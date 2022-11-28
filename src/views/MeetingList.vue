@@ -224,13 +224,13 @@ export default {
     // 獲取API
     getApi() {
       function getAPI() {
-        return axios.get("http://localhost:3000/meetingList");
-        // return axios.get("https://run.mocky.io/v3/9ecbd56c-aa62-413b-9ad0-ca28b6bc1081");
+        // return axios.get("http://localhost:3000/meetingList");
+        return axios.get("https://krytabo.github.io/meetings_vue3/db.json");
       }
 
       Promise.all([getAPI()]).then((response) => {
-        this.dataList = response[0].data;
-        // this.dataList = response[0].data.meetingList;
+        // this.dataList = response[0].data;
+        this.dataList = response[0].data.meetingList;
         this.loadingData = 100;
       });
 

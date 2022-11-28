@@ -948,13 +948,13 @@ export default {
     // 獲取API
     getApi() {
       function getAPI() {
-        return axios.get("http://localhost:3000/toDoList");
-        // return axios.get("https://run.mocky.io/v3/9ecbd56c-aa62-413b-9ad0-ca28b6bc1081");
+        // return axios.get("http://localhost:3000/toDoList");
+        return axios.get("https://krytabo.github.io/meetings_vue3/db.json");
       }
 
       Promise.all([getAPI()]).then((response) => {
-        this.inServForm.dataList = response[0].data;
-        // this.inServForm.dataList = response[0].data.toDoList;
+        // this.inServForm.dataList = response[0].data;
+        this.inServForm.dataList = response[0].data.toDoList;
         this.loadingData = 100;
         this.loading = false;
       });
@@ -1060,7 +1060,7 @@ export default {
     },
 
     //依照狀態改變table顏色
-    /*rowClass(row) {
+    rowClass(row) {
       if (row.row.status === "未完成" && row.row.auditStatus === "待送簽") {
         let stylejson = {};
         stylejson.backgroundColor = "#f56c6c !important";
@@ -1070,7 +1070,7 @@ export default {
         stylejson.backgroundColor = "#eeeeee !important";
         return stylejson;
       }
-    },*/
+    },
 
     tab1() {
       this.search = {
