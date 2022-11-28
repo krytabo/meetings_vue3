@@ -1,568 +1,779 @@
 <template>
-  <div class="flex-1 h-full p-5">
+  <div class="h-full flex-1 p-5">
     <!--<load-view :loading="loading" :progress-data="loadingData" :color="color"></load-view>-->
-    <div class="flex-col space-y-10 rounded-xl bg-white p-10 shadow-6 flex-1">
+    <div class="flex-1 flex-col space-y-10 rounded-xl bg-white p-10 shadow-6">
       <a-tabs default-active-key="1" class="toDo_tabs">
         <template #extra>
-          <div class="flex space-x-4 inline-block">
+          <div class="inline-block flex space-x-4">
             <div class="flex-1 text-right">快速搜尋：</div>
             <el-input v-model="wholeSearch" placeholder="請輸入關鍵字" class="flex-1"></el-input>
           </div>
         </template>
         <a-tab-pane key="1">
           <template #title><a-button class="toDo_tabs_button" @click="tab1">待辦事項總表</a-button></template>
-          <el-table :data="tables" style="width: 100%" :cell-style="rowClass">
-            <!--<el-table-column v-for="(item, index) in tableHeader" :key="index" :prop="item.propName" :label="item.labelName" :width="item.width"></el-table-column>-->
-            <el-table-column fixed label="序號" type="index" width="60" align="center"></el-table-column>
-            <el-table-column fixed label="待辦編碼" width="250" sortable>
-              <el-table-column prop="no" label="待辦編碼" width="250">
-                <template #header>
-                  <el-input v-model="search.no" size="mini" placeholder="關鍵字" />
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.no)"></span>
-                </template>
+          <el-form ref="validateForm" :inline="true" :model="editableTableData">
+            <el-table :data="tables" style="width: 100%" :cell-style="rowClass">
+              <!--<el-table-column v-for="(item, index) in tableHeader" :key="index" :prop="item.propName" :label="item.labelName" :width="item.width"></el-table-column>-->
+              <el-table-column fixed label="序號" type="index" width="60" align="center"></el-table-column>
+              <el-table-column fixed label="待辦編碼" width="250" sortable>
+                <el-table-column prop="no" label="待辦編碼" width="250">
+                  <template #header>
+                    <el-input v-model="search.no" size="mini" placeholder="關鍵字" />
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.no)"></span>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-            <el-table-column fixed prop="projectNo" label="專案編碼" width="150" sortable align="center">
-              <el-table-column prop="projectNo" label="專案編碼" width="150" align="center">
-                <template #header>
-                  <el-input v-model="search.projectNo" size="mini" placeholder="關鍵字" />
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.projectNo)"></span>
-                </template>
+              <el-table-column fixed prop="projectNo" label="專案編碼" width="150" sortable align="center">
+                <el-table-column prop="projectNo" label="專案編碼" width="150" align="center">
+                  <template #header>
+                    <el-input v-model="search.projectNo" size="mini" placeholder="關鍵字" />
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.projectNo)"></span>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-            <el-table-column fixed prop="meetingList" label="內容" min-width="240" sortable>
-              <el-table-column prop="meetingList" label="內容" min-width="240">
-                <template #header>
-                  <el-input v-model="search.meetingList" size="mini" placeholder="關鍵字" />
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.meetingList)"></span>
-                </template>
+              <el-table-column fixed prop="meetingList" label="內容" min-width="240" sortable>
+                <el-table-column prop="meetingList" label="內容" min-width="240">
+                  <template #header>
+                    <el-input v-model="search.meetingList" size="mini" placeholder="關鍵字" />
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.meetingList)"></span>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-            <el-table-column fixed prop="principal" label="負責人" width="200" sortable align="center">
-              <el-table-column prop="principal" label="負責人" width="200" align="center">
-                <template #header>
-                  <el-input v-model="search.principal" size="mini" placeholder="關鍵字" />
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.principal)"></span>
-                </template>
+              <el-table-column fixed prop="principal" label="負責人" width="200" sortable align="center">
+                <el-table-column prop="principal" label="負責人" width="200" align="center">
+                  <template #header>
+                    <el-input v-model="search.principal" size="mini" placeholder="關鍵字" />
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.principal)"></span>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-            <el-table-column prop="department" label="部門" width="150" sortable align="center">
-              <el-table-column prop="department" label="部門" width="150" align="center">
-                <template #header>
-                  <el-select v-model="search.department" size="mini" placeholder="請選擇" clearable>
-                    <el-option v-for="item in headerSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                  </el-select>
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.department)"></span>
-                </template>
+              <el-table-column prop="department" label="部門" width="150" sortable align="center">
+                <el-table-column prop="department" label="部門" width="150" align="center">
+                  <template #header>
+                    <el-select v-model="search.department" size="mini" placeholder="請選擇" clearable>
+                      <el-option v-for="item in headerSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.department)"></span>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-            <el-table-column prop="status" label="執行狀態" width="150" sortable align="center">
-              <el-table-column prop="status" width="150">
-                <template #header>
-                  <el-select v-model="search.status" size="mini" placeholder="請選擇" clearable>
-                    <el-option v-for="item in statusSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                  </el-select>
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.status)"></span>
-                </template>
+              <el-table-column prop="status" label="執行狀態" width="150" sortable align="center">
+                <el-table-column prop="status" width="150">
+                  <template #header>
+                    <el-select v-model="search.status" size="mini" placeholder="請選擇" clearable>
+                      <el-option v-for="item in statusSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.status)"></span>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-            <el-table-column prop="signedStatus" label="簽核狀態" width="150" sortable align="center">
-              <el-table-column prop="signedStatus" width="150">
-                <template #header>
-                  <el-select v-model="search.signedStatus" size="mini" placeholder="請選擇" clearable>
-                    <el-option v-for="item in auditStatusSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                  </el-select>
-                </template>
+              <el-table-column prop="signedStatus" label="簽核狀態" width="150" sortable align="center">
+                <el-table-column prop="signedStatus" width="150">
+                  <template #header>
+                    <el-select v-model="search.signedStatus" size="mini" placeholder="請選擇" clearable>
+                      <el-option v-for="item in auditStatusSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                  </template>
+                  <template #default="scope">
+                    <span v-if="scope.row.signedStatus.length === 0" class="w-full text-center" v-html="showDate(scope.row.auditStatus)"></span>
+                    <a-trigger v-else trigger="click">
+                      <a-button type="text" v-html="showDate(scope.row.auditStatus)" class="w-full"></a-button>
+                      <template #content>
+                        <div class="demo-basic rounded-md border border-gray-200 bg-white p-2 shadow-xl">
+                          <el-table ref="filterTable" :data="scope.row.signedStatus">
+                            <el-table-column type="index" label="序號" width="60" align="center"></el-table-column>
+                            <el-table-column prop="level" label="關卡" width="150"></el-table-column>
+                            <el-table-column prop="status" label="狀態" width="100"></el-table-column>
+                            <el-table-column prop="date" label="時間" width="180"></el-table-column>
+                            <el-table-column prop="commit" label="說明" width="150"></el-table-column>
+                          </el-table>
+                        </div>
+                      </template>
+                    </a-trigger>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+              <el-table-column prop="date" label="待辦發生日期" sortable>
+                <el-table-column prop="date" width="150">
+                  <template #header>
+                    <a-trigger trigger="click" :unmount-on-close="false">
+                      <el-button class="w-full">日期搜尋</el-button>
+                      <template #content>
+                        <div class="demo-basic rounded-md border border-gray-200 bg-white p-2 shadow-xl">
+                          <el-date-picker v-model="startDate" type="date" placeholder="開始" value-format="YYYY-MM-DD"></el-date-picker>
+                          <el-date-picker v-model="endDate" type="date" placeholder="結束" value-format="YYYY-MM-DD"></el-date-picker>
+                        </div>
+                      </template>
+                    </a-trigger>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.date)"></span>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+              <el-table-column prop="doneDate" label="預計完成日期" sortable>
+                <el-table-column prop="doneDate" width="150">
+                  <template #header>
+                    <a-trigger trigger="click" :unmount-on-close="false">
+                      <el-button class="w-full">日期搜尋</el-button>
+                      <template #content>
+                        <div class="demo-basic rounded-md border border-gray-200 bg-white p-2 shadow-xl">
+                          <el-date-picker v-model="search.start" type="date" placeholder="開始" value-format="YYYY-MM-DD"></el-date-picker>
+                          <el-date-picker v-model="search.end" type="date" placeholder="結束" value-format="YYYY-MM-DD"></el-date-picker>
+                        </div>
+                      </template>
+                    </a-trigger>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.doneDate)"></span>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+
+              <el-table-column prop="defer" label="遞延次數" width="120" sortable align="center">
+                <el-table-column prop="defer" width="120" align="center">
+                  <template #header>
+                    <el-input v-model="search.defer" size="mini" placeholder="關鍵字"></el-input>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.defer)"></span>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+              <el-table-column prop="KPI" label="KPI" width="100" sortable align="center">
+                <el-table-column prop="KPI" width="100" align="center">
+                  <template #header>
+                    <el-input v-model="search.KPI" size="mini" placeholder="關鍵字"></el-input>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.KPI)"></span>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+              <el-table-column prop="transfer" label="移轉紀錄" width="150" sortable align="center">
                 <template #default="scope">
-                  <span v-if="scope.row.signedStatus.length === 0" class="w-full text-center" v-html="showDate(scope.row.auditStatus)"></span>
+                  <span v-if="scope.row.transfer.length === 0"></span>
                   <a-trigger v-else trigger="click">
-                    <a-button type="text" v-html="showDate(scope.row.auditStatus)" class="w-full"></a-button>
+                    <a-button type="text" long>紀錄</a-button>
                     <template #content>
-                      <div class="demo-basic shadow-xl border border-gray-200 rounded-md bg-white p-2">
-                        <el-table ref="filterTable" :data="scope.row.signedStatus">
+                      <div class="demo-basic rounded-md border border-gray-200 bg-white p-2 shadow-xl">
+                        <el-table ref="filterTable" :data="scope.row.transfer">
                           <el-table-column type="index" label="序號" width="60" align="center"></el-table-column>
-                          <el-table-column prop="level" label="關卡" width="150"></el-table-column>
-                          <el-table-column prop="status" label="狀態" width="100"></el-table-column>
-                          <el-table-column prop="date" label="時間" width="180"></el-table-column>
-                          <el-table-column prop="commit" label="說明" width="150"></el-table-column>
+                          <el-table-column prop="date" label="時間" width="150"></el-table-column>
+                          <el-table-column prop="record" label="移轉紀錄" width="150">
+                            <template #default="scope">
+                              <div class="flex">
+                                <span>{{ scope.row.record.form }}</span>
+                                <i class="ri-arrow-right-line"></i>
+                                <span>{{ scope.row.record.to }}</span>
+                              </div>
+                            </template>
+                          </el-table-column>
+                          <el-table-column prop="edit" label="修改人員" width="150"></el-table-column>
                         </el-table>
                       </div>
                     </template>
                   </a-trigger>
                 </template>
               </el-table-column>
-            </el-table-column>
-            <el-table-column prop="date" label="待辦發生日期" sortable>
-              <el-table-column prop="date" width="150">
-                <template #header>
-                  <a-trigger trigger="click" :unmount-on-close="false">
-                    <el-button class="w-full">日期搜尋</el-button>
-                    <template #content>
-                      <div class="demo-basic shadow-xl border border-gray-200 rounded-md bg-white p-2">
-                        <el-date-picker v-model="startDate" type="date" placeholder="開始" value-format="YYYY-MM-DD"></el-date-picker>
-                        <el-date-picker v-model="endDate" type="date" placeholder="結束" value-format="YYYY-MM-DD"></el-date-picker>
-                      </div>
-                    </template>
-                  </a-trigger>
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.date)"></span>
-                </template>
-              </el-table-column>
-            </el-table-column>
-            <el-table-column prop="doneDate" label="預計完成日期" sortable>
-              <el-table-column prop="doneDate" width="150">
-                <template #header>
-                  <a-trigger trigger="click" :unmount-on-close="false">
-                    <el-button class="w-full">日期搜尋</el-button>
-                    <template #content>
-                      <div class="demo-basic shadow-xl border border-gray-200 rounded-md bg-white p-2">
-                        <el-date-picker v-model="search.start" type="date" placeholder="開始" value-format="YYYY-MM-DD"></el-date-picker>
-                        <el-date-picker v-model="search.end" type="date" placeholder="結束" value-format="YYYY-MM-DD"></el-date-picker>
-                      </div>
-                    </template>
-                  </a-trigger>
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.doneDate)"></span>
-                </template>
-              </el-table-column>
-            </el-table-column>
 
-            <el-table-column prop="defer" label="遞延次數" width="120" sortable align="center">
-              <el-table-column prop="defer" width="120" align="center">
-                <template #header>
-                  <el-input v-model="search.defer" size="mini" placeholder="關鍵字"></el-input>
-                </template>
+              <el-table-column label="會議記錄" width="100" align="center" fixed="right">
                 <template #default="scope">
-                  <span v-html="showDate(scope.row.defer)"></span>
+                  <a-button @click="Edit_PricingList(scope.$index, scope.row)" type="primary" status="success" size="small">檢視</a-button>
                 </template>
               </el-table-column>
-            </el-table-column>
-            <el-table-column prop="KPI" label="KPI" width="100" sortable align="center">
-              <el-table-column prop="KPI" width="100" align="center">
-                <template #header>
-                  <el-input v-model="search.KPI" size="mini" placeholder="關鍵字"></el-input>
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.KPI)"></span>
-                </template>
-              </el-table-column>
-            </el-table-column>
-            <el-table-column prop="transfer" label="移轉紀錄" width="150" sortable align="center">
-              <template #default="scope">
-                <span v-if="scope.row.transfer.length === 0"></span>
-                <a-trigger v-else trigger="click">
-                  <a-button type="text" long>紀錄</a-button>
-                  <template #content>
-                    <div class="demo-basic shadow-xl border border-gray-200 rounded-md bg-white p-2">
-                      <el-table ref="filterTable" :data="scope.row.transfer">
-                        <el-table-column type="index" label="序號" width="60" align="center"></el-table-column>
-                        <el-table-column prop="date" label="時間" width="150"></el-table-column>
-                        <el-table-column prop="record" label="移轉紀錄" width="150">
-                          <template #default="scope">
-                            <div class="flex">
-                              <span>{{ scope.row.record.form }}</span>
-                              <i class="ri-arrow-right-line"></i>
-                              <span>{{ scope.row.record.to }}</span>
-                            </div>
-                          </template>
-                        </el-table-column>
-                        <el-table-column prop="edit" label="修改人員" width="150"></el-table-column>
-                      </el-table>
-                    </div>
-                  </template>
-                </a-trigger>
-              </template>
-            </el-table-column>
-
-            <el-table-column label="會議記錄" width="100" align="center" fixed="right">
-              <template #default="scope">
-                <a-button @click="Edit_PricingList(scope.$index, scope.row)" type="primary" status="success" size="small">檢視</a-button>
-              </template>
-            </el-table-column>
-          </el-table>
+            </el-table>
+          </el-form>
         </a-tab-pane>
         <a-tab-pane key="2">
-          <template #title><a-button class="toDo_tabs_button" @click="tab1">當日到期待辦事項</a-button></template>
-          <el-table :data="tables" style="width: 100%" table-layout="fixed" :cell-style="rowClass">
-            <el-table-column fixed label="序號" type="index" width="60" align="center"></el-table-column>
-            <el-table-column fixed label="待辦編碼" width="250" sortable>
-              <el-table-column prop="no" label="待辦編碼" width="250">
-                <template #header>
-                  <el-input v-model="search.no" size="mini" placeholder="關鍵字" />
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.no)"></span>
-                </template>
+          <template #title><a-button class="toDo_tabs_button" @click="tab1">當日到期待辦事項(本人)</a-button></template>
+          <el-form ref="ruleForm" :inline="true" :model="inServForm">
+            <el-table :data="tables" style="width: 100%" table-layout="fixed" :cell-style="rowClass">
+              <el-table-column fixed label="序號" type="index" width="60" align="center"></el-table-column>
+              <el-table-column fixed label="待辦編碼" width="250" sortable>
+                <el-table-column prop="no" label="待辦編碼" width="250">
+                  <template #header>
+                    <el-input v-model="search.no" size="mini" placeholder="關鍵字" />
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.no)"></span>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-            <el-table-column fixed prop="projectNo" label="專案編碼" width="150" sortable align="center">
-              <el-table-column prop="projectNo" label="專案編碼" width="150" align="center">
-                <template #header>
-                  <el-input v-model="search.projectNo" size="mini" placeholder="關鍵字" />
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.projectNo)"></span>
-                </template>
+              <el-table-column fixed prop="projectNo" label="專案編碼及名稱" width="150" sortable align="center">
+                <el-table-column prop="projectNo" label="專案編碼及名稱" width="150" align="center">
+                  <template #header>
+                    <el-input v-model="search.projectNo" size="mini" placeholder="關鍵字" />
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.projectNo)"></span>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-            <el-table-column fixed prop="meetingList" label="內容" min-width="240" sortable>
-              <el-table-column prop="meetingList" label="內容" min-width="240">
-                <template #header>
-                  <el-input v-model="search.meetingList" size="mini" placeholder="關鍵字" />
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.meetingList)"></span>
-                </template>
+              <el-table-column fixed prop="meetingList" label="內容" min-width="240" sortable>
+                <el-table-column prop="meetingList" label="內容" min-width="240">
+                  <template #header>
+                    <el-input v-model="search.meetingList" size="mini" placeholder="關鍵字" />
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.meetingList)"></span>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-            <el-table-column fixed prop="principal" label="負責人" width="200" sortable align="center">
-              <el-table-column prop="principal" label="負責人" width="200" align="center">
-                <template #header>
-                  <el-input v-model="search.principal" size="mini" placeholder="關鍵字" />
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.principal)"></span>
-                </template>
+              <el-table-column fixed prop="principal" label="負責人" width="200" sortable align="center">
+                <el-table-column prop="principal" label="負責人" width="200" align="center">
+                  <template #header>
+                    <el-input v-model="search.principal" size="mini" placeholder="關鍵字" />
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.principal)"></span>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-            <el-table-column prop="department" label="部門" width="150" sortable align="center">
-              <el-table-column prop="department" label="部門" width="150" align="center">
-                <template #header>
-                  <el-select v-model="search.department" size="mini" placeholder="請選擇" clearable>
-                    <el-option v-for="item in headerSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                  </el-select>
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.department)"></span>
-                </template>
+              <el-table-column prop="department" label="部門" width="150" sortable align="center">
+                <el-table-column prop="department" label="部門" width="150" align="center">
+                  <template #header>
+                    <el-select v-model="search.department" size="mini" placeholder="請選擇" clearable>
+                      <el-option v-for="item in headerSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.department)"></span>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-            <el-table-column prop="status" label="執行狀態" width="150" sortable align="center">
-              <el-table-column prop="status" width="150">
-                <template #header>
-                  <el-select v-model="search.status" size="mini" placeholder="請選擇" clearable>
-                    <el-option v-for="item in statusSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                  </el-select>
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.status)"></span>
-                </template>
+              <el-table-column prop="status" label="執行狀態" width="150" sortable align="center">
+                <el-table-column prop="status" width="150">
+                  <template #header>
+                    <el-select v-model="search.status" size="mini" placeholder="請選擇" clearable>
+                      <el-option v-for="item in statusSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.status)"></span>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-            <el-table-column prop="signedStatus" label="簽核狀態" width="150" sortable align="center">
-              <el-table-column prop="signedStatus" width="150">
-                <template #header>
-                  <el-select v-model="search.signedStatus" size="mini" placeholder="請選擇" clearable>
-                    <el-option v-for="item in auditStatusSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                  </el-select>
-                </template>
-                <template #default="scope">
-                  <span v-if="scope.row.auditStatus === '待送簽' && scope.row.principal !== '王大明'" class="w-full text-center" v-html="showDate(scope.row.auditStatus)"></span>
-                  <a-button v-if="scope.row.auditStatus === '待送簽' && scope.row.principal === '王大明'" @click="sendPetition(scope.row)" type="primary" class="w-full">送簽</a-button>
-                  <a-button v-if="scope.row.auditStatus === '確認簽核'" @click="sendPetition(scope.row)" type="primary" class="w-full">確認簽核</a-button>
-                  <a-trigger v-if="scope.row.auditStatus === '已送簽'" trigger="click">
-                    <a-button type="text" v-html="showDate(scope.row.auditStatus)" class="w-full"></a-button>
-                    <template #content>
-                      <div class="demo-basic shadow-xl border border-gray-200 rounded-md bg-white p-2">
-                        <el-table ref="filterTable" :data="scope.row.signedStatus">
-                          <el-table-column type="index" label="序號" width="60" align="center"></el-table-column>
-                          <el-table-column prop="level" label="關卡" width="150"></el-table-column>
-                          <el-table-column prop="status" label="狀態" width="100"></el-table-column>
-                          <el-table-column prop="date" label="時間" width="180"></el-table-column>
-                          <el-table-column prop="commit" label="說明" width="150"></el-table-column>
-                        </el-table>
-                      </div>
-                    </template>
-                  </a-trigger>
-                </template>
+              <el-table-column prop="signedStatus" label="簽核狀態" width="150" sortable align="center">
+                <el-table-column prop="signedStatus" width="150">
+                  <template #header>
+                    <el-select v-model="search.signedStatus" size="mini" placeholder="請選擇" clearable>
+                      <el-option v-for="item in auditStatusSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                  </template>
+                  <template #default="scope">
+                    <span class="w-full text-center" v-html="showDate(scope.row.auditStatus)"></span>
+                    <!--                  <span v-if="scope.row.auditStatus === '待送簽' && scope.row.principal !== '王大明'" class="w-full text-center" v-html="showDate(scope.row.auditStatus)"></span>-->
+                    <a-button v-if="scope.row.auditStatus === '待送簽' && scope.row.principal === '王大明'" @click="sendPetition(scope.row)" type="primary" class="w-full">送簽</a-button>
+                    <a-button v-if="scope.row.auditStatus === '確認簽核'" @click="sendPetition(scope.row)" type="primary" class="w-full">確認簽核</a-button>
+                    <a-trigger v-if="scope.row.auditStatus === '已送簽'" trigger="click">
+                      <a-button type="text" v-html="showDate(scope.row.auditStatus)" class="w-full"></a-button>
+                      <template #content>
+                        <div class="demo-basic rounded-md border border-gray-200 bg-white p-2 shadow-xl">
+                          <el-table ref="filterTable" :data="scope.row.signedStatus">
+                            <el-table-column type="index" label="序號" width="60" align="center"></el-table-column>
+                            <el-table-column prop="level" label="關卡" width="150"></el-table-column>
+                            <el-table-column prop="status" label="狀態" width="100"></el-table-column>
+                            <el-table-column prop="date" label="時間" width="180"></el-table-column>
+                            <el-table-column prop="commit" label="說明" width="150"></el-table-column>
+                          </el-table>
+                        </div>
+                      </template>
+                    </a-trigger>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-            <el-table-column prop="date" label="待辦發生日期" sortable>
-              <el-table-column prop="date" width="150">
-                <template #header>
-                  <a-trigger trigger="click" :unmount-on-close="false">
-                    <el-button class="w-full">日期搜尋</el-button>
-                    <template #content>
-                      <div class="demo-basic shadow-xl border border-gray-200 rounded-md bg-white p-2">
-                        <el-date-picker v-model="startDate" type="date" placeholder="開始" value-format="YYYY-MM-DD"></el-date-picker>
-                        <el-date-picker v-model="endDate" type="date" placeholder="結束" value-format="YYYY-MM-DD"></el-date-picker>
-                      </div>
-                    </template>
-                  </a-trigger>
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.date)"></span>
-                </template>
+              <el-table-column prop="date" label="待辦發生日期" sortable>
+                <el-table-column prop="date" width="150">
+                  <template #header>
+                    <a-trigger trigger="click" :unmount-on-close="false">
+                      <el-button class="w-full">日期搜尋</el-button>
+                      <template #content>
+                        <div class="demo-basic rounded-md border border-gray-200 bg-white p-2 shadow-xl">
+                          <el-date-picker v-model="startDate" type="date" placeholder="開始" value-format="YYYY-MM-DD"></el-date-picker>
+                          <el-date-picker v-model="endDate" type="date" placeholder="結束" value-format="YYYY-MM-DD"></el-date-picker>
+                        </div>
+                      </template>
+                    </a-trigger>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.date)"></span>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-            <el-table-column prop="doneDate" label="預計完成日期" sortable>
-              <el-table-column prop="doneDate" width="150">
-                <template #header>
-                  <a-trigger trigger="click" :unmount-on-close="false">
-                    <el-button class="w-full">日期搜尋</el-button>
-                    <template #content>
-                      <div class="demo-basic shadow-xl border border-gray-200 rounded-md bg-white p-2">
-                        <el-date-picker v-model="search.start" type="date" placeholder="開始" value-format="YYYY-MM-DD"></el-date-picker>
-                        <el-date-picker v-model="search.end" type="date" placeholder="結束" value-format="YYYY-MM-DD"></el-date-picker>
-                      </div>
-                    </template>
-                  </a-trigger>
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.doneDate)"></span>
-                </template>
+              <el-table-column prop="doneDate" label="預計完成日期" sortable>
+                <el-table-column prop="doneDate" width="150">
+                  <template #header>
+                    <a-trigger trigger="click" :unmount-on-close="false">
+                      <el-button class="w-full">日期搜尋</el-button>
+                      <template #content>
+                        <div class="demo-basic rounded-md border border-gray-200 bg-white p-2 shadow-xl">
+                          <el-date-picker v-model="search.start" type="date" placeholder="開始" value-format="YYYY-MM-DD"></el-date-picker>
+                          <el-date-picker v-model="search.end" type="date" placeholder="結束" value-format="YYYY-MM-DD"></el-date-picker>
+                        </div>
+                      </template>
+                    </a-trigger>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.doneDate)"></span>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
 
-            <el-table-column prop="principalDone" label="負責人回覆是否完成" width="400" align="center">
-              <template #default="scope">
-                <div class="flex space-x-2 w-full">
-                  <el-radio-group v-model="scope.row.principalDone" class="text-center">
+              <el-table-column prop="principalDone" label="負責人回覆是否完成" width="400" align="center">
+                <template #default="scope">
+                  <div v-if="scope.row.principal === '王大明'" class="flex w-full space-x-2">
+                    <el-form-item label=" " :prop="'dataList.' + scope.$index + '.principalDone'" :rules="inServForm.rules.principalCommit">
+                      <el-radio-group v-model="scope.row.principalDone" class="text-center">
+                        <el-radio :label="true">是</el-radio>
+                        <el-radio :label="false">否</el-radio>
+                      </el-radio-group>
+
+                      <a-upload class="w-1/2" v-if="scope.row.principalDone === true" action="https://www.mocky.io/v2/5cc8019d300000980a055e76" :limit="1">
+                        <template #upload-button><a-button type="primary">選擇檔案</a-button></template>
+                      </a-upload>
+                      <el-input v-else class="w-1/2" type="textarea" :rows="2" placeholder="請輸入內容" v-model="scope.row.principalCommit"></el-input>
+                    </el-form-item>
+                    <!--                  <el-radio-group v-model="scope.row.principalDone" class="text-center" :disabled="scope.row.principal !== '王大明'">
                     <el-radio :label="true">是</el-radio>
                     <el-radio :label="false">否</el-radio>
                   </el-radio-group>
 
                   <a-upload class="w-1/2" v-if="scope.row.principalDone === true" action="https://www.mocky.io/v2/5cc8019d300000980a055e76" :limit="1">
-                    <template #upload-button><a-button type="primary">選擇檔案</a-button></template>
+                    <template #upload-button><a-button type="primary" :disabled="scope.row.principal !== '王大明'">選擇檔案</a-button></template>
                   </a-upload>
-                  <el-input v-else class="w-1/2" type="textarea" :rows="2" placeholder="請輸入內容" v-model="scope.row.principalCommit"></el-input>
-                </div>
-              </template>
-            </el-table-column>
-            <!--  <el-table-column prop="principalCommit" label="負責人說明" width="250" align="center">
-              <template #header>
-                <template v-if="tables.principalDone === true">負責人說明</template>
-                <template v-else>上傳附件</template>
-              </template>
-              <template #default="scope">
-                <el-input type="textarea" :rows="2" placeholder="請輸入內容" v-model="scope.row.principalCommit"></el-input>
-              </template>
-            </el-table-column>-->
-            <el-table-column prop="KPI" label="KPI" width="200" align="center">
-              <template #default="scope">
-                <div class="flex flex-col">
-                  <el-checkbox v-model="scope.row.KPIOption">評分</el-checkbox>
-                  <el-select v-model="scope.row.KPI" size="mini" placeholder="請選擇" clearable filterable allow-create :disabled="scope.row.KPIOption === false">
-                    <el-option v-for="item in KPISelect" :key="item.value" :label="item.value" :value="item.value"></el-option>
-                  </el-select>
-                  <!--<el-input-number :disabled="scope.row.KPIOption === false" v-model="scope.row.KPI" @change="handleChange"></el-input-number>-->
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="managerCommit" label="直屬主管意見" width="250" align="center">
-              <template #default="scope">
-                <el-input type="textarea" :rows="2" placeholder="請輸入內容" v-model="scope.row.managerCommit"></el-input>
-              </template>
-            </el-table-column>
+                  <el-input v-else class="w-1/2" type="textarea" :rows="2" placeholder="請輸入內容" v-model="scope.row.principalCommit" :disabled="scope.row.principal !== '王大明'"></el-input>-->
+                  </div>
+                  <div v-else class="flex w-full space-x-2">
+                    <p v-if="scope.row.principalCommit === ''">無</p>
+                    <p v-else>{{ scope.row.principalCommit }}</p>
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column prop="KPI" label="KPI" width="200" align="center">
+                <template #default="scope">
+                  <div class="flex flex-col">
+                    <el-checkbox v-model="scope.row.KPIOption">評分</el-checkbox>
+                    <el-select v-model="scope.row.KPI" size="mini" placeholder="請選擇" clearable filterable allow-create :disabled="scope.row.KPIOption === false">
+                      <el-option v-for="item in KPISelect" :key="item.value" :label="item.value" :value="item.value"></el-option>
+                    </el-select>
+                    <!--<el-input-number :disabled="scope.row.KPIOption === false" v-model="scope.row.KPI" @change="handleChange"></el-input-number>-->
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column prop="managerCommit" label="直屬主管意見" width="250" align="center">
+                <template #default="scope">
+                  <!--                <el-input type="textarea" :rows="2" placeholder="請輸入內容" v-model="scope.row.managerCommit" disabled></el-input>-->
+                  <p v-if="scope.row.managerCommit === ''">無</p>
+                  <p v-else>{{ scope.row.managerCommit }}</p>
+                </template>
+              </el-table-column>
 
-            <el-table-column label="會議記錄" width="100" align="center" fixed="right">
-              <template #default="scope">
-                <a-button @click="Edit_PricingList(scope.$index, scope.row)" type="primary" status="success" size="small">檢視</a-button>
-              </template>
-            </el-table-column>
-          </el-table>
+              <el-table-column label="會議記錄" width="100" align="center" fixed="right">
+                <template #default="scope">
+                  <a-button @click="Edit_PricingList(scope.$index, scope.row)" type="primary" status="success" size="small">檢視</a-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-form>
         </a-tab-pane>
         <a-tab-pane key="3">
+          <template #title><a-button class="toDo_tabs_button" @click="tab1">當日到期待辦事項(主管)</a-button></template>
+          <el-form ref="validateForm" :inline="true" :model="editableTableData">
+            <el-table :data="tables" style="width: 100%" table-layout="fixed" :cell-style="rowClass">
+              <el-table-column fixed label="序號" type="index" width="60" align="center"></el-table-column>
+              <el-table-column fixed label="待辦編碼" width="250" sortable>
+                <el-table-column prop="no" label="待辦編碼" width="250">
+                  <template #header>
+                    <el-input v-model="search.no" size="mini" placeholder="關鍵字" />
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.no)"></span>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+              <el-table-column fixed prop="projectNo" label="專案編碼及名稱" width="150" sortable align="center">
+                <el-table-column prop="projectNo" label="專案編碼及名稱" width="150" align="center">
+                  <template #header>
+                    <el-input v-model="search.projectNo" size="mini" placeholder="關鍵字" />
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.projectNo)"></span>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+              <el-table-column fixed prop="meetingList" label="內容" min-width="240" sortable>
+                <el-table-column prop="meetingList" label="內容" min-width="240">
+                  <template #header>
+                    <el-input v-model="search.meetingList" size="mini" placeholder="關鍵字" />
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.meetingList)"></span>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+              <el-table-column fixed prop="principal" label="負責人" width="200" sortable align="center">
+                <el-table-column prop="principal" label="負責人" width="200" align="center">
+                  <template #header>
+                    <el-input v-model="search.principal" size="mini" placeholder="關鍵字" />
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.principal)"></span>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+              <el-table-column prop="department" label="部門" width="150" sortable align="center">
+                <el-table-column prop="department" label="部門" width="150" align="center">
+                  <template #header>
+                    <el-select v-model="search.department" size="mini" placeholder="請選擇" clearable>
+                      <el-option v-for="item in headerSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.department)"></span>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+              <el-table-column prop="status" label="執行狀態" width="150" sortable align="center">
+                <el-table-column prop="status" width="150">
+                  <template #header>
+                    <el-select v-model="search.status" size="mini" placeholder="請選擇" clearable>
+                      <el-option v-for="item in statusSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.status)"></span>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+              <el-table-column prop="signedStatus" label="簽核狀態" width="150" sortable align="center">
+                <el-table-column prop="signedStatus" width="200">
+                  <template #header>
+                    <el-select v-model="search.signedStatus" size="mini" placeholder="請選擇" clearable>
+                      <el-option v-for="item in auditStatusSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                  </template>
+                  <template #default="scope">
+                    <div class="space-2 flex w-full flex-col">
+                      <span class="w-full text-center" v-html="showDate(scope.row.auditStatus)"></span>
+                      <!--                  <span v-if="scope.row.auditStatus === '待送簽' && scope.row.principal !== '王大明'" class="w-full text-center" v-html="showDate(scope.row.auditStatus)"></span>-->
+                      <!--                  <a-button v-if="scope.row.auditStatus === '待送簽' && scope.row.principal === '王大明'" @click="sendPetition(scope.row)" type="primary" class="w-full">送簽</a-button>-->
+                      <div class="flex space-x-2" v-if="scope.row.auditStatus === '待簽核'">
+                        <a-button @click="sendPetition(scope.row)" type="primary" class="w-full">簽核通過</a-button>
+                        <a-button @click="sendPetition(scope.row)" type="primary" class="w-full">退件</a-button>
+                      </div>
+
+                      <a-trigger v-if="scope.row.auditStatus === '已送簽'" trigger="click">
+                        <a-button type="text" v-html="showDate(scope.row.auditStatus)" class="w-full"></a-button>
+                        <template #content>
+                          <div class="demo-basic rounded-md border border-gray-200 bg-white p-2 shadow-xl">
+                            <el-table ref="filterTable" :data="scope.row.signedStatus">
+                              <el-table-column type="index" label="序號" width="60" align="center"></el-table-column>
+                              <el-table-column prop="level" label="關卡" width="150"></el-table-column>
+                              <el-table-column prop="status" label="狀態" width="100"></el-table-column>
+                              <el-table-column prop="date" label="時間" width="180"></el-table-column>
+                              <el-table-column prop="commit" label="說明" width="150"></el-table-column>
+                            </el-table>
+                          </div>
+                        </template>
+                      </a-trigger>
+                    </div>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+              <el-table-column prop="date" label="待辦發生日期" sortable>
+                <el-table-column prop="date" width="150">
+                  <template #header>
+                    <a-trigger trigger="click" :unmount-on-close="false">
+                      <el-button class="w-full">日期搜尋</el-button>
+                      <template #content>
+                        <div class="demo-basic rounded-md border border-gray-200 bg-white p-2 shadow-xl">
+                          <el-date-picker v-model="startDate" type="date" placeholder="開始" value-format="YYYY-MM-DD"></el-date-picker>
+                          <el-date-picker v-model="endDate" type="date" placeholder="結束" value-format="YYYY-MM-DD"></el-date-picker>
+                        </div>
+                      </template>
+                    </a-trigger>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.date)"></span>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+              <el-table-column prop="doneDate" label="預計完成日期" sortable>
+                <el-table-column prop="doneDate" width="150">
+                  <template #header>
+                    <a-trigger trigger="click" :unmount-on-close="false">
+                      <el-button class="w-full">日期搜尋</el-button>
+                      <template #content>
+                        <div class="demo-basic rounded-md border border-gray-200 bg-white p-2 shadow-xl">
+                          <el-date-picker v-model="search.start" type="date" placeholder="開始" value-format="YYYY-MM-DD"></el-date-picker>
+                          <el-date-picker v-model="search.end" type="date" placeholder="結束" value-format="YYYY-MM-DD"></el-date-picker>
+                        </div>
+                      </template>
+                    </a-trigger>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.doneDate)"></span>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+
+              <el-table-column prop="principalDone" label="負責人回覆是否完成" width="400" align="center">
+                <template #default="scope">
+                  <!--                <div class="flex w-full space-x-2">
+                  <el-radio-group v-model="scope.row.principalDone" class="text-center" :disabled="scope.row.principal !== '李四'">
+                    <el-radio :label="true">是</el-radio>
+                    <el-radio :label="false">否</el-radio>
+                  </el-radio-group>
+
+                  <a-upload class="w-1/2" v-if="scope.row.principalDone === true" action="https://www.mocky.io/v2/5cc8019d300000980a055e76" :limit="1">
+                    <template #upload-button><a-button type="primary" :disabled="scope.row.principal !== '李四'">選擇檔案</a-button></template>
+                  </a-upload>
+                  <el-input v-else class="w-1/2" type="textarea" :rows="2" placeholder="請輸入內容" v-model="scope.row.principalCommit" :disabled="scope.row.principal !== '李四'"></el-input>
+                </div>-->
+                  <div v-if="scope.row.principal === '蔡先生'" class="flex w-full space-x-2">
+                    <el-radio-group v-model="scope.row.principalDone" class="text-center">
+                      <el-radio :label="true">是</el-radio>
+                      <el-radio :label="false">否</el-radio>
+                    </el-radio-group>
+
+                    <a-upload class="w-1/2" v-if="scope.row.principalDone === true" action="https://www.mocky.io/v2/5cc8019d300000980a055e76" :limit="1">
+                      <template #upload-button><a-button type="primary">選擇檔案</a-button></template>
+                    </a-upload>
+                    <el-input v-else class="w-1/2" type="textarea" :rows="2" placeholder="請輸入內容" v-model="scope.row.principalCommit"></el-input>
+                  </div>
+                  <div v-else class="flex w-full space-x-2">
+                    <p v-if="scope.row.principalCommit === ''">無</p>
+                    <p v-else>{{ scope.row.principalCommit }}</p>
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column prop="KPI" label="KPI" width="200" align="center">
+                <template #default="scope">
+                  <div class="flex flex-col">
+                    <el-checkbox v-model="scope.row.KPIOption">評分</el-checkbox>
+                    <el-select v-model="scope.row.KPI" size="mini" placeholder="請選擇" clearable filterable allow-create :disabled="scope.row.KPIOption === false">
+                      <el-option v-for="item in KPISelect" :key="item.value" :label="item.value" :value="item.value"></el-option>
+                    </el-select>
+                    <!--<el-input-number :disabled="scope.row.KPIOption === false" v-model="scope.row.KPI" @change="handleChange"></el-input-number>-->
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column prop="managerCommit" label="直屬主管意見" width="250" align="center">
+                <template #default="scope">
+                  <el-input type="textarea" :rows="2" placeholder="請輸入內容" v-model="scope.row.managerCommit"></el-input>
+                </template>
+              </el-table-column>
+
+              <el-table-column label="會議記錄" width="100" align="center" fixed="right">
+                <template #default="scope">
+                  <a-button @click="Edit_PricingList(scope.$index, scope.row)" type="primary" status="success" size="small">檢視</a-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-form>
+        </a-tab-pane>
+        <a-tab-pane key="4">
           <template #title><a-button class="toDo_tabs_button" @click="tab3">個人待辦事項</a-button></template>
-          <el-table :data="tables" ref="filterTable" style="width: 100%" :cell-style="rowClass">
-            <!--<el-table-column v-for="(item, index) in tableHeader" :key="index" :prop="item.propName" :label="item.labelName" :width="item.width"></el-table-column>-->
-            <el-table-column fixed label="序號" type="index" width="60" align="center"></el-table-column>
-            <el-table-column fixed label="待辦編碼" width="250" sortable>
-              <el-table-column prop="no" label="待辦編碼" width="250">
-                <template #header>
-                  <el-input v-model="search.no" size="mini" placeholder="關鍵字" />
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.no)"></span>
-                </template>
+          <el-form ref="validateForm" :inline="true" :model="editableTableData">
+            <el-table :data="tables" ref="filterTable" style="width: 100%" :cell-style="rowClass">
+              <!--<el-table-column v-for="(item, index) in tableHeader" :key="index" :prop="item.propName" :label="item.labelName" :width="item.width"></el-table-column>-->
+              <el-table-column fixed label="序號" type="index" width="60" align="center"></el-table-column>
+              <el-table-column fixed label="待辦編碼" width="250" sortable>
+                <el-table-column prop="no" label="待辦編碼" width="250">
+                  <template #header>
+                    <el-input v-model="search.no" size="mini" placeholder="關鍵字" />
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.no)"></span>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-            <el-table-column fixed prop="projectNo" label="專案編碼" width="150" sortable align="center">
-              <el-table-column prop="projectNo" label="專案編碼" width="150" align="center">
-                <template #header>
-                  <el-input v-model="search.projectNo" size="mini" placeholder="關鍵字" />
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.projectNo)"></span>
-                </template>
+              <el-table-column fixed prop="projectNo" label="專案編碼" width="150" sortable align="center">
+                <el-table-column prop="projectNo" label="專案編碼" width="150" align="center">
+                  <template #header>
+                    <el-input v-model="search.projectNo" size="mini" placeholder="關鍵字" />
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.projectNo)"></span>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-            <el-table-column fixed prop="meetingList" label="內容" min-width="240" sortable>
-              <el-table-column prop="meetingList" label="內容" min-width="240">
-                <template #header>
-                  <el-input v-model="search.meetingList" size="mini" placeholder="關鍵字" />
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.meetingList)"></span>
-                </template>
+              <el-table-column fixed prop="meetingList" label="內容" min-width="240" sortable>
+                <el-table-column prop="meetingList" label="內容" min-width="240">
+                  <template #header>
+                    <el-input v-model="search.meetingList" size="mini" placeholder="關鍵字" />
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.meetingList)"></span>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-            <el-table-column prop="principal" label="負責人" width="200" align="center">
-              <!--<el-table-column prop="principal" label="負責人" width="100" :filtered-value="filteredVal" :filters="personSelect" :filter-method="filterHandler" :filter-multiple="false">-->
-              <el-table-column label="負責人" width="200">
-                <template #header>
-                  <el-select v-model="search.principal" size="mini" placeholder="請選擇" clearable>
-                    <el-option v-for="item in personSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                  </el-select>
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.principal)"></span>
-                </template>
+              <el-table-column prop="principal" label="負責人" width="200" align="center">
+                <!--<el-table-column prop="principal" label="負責人" width="100" :filtered-value="filteredVal" :filters="personSelect" :filter-method="filterHandler" :filter-multiple="false">-->
+                <el-table-column label="負責人" width="200">
+                  <template #header>
+                    <el-select v-model="search.principal" size="mini" placeholder="請選擇" clearable>
+                      <el-option v-for="item in personSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.principal)"></span>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-            <el-table-column prop="department" label="部門" width="150" sortable align="center">
-              <el-table-column prop="department" label="部門" width="150" align="center">
-                <template #header>
-                  <el-select v-model="search.department" size="mini" placeholder="請選擇" clearable>
-                    <el-option v-for="item in headerSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                  </el-select>
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.department)"></span>
-                </template>
+              <el-table-column prop="department" label="部門" width="150" sortable align="center">
+                <el-table-column prop="department" label="部門" width="150" align="center">
+                  <template #header>
+                    <el-select v-model="search.department" size="mini" placeholder="請選擇" clearable>
+                      <el-option v-for="item in headerSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.department)"></span>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-            <el-table-column prop="status" label="執行狀態" width="150" sortable align="center">
-              <el-table-column prop="status" width="150">
-                <template #header>
-                  <el-select v-model="search.status" size="mini" placeholder="請選擇" clearable>
-                    <el-option v-for="item in statusSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                  </el-select>
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.status)"></span>
-                </template>
+              <el-table-column prop="status" label="執行狀態" width="150" sortable align="center">
+                <el-table-column prop="status" width="150">
+                  <template #header>
+                    <el-select v-model="search.status" size="mini" placeholder="請選擇" clearable>
+                      <el-option v-for="item in statusSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.status)"></span>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-            <el-table-column prop="signedStatus" label="簽核狀態" width="150" sortable align="center">
-              <el-table-column prop="signedStatus" width="150">
-                <template #header>
-                  <el-select v-model="search.signedStatus" size="mini" placeholder="請選擇" clearable>
-                    <el-option v-for="item in auditStatusSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                  </el-select>
-                </template>
+              <el-table-column prop="signedStatus" label="簽核狀態" width="150" sortable align="center">
+                <el-table-column prop="signedStatus" width="150">
+                  <template #header>
+                    <el-select v-model="search.signedStatus" size="mini" placeholder="請選擇" clearable>
+                      <el-option v-for="item in auditStatusSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                  </template>
+                  <template #default="scope">
+                    <a-button v-if="scope.row.signedStatus.length === 0" @click="sendPetition(scope.row)" type="primary" class="w-full">送簽</a-button>
+                    <a-trigger v-else trigger="click">
+                      <a-button type="text" v-html="showDate(scope.row.auditStatus)" class="w-full"></a-button>
+                      <template #content>
+                        <div class="demo-basic rounded-md border border-gray-200 bg-white p-2 shadow-xl">
+                          <el-table ref="filterTable" :data="scope.row.signedStatus">
+                            <el-table-column type="index" label="序號" width="60" align="center"></el-table-column>
+                            <el-table-column prop="level" label="關卡" width="150"></el-table-column>
+                            <el-table-column prop="status" label="狀態" width="100"></el-table-column>
+                            <el-table-column prop="date" label="時間" width="180"></el-table-column>
+                            <el-table-column prop="commit" label="說明" width="150"></el-table-column>
+                          </el-table>
+                        </div>
+                      </template>
+                    </a-trigger>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+              <el-table-column prop="date" label="待辦發生日期" sortable>
+                <el-table-column prop="date" width="150">
+                  <template #header>
+                    <a-trigger trigger="click" :unmount-on-close="false">
+                      <el-button class="w-full">日期搜尋</el-button>
+                      <template #content>
+                        <div class="demo-basic rounded-md border border-gray-200 bg-white p-2 shadow-xl">
+                          <el-date-picker v-model="startDate" type="date" placeholder="開始" value-format="YYYY-MM-DD"></el-date-picker>
+                          <el-date-picker v-model="endDate" type="date" placeholder="結束" value-format="YYYY-MM-DD"></el-date-picker>
+                        </div>
+                      </template>
+                    </a-trigger>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.date)"></span>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+              <el-table-column prop="doneDate" label="預計完成日期" sortable>
+                <el-table-column prop="doneDate" width="150">
+                  <template #header>
+                    <a-trigger trigger="click" :unmount-on-close="false">
+                      <el-button class="w-full">日期搜尋</el-button>
+                      <template #content>
+                        <div class="demo-basic rounded-md border border-gray-200 bg-white p-2 shadow-xl">
+                          <el-date-picker v-model="search.start" type="date" placeholder="開始" value-format="YYYY-MM-DD"></el-date-picker>
+                          <el-date-picker v-model="search.end" type="date" placeholder="結束" value-format="YYYY-MM-DD"></el-date-picker>
+                        </div>
+                      </template>
+                    </a-trigger>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.doneDate)"></span>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+              <el-table-column prop="defer" label="遞延次數" width="120" sortable align="center">
+                <el-table-column prop="defer" width="120" align="center">
+                  <template #header>
+                    <el-input v-model="search.defer" size="mini" placeholder="關鍵字"></el-input>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.defer)"></span>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+              <el-table-column prop="KPI" label="KPI" width="100" sortable align="center">
+                <el-table-column prop="KPI" width="100" align="center">
+                  <template #header>
+                    <el-input v-model="search.KPI" size="mini" placeholder="關鍵字"></el-input>
+                  </template>
+                  <template #default="scope">
+                    <span v-html="showDate(scope.row.KPI)"></span>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+              <el-table-column prop="transfer" label="移轉紀錄" width="150" sortable align="center">
                 <template #default="scope">
-                  <a-button v-if="scope.row.signedStatus.length === 0" @click="sendPetition(scope.row)" type="primary" class="w-full">送簽</a-button>
+                  <span v-if="scope.row.transfer.length === 0"></span>
                   <a-trigger v-else trigger="click">
-                    <a-button type="text" v-html="showDate(scope.row.auditStatus)" class="w-full"></a-button>
+                    <a-button type="text" long>紀錄</a-button>
                     <template #content>
-                      <div class="demo-basic shadow-xl border border-gray-200 rounded-md bg-white p-2">
-                        <el-table ref="filterTable" :data="scope.row.signedStatus">
+                      <div class="demo-basic rounded-md border border-gray-200 bg-white p-2 shadow-xl">
+                        <el-table ref="filterTable" :data="scope.row.transfer">
                           <el-table-column type="index" label="序號" width="60" align="center"></el-table-column>
-                          <el-table-column prop="level" label="關卡" width="150"></el-table-column>
-                          <el-table-column prop="status" label="狀態" width="100"></el-table-column>
-                          <el-table-column prop="date" label="時間" width="180"></el-table-column>
-                          <el-table-column prop="commit" label="說明" width="150"></el-table-column>
+                          <el-table-column prop="date" label="時間" width="150"></el-table-column>
+                          <el-table-column prop="record" label="移轉紀錄" width="150">
+                            <template #default="scope">
+                              <div class="flex">
+                                <span>{{ scope.row.record.form }}</span>
+                                <i class="ri-arrow-right-line"></i>
+                                <span>{{ scope.row.record.to }}</span>
+                              </div>
+                            </template>
+                          </el-table-column>
+                          <el-table-column prop="edit" label="修改人員" width="150"></el-table-column>
                         </el-table>
                       </div>
                     </template>
                   </a-trigger>
                 </template>
               </el-table-column>
-            </el-table-column>
-            <el-table-column prop="date" label="待辦發生日期" sortable>
-              <el-table-column prop="date" width="150">
-                <template #header>
-                  <a-trigger trigger="click" :unmount-on-close="false">
-                    <el-button class="w-full">日期搜尋</el-button>
-                    <template #content>
-                      <div class="demo-basic shadow-xl border border-gray-200 rounded-md bg-white p-2">
-                        <el-date-picker v-model="startDate" type="date" placeholder="開始" value-format="YYYY-MM-DD"></el-date-picker>
-                        <el-date-picker v-model="endDate" type="date" placeholder="結束" value-format="YYYY-MM-DD"></el-date-picker>
-                      </div>
-                    </template>
-                  </a-trigger>
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.date)"></span>
-                </template>
-              </el-table-column>
-            </el-table-column>
-            <el-table-column prop="doneDate" label="預計完成日期" sortable>
-              <el-table-column prop="doneDate" width="150">
-                <template #header>
-                  <a-trigger trigger="click" :unmount-on-close="false">
-                    <el-button class="w-full">日期搜尋</el-button>
-                    <template #content>
-                      <div class="demo-basic shadow-xl border border-gray-200 rounded-md bg-white p-2">
-                        <el-date-picker v-model="search.start" type="date" placeholder="開始" value-format="YYYY-MM-DD"></el-date-picker>
-                        <el-date-picker v-model="search.end" type="date" placeholder="結束" value-format="YYYY-MM-DD"></el-date-picker>
-                      </div>
-                    </template>
-                  </a-trigger>
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.doneDate)"></span>
-                </template>
-              </el-table-column>
-            </el-table-column>
-            <el-table-column prop="defer" label="遞延次數" width="120" sortable align="center">
-              <el-table-column prop="defer" width="120" align="center">
-                <template #header>
-                  <el-input v-model="search.defer" size="mini" placeholder="關鍵字"></el-input>
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.defer)"></span>
-                </template>
-              </el-table-column>
-            </el-table-column>
-            <el-table-column prop="KPI" label="KPI" width="100" sortable align="center">
-              <el-table-column prop="KPI" width="100" align="center">
-                <template #header>
-                  <el-input v-model="search.KPI" size="mini" placeholder="關鍵字"></el-input>
-                </template>
-                <template #default="scope">
-                  <span v-html="showDate(scope.row.KPI)"></span>
-                </template>
-              </el-table-column>
-            </el-table-column>
-            <el-table-column prop="transfer" label="移轉紀錄" width="150" sortable align="center">
-              <template #default="scope">
-                <span v-if="scope.row.transfer.length === 0"></span>
-                <a-trigger v-else trigger="click">
-                  <a-button type="text" long>紀錄</a-button>
-                  <template #content>
-                    <div class="demo-basic shadow-xl border border-gray-200 rounded-md bg-white p-2">
-                      <el-table ref="filterTable" :data="scope.row.transfer">
-                        <el-table-column type="index" label="序號" width="60" align="center"></el-table-column>
-                        <el-table-column prop="date" label="時間" width="150"></el-table-column>
-                        <el-table-column prop="record" label="移轉紀錄" width="150">
-                          <template #default="scope">
-                            <div class="flex">
-                              <span>{{ scope.row.record.form }}</span>
-                              <i class="ri-arrow-right-line"></i>
-                              <span>{{ scope.row.record.to }}</span>
-                            </div>
-                          </template>
-                        </el-table-column>
-                        <el-table-column prop="edit" label="修改人員" width="150"></el-table-column>
-                      </el-table>
-                    </div>
-                  </template>
-                </a-trigger>
-              </template>
-            </el-table-column>
 
-            <el-table-column label="會議記錄" width="100" align="center" fixed="right">
-              <template #default="scope">
-                <a-button @click="Edit_PricingList(scope.$index, scope.row)" type="primary" status="success" size="small">檢視</a-button>
-              </template>
-            </el-table-column>
-          </el-table>
+              <el-table-column label="會議記錄" width="100" align="center" fixed="right">
+                <template #default="scope">
+                  <a-button @click="Edit_PricingList(scope.$index, scope.row)" type="primary" status="success" size="small">檢視</a-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-form>
         </a-tab-pane>
       </a-tabs>
     </div>
@@ -602,8 +813,17 @@ export default {
         end: "",
       },
 
+      /** 驗證規則 */
+
       /** 待api匯入 */
-      dataList: [], //待辦事項
+      inServForm: {
+        dataList: [], //待辦事項
+        rules: {
+          principalCommit: [{ required: true, message: "請輸入內容", trigger: "blur" }],
+        },
+      },
+
+      domains: [],
       KPI: false,
       todayList: [], //當天到期
       // personal: "王大明", //個人待辦事項
@@ -662,18 +882,36 @@ export default {
           value: 0,
         },
         {
-          value: 1,
+          value: "+2",
         },
         {
-          value: 2,
+          value: "+3",
         },
         {
-          value: 3,
+          value: "+5",
         },
         {
-          value: 4,
+          value: "+7",
         },
-      ],
+        {
+          value: "+10",
+        },
+        {
+          value: "-2",
+        },
+        {
+          value: "-3",
+        },
+        {
+          value: "-5",
+        },
+        {
+          value: "-7",
+        },
+        {
+          value: "-10",
+        },
+      ], //KPI分數選單
       auditStatusSelect: [
         {
           text: "已送簽",
@@ -701,7 +939,7 @@ export default {
   created() {
     this.getApi();
 
-    // this.tableData = this.dataList;
+    // this.tableData = this.inServForm.dataList;
     if (sessionStorage.getItem("tableHeader")) {
       this.tableHeader = JSON.parse(sessionStorage.getItem("tableHeader"));
     }
@@ -710,13 +948,13 @@ export default {
     // 獲取API
     getApi() {
       function getAPI() {
-        // return axios.get("http://localhost:3000/toDoList");
-        return axios.get("https://run.mocky.io/v3/9ecbd56c-aa62-413b-9ad0-ca28b6bc1081");
+        return axios.get("http://localhost:3000/toDoList");
+        // return axios.get("https://run.mocky.io/v3/9ecbd56c-aa62-413b-9ad0-ca28b6bc1081");
       }
 
       Promise.all([getAPI()]).then((response) => {
-        // this.dataList = response[0].data;
-        this.dataList = response[0].data.toDoList;
+        this.inServForm.dataList = response[0].data;
+        // this.inServForm.dataList = response[0].data.toDoList;
         this.loadingData = 100;
         this.loading = false;
       });
@@ -769,19 +1007,42 @@ export default {
     },
 
     // 送簽
-    sendPetition(index, row) {
-      console.log(row);
-      this.$swal.fire({
-        title: "你確定嗎？",
-        text: "即將送出簽核",
-        icon: "warning",
-        showCancelButton: true,
-        cancelButtonColor: "#0084ff",
-        confirmButtonColor: "#cccccc",
-        confirmButtonText: "確定送出",
-        cancelButtonText: "取消",
-        closeOnConfirm: false,
-      });
+    validateField(form, index) {
+      let result = true;
+      for (const item of this.$refs[form].fields) {
+        if (item.prop.split(".")[1] === index.toString()) {
+          this.$refs[form].validateField(item.prop, (error) => {
+            if (error !== "") {
+              result = false;
+            }
+          });
+        }
+      }
+      return result;
+    },
+    sendPetition(index) {
+      console.log(index);
+
+      let isValid = this.validateField("ruleForm", index);
+      if (!isValid) return false;
+
+      /*this.$refs["productRuleForm"].validate((valid) => {
+        if (valid) {
+          this.$swal.fire({
+            title: "你確定嗎？",
+            text: "即將送出簽核",
+            icon: "warning",
+            showCancelButton: true,
+            cancelButtonColor: "#0084ff",
+            confirmButtonColor: "#cccccc",
+            confirmButtonText: "確定送出",
+            cancelButtonText: "取消",
+            closeOnConfirm: false,
+          });
+        } else {
+          return false;
+        }
+      });*/
     },
 
     // 檢視
@@ -799,17 +1060,17 @@ export default {
     },
 
     //依照狀態改變table顏色
-    rowClass(row) {
+    /*rowClass(row) {
       if (row.row.status === "未完成" && row.row.auditStatus === "待送簽") {
         let stylejson = {};
         stylejson.backgroundColor = "#f56c6c !important";
         return stylejson;
-      } else if (row.row.status === "已完成" && row.row.auditStatus === "已送簽") {
+      } else if (row.row.status === "已完成" && row.row.auditStatus === "已簽核") {
         let stylejson = {};
         stylejson.backgroundColor = "#eeeeee !important";
         return stylejson;
       }
-    },
+    },*/
 
     tab1() {
       this.search = {
@@ -850,50 +1111,50 @@ export default {
       const search12 = this.search.KPI;
 
       if (search) {
-        return this.dataList.filter((data) => {
+        return this.inServForm.dataList.filter((data) => {
           return Object.keys(data).some((key) => {
             // return String(data[key]).toLowerCase().indexOf(search) > -1;
             return String(data[key]).toLowerCase().includes(search.toLowerCase());
           });
         });
       } else if (search2) {
-        return this.dataList.filter((data) => {
+        return this.inServForm.dataList.filter((data) => {
           return String(data.no).toLowerCase().includes(search2.toLowerCase());
         });
       } else if (search3) {
-        return this.dataList.filter((data) => {
+        return this.inServForm.dataList.filter((data) => {
           return String(data.projectNo).toLowerCase().includes(search3.toLowerCase());
         });
       } else if (search4) {
-        return this.dataList.filter((data) => {
+        return this.inServForm.dataList.filter((data) => {
           return String(data.meetingList).toLowerCase().includes(search4.toLowerCase());
         });
       } else if (search5) {
-        return this.dataList.filter((data) => {
+        return this.inServForm.dataList.filter((data) => {
           return String(data.principal).toLowerCase().includes(search5.toLowerCase());
         });
       } else if (search6) {
-        return this.dataList.filter((data) => {
+        return this.inServForm.dataList.filter((data) => {
           return String(data.department).toLowerCase().includes(search6.toLowerCase());
         });
       } else if (search7) {
-        return this.dataList.filter((data) => {
+        return this.inServForm.dataList.filter((data) => {
           return String(data.status).toLowerCase().includes(search7.toLowerCase());
         });
       } else if (search8) {
-        return this.dataList.filter((data) => {
+        return this.inServForm.dataList.filter((data) => {
           return String(data.auditStatus).toLowerCase().includes(search8.toLowerCase());
         });
       } else if (search10) {
-        return this.dataList.filter((data) => {
+        return this.inServForm.dataList.filter((data) => {
           return String(data.doneDate).toLowerCase().includes(search10.toLowerCase());
         });
       } else if (search11) {
-        return this.dataList.filter((data) => {
+        return this.inServForm.dataList.filter((data) => {
           return String(data.defer).toLowerCase().includes(search11.toLowerCase());
         });
       } else if (search12) {
-        return this.dataList.filter((data) => {
+        return this.inServForm.dataList.filter((data) => {
           return String(data.KPI).toLowerCase().includes(search12.toLowerCase());
         });
       } else {
@@ -901,7 +1162,7 @@ export default {
         let endDate = this.localizeDate(this.endDate);
         const startDone = this.localizeDate(this.search.start);
         const endDone = this.localizeDate(this.search.end);
-        return this.dataList.filter((item) => {
+        return this.inServForm.dataList.filter((item) => {
           const itemDate = new Date(item.date);
           const itemDate2 = new Date(item.doneDate);
           if (startDate && endDate) {
@@ -927,7 +1188,7 @@ export default {
         });
       }
 
-      // return this.dataList;
+      // return this.inServForm.dataList;
     },
   },
 };

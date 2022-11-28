@@ -1,30 +1,30 @@
 <template>
-  <el-scrollbar class="w-full h-full">
+  <el-scrollbar class="h-full w-full">
     <!--<load-view :loading="loading" :progress-data="loadingData" :color="color"></load-view>-->
     <breadcrumb></breadcrumb>
-    <div class="flex-col space-y-7 mx-5 mb-5 flex-col rounded-xl bg-white p-10 shadow-6">
+    <div class="mx-5 mb-5 flex-col flex-col space-y-7 rounded-xl bg-white p-10 shadow-6">
       <!--標題-->
-      <div class="title-before flex border-b border-b-gray-300 pb-5 h-14">
+      <div class="title-before flex h-14 border-b border-b-gray-300 pb-5">
         <p class="flex-1 text-left text-3xl font-bold">會議記錄表-{{ formTitle }}</p>
-        <div class="flex space-x-2 h-10">
+        <div class="flex h-10 space-x-2">
           <el-button plain @click="saveButton">返回</el-button>
         </div>
       </div>
       <!--表格-->
-      <el-form ref="form" :rules="rules" :model="form" :inline="true" class="flex flex-col space-y-3 meeting_form">
+      <el-form ref="form" :rules="rules" :model="form" :inline="true" class="meeting_form flex flex-col space-y-3">
         <!--會議標題-->
         <div class="grid grid-cols-2 gap-4">
-          <el-form-item label="負責人" prop="principal" class="flex mb-0 w-full">
+          <el-form-item label="負責人" prop="principal" class="mb-0 flex w-full">
             <member-list-dialog v-model="form.principal" :value="form.principal" disabled></member-list-dialog>
           </el-form-item>
-          <el-form-item label="專案代碼及名稱" prop="name" class="flex mb-0 w-full">
-            <el-cascader v-model="form.name" :options="options" clearable @change="handleChange" disabled class="flex-1 w-full"></el-cascader>
+          <el-form-item label="專案代碼及名稱" prop="name" class="mb-0 flex w-full">
+            <el-cascader v-model="form.name" :options="options" clearable @change="handleChange" disabled class="w-full flex-1"></el-cascader>
           </el-form-item>
         </div>
         <!--摘要-->
-        <div class="p-5 rounded-lg bg-gray-100 flex flex-col space-y-4">
+        <div class="flex flex-col space-y-4 rounded-lg bg-gray-100 p-5">
           <div class="flex space-x-3">
-            <div class="flex-1 flex justify-star space-x-3">
+            <div class="justify-star flex flex-1 space-x-3">
               <a-button type="primary" status="success" disabled @click="openopenDialogOption">目前待辦</a-button>
               <a-button type="primary" status="success" disabled @click="openMeetingDialog">前次會議記錄</a-button>
             </div>
@@ -34,38 +34,38 @@
           <el-input type="textarea" :rows="5" placeholder="請輸入摘要內容" v-model="form.textarea" disabled></el-input>
         </div>
         <!--詳細內容-->
-        <div class="p-5 rounded-lg bg-gray-100 flex flex-col space-y-4 meetingForm">
+        <div class="meetingForm flex flex-col space-y-4 rounded-lg bg-gray-100 p-5">
           <div class="grid grid-cols-4 gap-4">
-            <el-form-item label-width="69px" label="主席" prop="chairman" class="flex mb-0 w-full">
+            <el-form-item label-width="69px" label="主席" prop="chairman" class="mb-0 flex w-full">
               <member-list-dialog v-model="form.chairman" :value="form.chairman" disabled></member-list-dialog>
             </el-form-item>
-            <el-form-item label="紀錄" prop="record" class="flex mb-0 w-full">
+            <el-form-item label="紀錄" prop="record" class="mb-0 flex w-full">
               <member-list-dialog v-model="form.record" :value="form.record" disabled></member-list-dialog>
             </el-form-item>
-            <el-form-item label="會議日期" prop="date" class="flex mb-0 w-full">
+            <el-form-item label="會議日期" prop="date" class="mb-0 flex w-full">
               <el-date-picker placeholder="請選擇日期" type="date" v-model="form.date" disabled></el-date-picker>
             </el-form-item>
-            <el-form-item label="會議時間" prop="time" class="flex mb-0 w-full">
+            <el-form-item label="會議時間" prop="time" class="mb-0 flex w-full">
               <el-time-picker type="date" v-model="form.time" is-range range-separator="~" start-placeholder="開始時間" end-placeholder="結束時間" disabled></el-time-picker>
             </el-form-item>
           </div>
           <div class="grid grid-cols-2 gap-4">
-            <el-form-item label="會議主題" prop="theme" class="flex mb-0 w-full">
+            <el-form-item label="會議主題" prop="theme" class="mb-0 flex w-full">
               <el-input v-model="form.theme" placeholder="請輸入內容" disabled></el-input>
             </el-form-item>
-            <el-form-item label="出席人員" prop="member" class="flex mb-0 w-full">
+            <el-form-item label="出席人員" prop="member" class="mb-0 flex w-full">
               <member-list-dialog-even v-model="form.member" :value="form.member" disabled></member-list-dialog-even>
             </el-form-item>
           </div>
 
-          <el-form-item label="客戶提供內容" prop="accessory" class="flex radio_center">
-            <el-radio-group v-model="form.offer" class="flex justify-star items-center" disabled>
+          <el-form-item label="客戶提供內容" prop="accessory" class="radio_center flex">
+            <el-radio-group v-model="form.offer" class="justify-star flex items-center" disabled>
               <el-radio :label="0" v-model="form.offer">否</el-radio>
               <el-radio :label="1" v-model="form.offer">是</el-radio>
             </el-radio-group>
           </el-form-item>
 
-          <div v-if="form.offer === 1" class="flex flex-col space-y-2 p-4 rounded-lg bg-gray-200">
+          <div v-if="form.offer === 1" class="flex flex-col space-y-2 rounded-lg bg-gray-200 p-4">
             <el-checkbox-group v-model="form.accessory">
               <el-checkbox v-for="item in accessoryList" :label="item.accessoryLabel" :key="item.accessoryLabel" :velus="item.accessoryLabel" @change="(val) => handleChecked(val, item)">
                 {{ item.accessoryLabel }}
@@ -94,7 +94,7 @@
             <a-table-column title="結論待辦">
               <template #cell="{ record }">
                 <div v-if="record.edit === true">
-                  <el-select v-model="record.conclusion" class="flex-1 w-full" clearable>
+                  <el-select v-model="record.conclusion" class="w-full flex-1" clearable>
                     <el-option v-for="item in conclusionOption" :key="item.id" :label="item.name" :value="item.name"></el-option>
                   </el-select>
                 </div>
@@ -774,7 +774,7 @@ export default {
     border: none;
   }
   .el-upload-list {
-    @apply flex-1 bg-white rounded-lg h-28 px-2 overflow-auto pb-2;
+    @apply h-28 flex-1 overflow-auto rounded-lg bg-white px-2 pb-2;
 
     .el-upload-list__item {
       text-align: left;
@@ -802,7 +802,7 @@ export default {
     @apply mt-0;
   }
   .arco-upload-list {
-    @apply bg-white rounded-lg p-4 h-28 overflow-auto;
+    @apply h-28 overflow-auto rounded-lg bg-white p-4;
   }
 }
 </style>

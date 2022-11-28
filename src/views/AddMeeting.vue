@@ -881,35 +881,38 @@ export default {
 
     // 送簽-變更資料到api
     patchApprove(formName) {
-      this.form.approvals = "待簽核";
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$swal
             .fire({
-              title: "存檔完成！",
-              icon: "success",
+              title: "你確定嗎？",
+              text: "會議狀態即將改為「待簽核」",
+              icon: "warning",
               showCancelButton: true,
-              confirmButtonColor: "#0084ff",
-              confirmButtonText: "返回列表",
-              cancelButtonText: "繼續編輯",
+              cancelButtonColor: "#0084ff",
+              confirmButtonColor: "#cccccc",
+              confirmButtonText: "確定送簽",
+              cancelButtonText: "取消",
+              closeOnConfirm: false,
             })
             .then((result) => {
               const obj = this.form;
               const id = this.form.id;
-              this.axios
-                .patch("http://localhost:3000/meetingList/" + `${id}`, obj)
-                .then((response) => {
-                  this.form.id = response.data.id;
-                  this.getApi();
-                })
-                .catch((error) => {
-                  console.error("There was an error!", error);
-                });
               if (result.isConfirmed) {
-                this.getApi();
-                this.$router.push({ path: "/meetingList" });
+                this.form.approvals = "待簽核";
+                this.axios
+                  .patch("http://localhost:3000/meetingList/" + `${id}`, obj)
+                  .then((response) => {
+                    this.form.id = response.data.id;
+                    this.getApi();
+                    this.$router.push({ path: "/meetingList" });
+                  })
+                  .catch((error) => {
+                    console.error("There was an error!", error);
+                  });
               }
-            });
+            })
+            .catch(() => {});
         } else {
           return false;
         }

@@ -4,9 +4,9 @@
       <router-link :to="item.link" class="px-4 py-2 text-base text-gray-900 hover:bg-gray-500 hover:bg-opacity-10">{{ item.name }}</router-link>
     </template>
   </div>-->
-  <div class="w-full flex h-10 items-center space-x-2" style="top: 60px">
+  <div class="flex h-10 w-full items-center space-x-2" style="top: 60px">
     <template v-for="(item, index) in tabsList" :key="index">
-      <router-link :to="item.link" class="px-4 py-2 text-base text-white hover:bg-blue-900 hover:bg-opacity-40 rounded-md" class-active="active">{{ item.name }}</router-link>
+      <router-link :to="item.link" class="rounded-md px-4 py-2 text-base text-white hover:bg-blue-900 hover:bg-opacity-40" class-active="active">{{ item.name }}</router-link>
     </template>
   </div>
 </template>
@@ -71,7 +71,7 @@ export default {
 
 <style scoped lang="scss">
 .router-link-active {
-  @apply text-white border-b-2 border-blue-500 bg-blue-900 bg-opacity-50 rounded-md;
+  @apply rounded-md border-b-2 border-blue-500 bg-blue-900 bg-opacity-50 text-white;
 }
 .router-link-active {
   //color: #165dff !important;
@@ -85,7 +85,7 @@ export default {
   color: #fff !important;
 }*/
 .sideMenu_model {
-  @apply flex flex-col w-full flex-col space-y-5 bg-gray-900 p-4 pr-20 md:relative md:w-80;
+  @apply flex w-full flex-col space-y-5 bg-gray-900 p-4 pr-20 md:relative md:w-80;
 
   .router-link-exact-active {
     @apply border border-blue-500 bg-blue-600 bg-opacity-20;

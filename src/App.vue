@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="relative">
     <a-config-provider :locale="zhTW">
-      <a-layout class="h-screen absolute w-full">
+      <a-layout class="absolute h-screen w-full">
         <a-layout-header>
           <navbar-header :title="headerTitle"></navbar-header>
           <!--<top-menu class="body-height"></top-menu>-->

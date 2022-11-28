@@ -799,18 +799,6 @@
         }
       ],
       "remark": ""
-    },
-    {
-      "id": 10
-    },
-    {
-      "id": 11
-    },
-    {
-      "id": 12
-    },
-    {
-      "id": 13
     }
   ],
   "toDoList": [
@@ -850,7 +838,7 @@
           "edit": "張三"
         }
       ],
-      "auditStatus": "待送簽",
+      "auditStatus": "待簽核",
       "signedStatus": [],
       "managerCommit": "",
       "name": "A18002-公共工程投標案",
@@ -862,7 +850,7 @@
       "key": "2",
       "no": "A21006-220413-t0098-220428-02",
       "projectNo": "A21033",
-      "principal": "張三",
+      "principal": "王大明",
       "principalCommit": "",
       "principalDone": false,
       "department": "行政部",
@@ -872,9 +860,9 @@
       "status": "未完成",
       "defer": "03",
       "KPIOption": true,
-      "KPI": 2,
+      "KPI": "+2",
       "transfer": [],
-      "auditStatus": "確認簽核",
+      "auditStatus": "待送簽",
       "signedStatus": [
         {
           "level": "負責人(王大明)",
@@ -909,7 +897,7 @@
       "status": "已完成",
       "defer": "03",
       "KPIOption": true,
-      "KPI": 1,
+      "KPI": "-5",
       "transfer": [
         {
           "id": 1,
@@ -930,7 +918,7 @@
           "edit": "張大文"
         }
       ],
-      "auditStatus": "待送簽",
+      "auditStatus": "待簽核",
       "signedStatus": [
         {
           "level": "負責人(王大明)",
@@ -992,7 +980,7 @@
       "key": "5",
       "no": "MYN2D/-220301-t0095-220310-01",
       "projectNo": "MYN2D",
-      "principal": "吳先生",
+      "principal": "蔡先生",
       "principalCommit": "",
       "principalDone": false,
       "department": "建二部",
@@ -1004,7 +992,7 @@
       "KPIOption": true,
       "KPI": -2,
       "transfer": [],
-      "auditStatus": "已送簽",
+      "auditStatus": "待簽核",
       "signedStatus": [
         {
           "level": "負責人(王大明)",
@@ -1041,7 +1029,44 @@
       "KPIOption": true,
       "KPI": -2,
       "transfer": [],
-      "auditStatus": "已送簽",
+      "auditStatus": "已簽核",
+      "signedStatus": [
+        {
+          "level": "負責人(王大明)",
+          "status": "送簽",
+          "date": "2022年04月07日 10:51",
+          "commit": ""
+        },
+        {
+          "level": "審核(直屬主管)",
+          "status": "通過",
+          "date": "2022年04月07日 10:51",
+          "commit": ""
+        }
+      ],
+      "managerCommit": "",
+      "name": "A18002-公共工程投標案",
+      "member": "王大明",
+      "accessory": ""
+    },
+    {
+      "id": 6,
+      "key": "5",
+      "no": "MYN2D/-220301-t0095-220310-01",
+      "projectNo": "MYN2D",
+      "principal": "吳先生",
+      "principalCommit": "",
+      "principalDone": false,
+      "department": "建二部",
+      "meetingList": "設計圖修改",
+      "date": "2022-04-08",
+      "doneDate": "2022-04-29",
+      "status": "已完成",
+      "defer": "01",
+      "KPIOption": true,
+      "KPI": -2,
+      "transfer": [],
+      "auditStatus": "已簽核",
       "signedStatus": [
         {
           "level": "負責人(王大明)",

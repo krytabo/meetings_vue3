@@ -1,5 +1,5 @@
 <template>
-  <el-breadcrumb separator="/" class="m-5 p-4 bg-gray-100 rounded">
+  <el-breadcrumb separator="/" class="m-5 rounded bg-gray-100 p-4">
     <el-breadcrumb-item v-for="item in lists" :key="item.path">
       <router-link :to="item.name">{{ item.meta.title }}</router-link>
     </el-breadcrumb-item>

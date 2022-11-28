@@ -3,12 +3,12 @@
     <img src="@/assets/logo/EZPLUS_white.svg" alt="" class="h-10" />
     <!--<p class="hidden flex-1 text-left text-xl font-bold text-white sm:flex">{{ title }}</p>-->
 
-    <div class="sm:block hidden flex-1">
+    <div class="hidden flex-1 sm:block">
       <top-menu class="body-height"></top-menu>
     </div>
 
     <!--功能-->
-    <div class="space-x-2 sm:block hidden">
+    <div class="hidden space-x-2 sm:block">
       <div class="flex cursor-pointer rounded p-2 text-white hover:bg-blue-600">
         <i class="ri-user-line"></i>
         王大明

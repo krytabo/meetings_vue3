@@ -1,7 +1,7 @@
 <template>
-  <div class="flex w-full member_select">
-    <a-input-tag v-if="disabled === true" v-model="search" placeholder="請選擇" class="flex-1 text-left border border-gray-200" style="background: #f5f7fa" disabled />
-    <a-input-tag v-else v-model="search" placeholder="請選擇" class="flex-1 text-left bg-white border border-gray-300" @change="onInput" />
+  <div class="member_select flex w-full">
+    <a-input-tag v-if="disabled === true" v-model="search" placeholder="請選擇" class="flex-1 border border-gray-200 text-left" style="background: #f5f7fa" disabled />
+    <a-input-tag v-else v-model="search" placeholder="請選擇" class="flex-1 border border-gray-300 bg-white text-left" @change="onInput" />
 
     <el-popover trigger="click" ref="visible" width="auto">
       <!--搜尋框-->
@@ -27,8 +27,8 @@
       </div>
       <!--選擇按鈕-->
       <template #reference>
-        <div v-if="disabled === true" class="flex items-center justify-center px-3 rounded border border-gray-300 bg-gray-200 text-gray-400 hover:cursor-not-allowed">選擇</div>
-        <div v-else class="flex items-center justify-center px-3 rounded border border-gray-300 bg-white hover:bg-gray-800 hover:text-white hover:cursor-pointer" @click="search = null">選擇</div>
+        <div v-if="disabled === true" class="flex items-center justify-center rounded border border-gray-300 bg-gray-200 px-3 text-gray-400 hover:cursor-not-allowed">選擇</div>
+        <div v-else class="flex items-center justify-center rounded border border-gray-300 bg-white px-3 hover:cursor-pointer hover:bg-gray-800 hover:text-white" @click="search = null">選擇</div>
       </template>
     </el-popover>
   </div>

@@ -20,8 +20,8 @@
       </div>
       <!--選擇按鈕-->
       <template #reference>
-        <div v-if="disabled === true" class="flex items-center justify-center px-3 rounded border border-gray-300 bg-gray-200 text-gray-400 hover:cursor-not-allowed">選擇</div>
-        <div v-else class="flex items-center justify-center px-3 rounded border border-gray-300 bg-white hover:bg-gray-800 hover:text-white hover:cursor-pointer" @click="test">選擇</div>
+        <div v-if="disabled === true" class="flex items-center justify-center rounded border border-gray-300 bg-gray-200 px-3 text-gray-400 hover:cursor-not-allowed">選擇</div>
+        <div v-else class="flex items-center justify-center rounded border border-gray-300 bg-white px-3 hover:cursor-pointer hover:bg-gray-800 hover:text-white" @click="test">選擇</div>
       </template>
     </el-popover>
 
