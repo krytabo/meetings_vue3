@@ -15,72 +15,127 @@
       </div>
       <!--表格-->
       <el-table :data="tables.slice((currentPage - 1) * pageSize, currentPage * pageSize)" ref="multipleTable" style="width: 100%">
-        <el-table-column label="類型" prop="type" width="100" :filters="typeSelect" :filter-method="filterHandler" :filter-multiple="false">
-          <template #default="scope">
-            <span v-html="showDate(scope.row.type)"></span>
-          </template>
+        <el-table-column label="類型" prop="type" sortable>
+          <el-table-column prop="type" width="150">
+            <template #header>
+              <el-select v-model="search.type" size="mini" placeholder="請選擇" clearable>
+                <el-option v-for="item in typeSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
+            </template>
+            <template #default="scope">
+              <span v-html="showDate(scope.row.type)"></span>
+            </template>
+          </el-table-column>
         </el-table-column>
-        <el-table-column label="專案代碼及名稱" prop="name" min-width="250">
-          <template #default="scope">
-            <span v-html="showDate(scope.row.name)"></span>
-          </template>
+        <el-table-column label="專案編碼及名稱" prop="name" sortable>
+          <el-table-column prop="name" min-width="250">
+            <template #header>
+              <el-input placeholder="關鍵字" v-model="search.name"></el-input>
+            </template>
+            <template #default="scope">
+              <span v-html="showDate(scope.row.name)"></span>
+            </template>
+          </el-table-column>
         </el-table-column>
-        <el-table-column label="會議主題" prop="theme" width="200">
-          <template #default="scope">
-            <span v-html="showDate(scope.row.theme)"></span>
-          </template>
+        <el-table-column label="會議主題" prop="theme" sortable>
+          <el-table-column prop="theme" width="200">
+            <template #header>
+              <el-input placeholder="關鍵字" v-model="search.theme"></el-input>
+            </template>
+            <template #default="scope">
+              <span v-html="showDate(scope.row.theme)"></span>
+            </template>
+          </el-table-column>
         </el-table-column>
-        <el-table-column label="會議日期" prop="date" align="center" width="150">
-          <template #header>
-            <div class="flex items-center">
-              會議日期
+        <el-table-column label="會議日期" prop="date" align="center" sortable>
+          <el-table-column prop="date" align="center" width="120">
+            <template #header>
               <a-trigger trigger="click" :unmount-on-close="false">
-                <a-button><i class="ri-search-line"></i></a-button>
+                <el-button class="w-full">日期搜尋</el-button>
                 <template #content>
                   <div class="demo-basic shadow-xl border border-gray-200 rounded-md bg-white p-2">
-                    <selectFilterHeader v-model="dateSearch" :shortcuts-dbl="[7, 30, 60]" range-separator="至" is-double-time></selectFilterHeader>
+                    <el-date-picker v-model="search.start" type="date" placeholder="開始" value-format="YYYY-MM-DD"></el-date-picker>
+                    <el-date-picker v-model="search.end" type="date" placeholder="結束" value-format="YYYY-MM-DD"></el-date-picker>
                   </div>
                 </template>
               </a-trigger>
-            </div>
-          </template>
-          <template #default="scope">
-            <span v-html="showDate(scope.row.date)"></span>
-          </template>
+            </template>
+            <template #default="scope">
+              <span v-html="showDate(scope.row.date)"></span>
+            </template>
+          </el-table-column>
         </el-table-column>
-        <el-table-column label="負責人" prop="principal" align="center" width="100">
-          <template #default="scope">
-            <span v-html="showDate(scope.row.principal)"></span>
-          </template>
+        <el-table-column label="負責人員" prop="principal" align="center" sortable>
+          <el-table-column prop="principal" align="center" width="120">
+            <template #header>
+              <el-input placeholder="關鍵字" v-model="search.principal"></el-input>
+            </template>
+            <template #default="scope">
+              <span v-html="showDate(scope.row.principal)"></span>
+            </template>
+          </el-table-column>
         </el-table-column>
-        <el-table-column label="部門" prop="chairman" align="center" width="100">
-          <template #default="scope">
-            <span v-html="showDate(scope.row.chairman)"></span>
-          </template>
+        <el-table-column label="部門" prop="chairman" align="center" sortable>
+          <el-table-column prop="chairman" align="center" width="100">
+            <template #header>
+              <el-input placeholder="關鍵字" v-model="search.chairman"></el-input>
+            </template>
+            <template #default="scope">
+              <span v-html="showDate(scope.row.chairman)"></span>
+            </template>
+          </el-table-column>
         </el-table-column>
-        <el-table-column label="出席人員" prop="member" width="250">
-          <template #default="scope">
-            <span v-html="showDate(scope.row.member)"></span>
-          </template>
+        <el-table-column label="出席人員" prop="member" sortable>
+          <el-table-column prop="member" width="250">
+            <template #header>
+              <el-input placeholder="關鍵字" v-model="search.member"></el-input>
+            </template>
+            <template #default="scope">
+              <span v-html="showDate(scope.row.member)"></span>
+            </template>
+          </el-table-column>
         </el-table-column>
-        <el-table-column label="簽核" prop="approvals" align="center" width="100">
-          <template #default="scope">
-            <el-tag v-if="scope.row.approvals === '已簽核'" type="success" v-html="showDate(scope.row.approvals)"></el-tag>
-            <el-tag v-else-if="scope.row.approvals === '待簽核'" type="danger" v-html="showDate(scope.row.approvals)"></el-tag>
-            <a-button v-else type="primary" @click="sendPetition(scope.row)">送簽</a-button>
-          </template>
+        <el-table-column label="簽核" prop="approvals" align="center" sortable>
+          <el-table-column prop="approvals" align="center" width="150">
+            <template #header>
+              <el-select v-model="search.approvals" size="mini" placeholder="請選擇" clearable>
+                <el-option v-for="item in approvalsSelect" :key="item.value" :label="item.value" :value="item.value"></el-option>
+              </el-select>
+            </template>
+            <template #default="scope">
+              <a-tag v-if="scope.row.approvals === '已簽核'" color="arcoblue" v-html="showDate(scope.row.approvals)"></a-tag>
+              <div v-else-if="scope.row.approvals === '待送簽'" class="flex space-x-2 items-center">
+                <a-tag v-show="scope.row.approvals === '待送簽'" color="red" v-html="showDate(scope.row.approvals)"></a-tag>
+                <a-button v-show="scope.row.approvals === '待送簽' && scope.row.principal === '王大明'" type="primary" @click="sendPetition(scope.row)">送簽</a-button>
+              </div>
+              <a-tag v-else color="purple" v-html="showDate(scope.row.approvals)"></a-tag>
+            </template>
+          </el-table-column>
         </el-table-column>
-        <el-table-column label="備註" prop="remark" width="250">
-          <template #default="scope">
-            <span v-if="scope.row.remark === ''">無</span>
-            <span v-else v-html="showDate(scope.row.remark)"></span>
-          </template>
+        <el-table-column label="備註" prop="remark" sortable>
+          <el-table-column prop="remark" width="250">
+            <template #header>
+              <el-input placeholder="關鍵字" v-model="search.remark"></el-input>
+            </template>
+            <template #default="scope">
+              <span v-if="scope.row.remark === ''">無</span>
+              <span v-else v-html="showDate(scope.row.remark)"></span>
+            </template>
+          </el-table-column>
         </el-table-column>
         <el-table-column label="編修" align="center" fixed="right" width="100">
+          <template #header>
+            <div class="w-full text-center">編修</div>
+          </template>
           <template #default="scope">
-            <!--<el-button type="text" size="small">檢視</el-button>-->
-
-            <el-button type="text" size="small" class="ml-0" @click="Edit_PricingList(scope.$index, scope.row)">修改</el-button>
+            <a-button v-if="scope.row.approvals === '待送簽'" type="text" class="ml-0 w-full" @click="Edit_PricingList(scope.$index, scope.row)">
+              修改
+              <i class="ri-pencil-fill"></i>
+            </a-button>
+            <a-button v-else type="text" status="success" class="ml-0 w-full" @click="View_PricingList(scope.$index, scope.row)">
+              檢視
+              <i class="ri-eye-fill"></i>
+            </a-button>
           </template>
         </el-table-column>
       </el-table>
@@ -101,11 +156,10 @@
 </template>
 
 <script>
-import selectFilterHeader from "@/components/selectFilterHeader";
 import axios from "axios";
 export default {
   name: "HomeView",
-  components: { selectFilterHeader },
+  components: {},
   created() {
     this.getApi();
   },
@@ -138,7 +192,31 @@ export default {
           value: "一般行政",
         },
       ], //類型選單
+      approvalsSelect: [
+        {
+          value: "待送簽", //負責人是本人的狀態下出現「送簽按鈕」
+        },
+        {
+          value: "待簽核", //已送簽，主管未簽核
+        },
+        {
+          value: "已簽核",
+        },
+      ], //簽核狀態選單
       dataList: [],
+      /** 表頭搜尋 */
+      search: {
+        type: "",
+        name: "",
+        theme: "",
+        principal: "",
+        chairman: "",
+        member: "",
+        approvals: "",
+        remark: "",
+        start: "",
+        end: "",
+      },
     };
   },
   methods: {
@@ -146,10 +224,12 @@ export default {
     getApi() {
       function getAPI() {
         return axios.get("http://localhost:3000/meetingList");
+        // return axios.get("https://run.mocky.io/v3/9ecbd56c-aa62-413b-9ad0-ca28b6bc1081");
       }
 
       Promise.all([getAPI()]).then((response) => {
         this.dataList = response[0].data;
+        // this.dataList = response[0].data.meetingList;
         this.loadingData = 100;
       });
 
@@ -162,7 +242,7 @@ export default {
 
     Edit_PricingList(index, result) {
       let data = JSON.stringify(result);
-      this.$router.push({ path: "editMeeting", query: { res: data } });
+      this.$router.push({ path: "editMeeting", query: { res: data, editStatus: true } });
       /*this.$router.push({
         path: "editMeeting",
         query: {
@@ -183,6 +263,11 @@ export default {
           detailList: JSON.parse(JSON.stringify(row.detailList)),
         },
       });*/
+    },
+
+    View_PricingList(index, result) {
+      let data = JSON.stringify(result);
+      this.$router.push({ path: "editMeeting", query: { res: data, editStatus: false } });
     },
 
     add() {
@@ -282,10 +367,17 @@ export default {
         })
         .catch(() => {});
     },
+
+    //日期區間搜尋使用
+    localizeDate(date) {
+      if (!date || !date.includes("-")) return date;
+      const [yyyy, mm, dd] = date.split("-");
+      return new Date(`${mm}/${dd}/${yyyy}`);
+    },
   },
   computed: {
     // 搜尋
-    tables() {
+    /*tables() {
       const search = this.wholeSearch;
       if (search) {
         return this.dataList.filter((data) => {
@@ -295,6 +387,77 @@ export default {
         });
       }
       return this.dataList;
+    },*/
+
+    tables() {
+      const search = this.wholeSearch;
+      const search2 = this.search.type;
+      const search3 = this.search.name;
+      const search4 = this.search.theme;
+      const search5 = this.search.principal;
+      const search6 = this.search.chairman;
+      const search7 = this.search.member;
+      const search8 = this.search.approvals;
+      const search10 = this.search.remark;
+
+      if (search) {
+        return this.dataList.filter((data) => {
+          return Object.keys(data).some((key) => {
+            // return String(data[key]).toLowerCase().indexOf(search) > -1;
+            return String(data[key]).toLowerCase().includes(search.toLowerCase());
+          });
+        });
+      } else if (search2) {
+        return this.dataList.filter((data) => {
+          return String(data.type).toLowerCase().includes(search2.toLowerCase());
+        });
+      } else if (search3) {
+        return this.dataList.filter((data) => {
+          return String(data.name).toLowerCase().includes(search3.toLowerCase());
+        });
+      } else if (search4) {
+        return this.dataList.filter((data) => {
+          return String(data.theme).toLowerCase().includes(search4.toLowerCase());
+        });
+      } else if (search5) {
+        return this.dataList.filter((data) => {
+          return String(data.principal).toLowerCase().includes(search5.toLowerCase());
+        });
+      } else if (search6) {
+        return this.dataList.filter((data) => {
+          return String(data.chairman).toLowerCase().includes(search6.toLowerCase());
+        });
+      } else if (search7) {
+        return this.dataList.filter((data) => {
+          return String(data.member).toLowerCase().includes(search7.toLowerCase());
+        });
+      } else if (search8) {
+        return this.dataList.filter((data) => {
+          return String(data.approvals).toLowerCase().includes(search8.toLowerCase());
+        });
+      } else if (search10) {
+        return this.dataList.filter((data) => {
+          return String(data.remark).toLowerCase().includes(search10.toLowerCase());
+        });
+      } else {
+        const startDone = this.localizeDate(this.search.start);
+        const endDone = this.localizeDate(this.search.end);
+        return this.dataList.filter((item) => {
+          const itemDate = new Date(item.date);
+          if (startDone && endDone) {
+            return startDone <= itemDate && itemDate <= endDone;
+          }
+          if (startDone && !endDone) {
+            return startDone <= itemDate;
+          }
+          if (!startDone && endDone) {
+            return itemDate <= endDone;
+          }
+          return true;
+        });
+      }
+
+      // return this.dataList;
     },
   },
 };

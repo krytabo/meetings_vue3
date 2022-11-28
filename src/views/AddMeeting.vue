@@ -6,11 +6,14 @@
       <!--標題-->
       <div class="title-before flex border-b border-b-gray-300 pb-5 h-14">
         <p class="flex-1 text-left text-3xl font-bold">會議記錄表-{{ formTitle }}</p>
+        {{ editStatus }}
         <div class="flex space-x-2 h-10">
           <el-button plain @click="saveButton">返回</el-button>
-          <a-button type="primary" status="danger" @click="finishButton" :disabled="form.finish === true">結束會議</a-button>
-          <el-button type="primary" plain @click="saveButton">暫存</el-button>
-          <a-button type="primary" @click="saveButton('form')">送簽</a-button>
+          <div :class="{ hidden: editStatus === false }">
+            <a-button type="primary" status="danger" @click="finishButton" :disabled="form.finish === true">結束會議</a-button>
+            <a-button type="outline" @click="saveButton">暫存</a-button>
+            <a-button type="primary" @click="saveButton('form')">送簽</a-button>
+          </div>
         </div>
       </div>
       <!--表格-->
@@ -18,7 +21,7 @@
         <!--會議標題-->
         <div class="grid grid-cols-2 gap-4">
           <el-form-item label="負責人" prop="principal" class="flex mb-0 w-full">
-            <member-list-dialog v-model="form.principal" :value="form.principal" :disabled="form.detailList.length === 0"></member-list-dialog>
+            <member-list-dialog v-model="form.principal" :value="form.principal" :disabled="form.detailList.length === 0 || editStatus === false"></member-list-dialog>
           </el-form-item>
           <el-form-item label="專案代碼及名稱" prop="name" class="flex mb-0 w-full">
             <el-cascader
@@ -27,14 +30,14 @@
               :options="options"
               clearable
               @change="handleChange"
-              :disabled="form.detailList.length === 0"
+              :disabled="form.detailList.length === 0 || editStatus === false"
               class="flex-1 w-full"
             ></el-cascader>
             <el-cascader v-else v-model="form.name" :options="options" clearable @change="handleChange" class="flex-1 w-full"></el-cascader>
           </el-form-item>
         </div>
         <!--摘要-->
-        <div class="p-5 rounded-lg bg-gray-100 flex flex-col space-y-4">
+        <div class="p-5 rounded-lg bg-gray-100 flex flex-col space-y-4" :class="{ hidden: editStatus === false }">
           <div class="flex space-x-3">
             <div class="flex-1 flex justify-star space-x-3">
               <a-button type="primary" status="success" :disabled="form.name === '' || form.name.length === 0" @click="openopenDialogOption">目前待辦</a-button>
@@ -49,10 +52,11 @@
         <div class="p-5 rounded-lg bg-gray-100 flex flex-col space-y-4 meetingForm">
           <div class="grid grid-cols-4 gap-4">
             <el-form-item label-width="80px" label="主席" prop="chairman" class="flex mb-0 w-full">
-              <member-list-dialog v-model="form.chairman" :value="form.chairman" :disabled="form.detailList.length === 0"></member-list-dialog>
+              <member-list-dialog v-if="editStatus === true" v-model="form.chairman" :value="form.chairman" :disabled="form.detailList.length === 0"></member-list-dialog>
+              <p v-else>{{ form.chairman }}</p>
             </el-form-item>
             <el-form-item label="紀錄" prop="record" class="flex mb-0 w-full">
-              <member-list-dialog v-model="form.record" :value="form.record" :disabled="form.detailList.length === 0"></member-list-dialog>
+              <member-list-dialog v-model="form.record" :value="form.record" :disabled="form.detailList.length === 0 || editStatus === false"></member-list-dialog>
             </el-form-item>
             <el-form-item label="會議日期" prop="date" class="flex mb-0 w-full">
               {{ form.date }}
@@ -284,6 +288,7 @@ export default {
       color: "#673ab7",
       selectDialogFrist: false,
       formTitle: "",
+      editStatus: true,
 
       /** 共用 */
       //會議列表表格資訊
@@ -538,7 +543,7 @@ export default {
       return `${hh}:${mm}`;
     },
     getDate(val) {
-      //   获取时间并格式化
+      //   獲取時間並格式化
       var now = new Date();
       // val === 0 ? "" : now.setTime(now.getTime() - 24 * 60 * 60 * 1000 * val); //   获取前val天的时间
       val === 0 ? "" : now.setTime(now.getTime() + 24 * 60 * 60 * 1000 * val); //   获取后val天的时间
@@ -552,7 +557,7 @@ export default {
       return `${y}-${m}-${d}`;
     },
     /*getDateTime(val) {
-      //   获取时间并格式化
+      //   獲取時間並格式化
       var now = new Date();
       val === 0 ? "" : now.setTime(now.getTime() - 24 * 60 * 60 * 1000 * val); //   获取前val天的时间
       // val === 0 ? "" : now.setTime(now.getTime() + 24 * 60 * 60 * 1000 * val); //   获取后val天的时间
@@ -562,21 +567,22 @@ export default {
       const hh = (now.getHours() + "").padStart(2, "0");
       const mm = (now.getMinutes() + "").padStart(2, "0");
       const ss = (now.getSeconds() + "").padStart(2, "0");
-      //获取当前的星期
+      //獲取當前星期
       let wk = now.getDay();
       let weeks = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
       let week = weeks[wk];
       this.nowWeek = week;
-      return `${y}-${m}-${d} ${hh}:${mm}:${ss}`; // 获取的时间格式为 2021-11-16 11:37:15
-      //return `${y}年${m}月${d}日 ${hh}:${mm}:${ss}`; // 获取的时间格式为 2021年11月16日 11:37:15
-      // return `${y}-${m}-${d} ${hh}:${mm}:${ss}`; // 获取的时间格式为 2021-04-09 11:37:15
-      // return y + m + d                           // 获取的时间格式为  20210409
+      return `${y}-${m}-${d} ${hh}:${mm}:${ss}`; // 獲取的時間格式為 2021-11-16 11:37:15
+      //return `${y}年${m}月${d}日 ${hh}:${mm}:${ss}`; // 獲取的時間格式為 2021年11月16日 11:37:15
+      // return `${y}-${m}-${d} ${hh}:${mm}:${ss}`; // 獲取的時間格式為 2021-04-09 11:37:15
+      // return y + m + d                           // 獲取的時間格式為  20210409
     },*/
     getinfo() {
       if (this.$route.query && this.$route.query.res) {
         let data = JSON.parse(this.$route.query.res);
         this.form = Object.assign({}, data);
         this.formTitle = "編輯";
+        this.editStatus = JSON.parse(this.$route.query.editStatus);
 
         console.log("有值", this.$route.query);
       } else {

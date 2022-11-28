@@ -93,7 +93,8 @@ export default {
 }
 
 .listHidden-button {
-  @apply absolute right-5 top-2 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white shadow-6;
+  //@apply absolute right-5 top-2 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white shadow-6;
+  @apply absolute right-5 top-2 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white;
 }
 
 .listShow_button {

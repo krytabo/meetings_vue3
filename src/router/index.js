@@ -1,20 +1,87 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import MeetingList from "../views/MeetingList";
+import AddMeeting from "@/views/AddMeeting";
+// import EditMeeting from "@/views/EditMeeting";
+import Parent from "@/components/Parent";
+import ToDoList from "@/views/ToDoList";
+import ViewMeeting from "@/views/ViewMeeting";
+import test from "@/views/test";
 
 const routes = [
   {
     path: "/",
-    name: "home",
-    component: HomeView,
+    name: "/",
+    component: Parent,
+    meta: { title: "會議記錄系統" },
+    children: [
+      {
+        path: "/",
+        name: "/",
+        meta: { title: "會議記錄系統" },
+        component: MeetingList,
+      },
+    ],
   },
   {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+    path: "/meetingList",
+    name: "meetingList",
+    component: Parent,
+    meta: { title: "會議記錄系統" },
+    children: [
+      {
+        path: "",
+        name: "meetingList",
+        meta: { title: "會議記錄系統" },
+        component: MeetingList,
+      },
+      {
+        path: "addMeeting",
+        name: "addMeeting",
+        meta: { title: "會議記錄表-新增" },
+        component: AddMeeting,
+      },
+      {
+        path: "/editMeeting",
+        name: "editMeeting",
+        meta: { title: "會議記錄表-編輯" },
+        component: AddMeeting,
+        hidden: true,
+      },
+    ],
+  },
+  {
+    path: "/toDoList",
+    name: "toDoList",
+    component: Parent,
+    meta: { title: "待辦事項" },
+    children: [
+      {
+        path: "",
+        name: "toDoList",
+        meta: { title: "待辦事項" },
+        component: ToDoList,
+      },
+      {
+        path: "viewMeeting",
+        name: "viewMeeting",
+        meta: { title: "待辦事項" },
+        component: ViewMeeting,
+      },
+    ],
+  },
+  {
+    path: "/test",
+    name: "test",
+    component: Parent,
+    meta: { title: "待辦事項" },
+    children: [
+      {
+        path: "",
+        name: "test",
+        meta: { title: "待辦事項" },
+        component: test,
+      },
+    ],
   },
 ];
 
