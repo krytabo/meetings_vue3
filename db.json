@@ -1,0 +1,646 @@
+{
+  "meetingList": [
+    {
+      "finish": false,
+      "id": 0,
+      "principal": "王大明",
+      "type": "專案",
+      "name": "A21033-企業辦公大樓興建工程",
+      "textarea": "",
+      "chairman": "李先生",
+      "record": "李先生",
+      "date": "2021/12/14",
+      "time": "10:34",
+      "endTime": "",
+      "theme": "會議主題1",
+      "member": ["王大明", "蔡先生", "吳先生", "張三"],
+      "approvals": "未開始",
+      "offer": 0,
+      "remark": "下次開會再繼續討論",
+      "accessory": [],
+      "fileList": [],
+      "detailList": [
+        {
+          "id": 1,
+          "content": "5/11召開會議",
+          "number": "aaaa-11234567-234",
+          "conclusion": "待辦",
+          "name": "A21033-企業辦公大樓興建工程",
+          "principal": "王大明",
+          "date": "2021/12/14",
+          "member": "王大明",
+          "accessory": "",
+          "edit": false
+        },
+        {
+          "id": 2,
+          "content": "會議議程:代碼編碼原則確認",
+          "number": "aaaa-11234567-234",
+          "conclusion": "待辦",
+          "name": "A21033-企業辦公大樓興建工程",
+          "principal": "王大明",
+          "date": "2021/12/14",
+          "member": "王大明",
+          "accessory": "",
+          "edit": false
+        }
+      ]
+    },
+    {
+      "finish": true,
+      "id": 1,
+      "principal": "林先生",
+      "type": "專案",
+      "name": "A20003-台中市捷運工程",
+      "textarea": "",
+      "chairman": "王先生",
+      "record": "李先生",
+      "date": "2021/12/14",
+      "time": "10:34",
+      "endTime": "14:33",
+      "theme": "會議主題2",
+      "member": ["王大明", "蔡先生", "吳先生", "張三"],
+      "approvals": "未開始",
+      "offer": 0,
+      "remark": "",
+      "accessory": [],
+      "fileList": [],
+      "detailList": [
+        {
+          "id": 1,
+          "content": "5/11召開會議",
+          "number": "aaaa-11234567-234",
+          "conclusion": "待辦",
+          "name": "A21033-企業辦公大樓興建工程",
+          "principal": "王大明",
+          "date": "2021/12/14",
+          "member": "王大明",
+          "accessory": "",
+          "edit": false
+        },
+        {
+          "id": 2,
+          "content": "會議議程:代碼編碼原則確認",
+          "number": "aaaa-11234567-234",
+          "conclusion": "待辦",
+          "name": "A21033-企業辦公大樓興建工程",
+          "principal": "王大明",
+          "date": "2021/12/14",
+          "member": "王大明",
+          "accessory": "",
+          "edit": false
+        }
+      ]
+    },
+    {
+      "finish": true,
+      "id": 2,
+      "principal": "王大明",
+      "type": "例行性會議",
+      "name": "RD1330-部門會議",
+      "textarea": "",
+      "chairman": "吳先生",
+      "record": "李先生",
+      "date": "2021/12/13",
+      "time": "10:34",
+      "endTime": "14:33",
+      "theme": "會議主題3",
+      "member": ["王大明", "蔡先生", "吳先生", "張三"],
+      "approvals": "待簽核",
+      "offer": 0,
+      "remark": "",
+      "accessory": [],
+      "fileList": [],
+      "detailList": [
+        {
+          "id": 1,
+          "content": "5/11召開會議",
+          "number": "aaaa-11234567-234",
+          "conclusion": "待辦",
+          "name": "A21033-企業辦公大樓興建工程",
+          "principal": "王大明",
+          "date": "2021/12/14",
+          "member": "王大明",
+          "accessory": "",
+          "edit": false
+        },
+        {
+          "id": 2,
+          "content": "會議議程:代碼編碼原則確認",
+          "number": "aaaa-11234567-234",
+          "conclusion": "待辦",
+          "name": "A21033-企業辦公大樓興建工程",
+          "principal": "王大明",
+          "date": "2021/12/14",
+          "member": "王大明",
+          "accessory": "",
+          "edit": false
+        }
+      ]
+    },
+    {
+      "finish": true,
+      "id": 3,
+      "principal": "王大明",
+      "type": "建築行政",
+      "name": "MYN2D/-室內",
+      "textarea": "",
+      "chairman": "謝先生",
+      "record": "李先生",
+      "date": "2021/12/10",
+      "time": "10:34",
+      "endTime": "14:33",
+      "theme": "會議主題4",
+      "member": ["王大明", "蔡先生", "吳先生", "張三"],
+      "approvals": "已簽核",
+      "offer": 0,
+      "remark": "",
+      "accessory": [],
+      "fileList": [],
+      "detailList": [
+        {
+          "id": 1,
+          "content": "5/11召開會議",
+          "number": "aaaa-11234567-234",
+          "conclusion": "待辦",
+          "name": "A21033-企業辦公大樓興建工程",
+          "principal": "王大明",
+          "date": "2021/12/14",
+          "member": "王大明",
+          "accessory": "",
+          "edit": false
+        },
+        {
+          "id": 2,
+          "content": "會議議程:代碼編碼原則確認",
+          "number": "aaaa-11234567-234",
+          "conclusion": "待辦",
+          "name": "A21033-企業辦公大樓興建工程",
+          "principal": "王大明",
+          "date": "2021/12/14",
+          "member": "王大明",
+          "accessory": "",
+          "edit": false
+        }
+      ]
+    },
+    {
+      "finish": true,
+      "id": 4,
+      "principal": "王武",
+      "type": "一般行政",
+      "name": "GYN06/-財務會計",
+      "textarea": "",
+      "chairman": "張三",
+      "record": "李先生",
+      "date": "2021/12/10",
+      "time": "10:34",
+      "endTime": "14:33",
+      "theme": "會議主題5",
+      "member": ["王大明", "蔡先生", "吳先生", "張三"],
+      "approvals": "已簽核",
+      "offer": 0,
+      "remark": "",
+      "accessory": [],
+      "fileList": [],
+      "detailList": [
+        {
+          "id": 1,
+          "content": "5/11召開會議",
+          "number": "aaaa-11234567-234",
+          "conclusion": "待辦",
+          "name": "A21033-企業辦公大樓興建工程",
+          "principal": "王大明",
+          "date": "2021/12/14",
+          "member": "王大明",
+          "accessory": "",
+          "edit": false
+        },
+        {
+          "id": 2,
+          "content": "會議議程:代碼編碼原則確認",
+          "number": "aaaa-11234567-234",
+          "conclusion": "待辦",
+          "name": "A21033-企業辦公大樓興建工程",
+          "principal": "王大明",
+          "date": "2021/12/14",
+          "member": "王大明",
+          "accessory": "",
+          "edit": false
+        }
+      ]
+    },
+    {
+      "finish": true,
+      "id": 5,
+      "principal": "王武",
+      "type": "建築行政",
+      "name": "MYN2D/-室內",
+      "textarea": "",
+      "chairman": "林小明",
+      "record": "李先生",
+      "date": "2021/12/03",
+      "time": "10:34",
+      "endTime": "14:33",
+      "theme": "會議主題6",
+      "member": ["王大明", "蔡先生", "吳先生", "張三"],
+      "approvals": "已簽核",
+      "offer": 0,
+      "remark": "",
+      "accessory": [],
+      "fileList": [],
+      "detailList": [
+        {
+          "id": 1,
+          "content": "5/11召開會議",
+          "number": "aaaa-11234567-234",
+          "conclusion": "待辦",
+          "name": "A21033-企業辦公大樓興建工程",
+          "principal": "王大明",
+          "date": "2021/12/14",
+          "member": "王大明",
+          "accessory": "",
+          "edit": false
+        },
+        {
+          "id": 2,
+          "content": "會議議程:代碼編碼原則確認",
+          "number": "aaaa-11234567-234",
+          "conclusion": "待辦",
+          "name": "A21033-企業辦公大樓興建工程",
+          "principal": "王大明",
+          "date": "2021/12/14",
+          "member": "王大明",
+          "accessory": "",
+          "edit": false
+        }
+      ]
+    },
+    {
+      "finish": true,
+      "id": 6,
+      "principal": "蔡先生",
+      "type": "專案",
+      "name": "A18002-公共工程投標案",
+      "textarea": "",
+      "chairman": "王大明",
+      "record": "王大明",
+      "date": "2022-10-12",
+      "time": "10:34",
+      "endTime": "14:33",
+      "theme": "dfsdffsdff",
+      "member": ["張三", "吳先生", "蔡先生", "測試人員"],
+      "approvals": "已簽核",
+      "offer": 1,
+      "remark": "",
+      "accessory": [
+        "書籍",
+        {
+          "accessoryLabel": "書籍",
+          "accessoryNo": ""
+        },
+        "文件",
+        {
+          "accessoryLabel": "文件",
+          "accessoryNo": ""
+        }
+      ],
+      "fileList": [],
+      "detailList": [
+        {
+          "content": "fdgdff",
+          "number": "q34rethg",
+          "conclusion": "待辦",
+          "name": "fdfsd",
+          "principal": "張三",
+          "date": "2022年10月27日",
+          "member": "sfsdfsdfsdf",
+          "accessory": "",
+          "edit": false
+        },
+        {
+          "content": "設計圖修改",
+          "number": "fsdfsdf",
+          "conclusion": "已簽核",
+          "name": "sdfdsf",
+          "principal": "王大明",
+          "date": "2022年10月27日",
+          "member": "dsfsdfsdfsdf",
+          "accessory": "",
+          "edit": false
+        },
+        {
+          "content": "用Checklist檢討103-03排水圖",
+          "number": "dsfsdf",
+          "conclusion": "待辦",
+          "name": "sdfsdf",
+          "principal": "張三",
+          "date": "2022年10月27日",
+          "member": "sdfsdf",
+          "accessory": "",
+          "edit": false
+        }
+      ]
+    },
+    {
+      "finish": true,
+      "id": 7,
+      "principal": "王大明",
+      "type": "專案",
+      "name": "A18002-公共工程投標案",
+      "textarea": "",
+      "chairman": "王大明",
+      "record": "王大明",
+      "date": "2022-10-18",
+      "time": "10:34",
+      "endTime": "14:33",
+      "theme": "年終會議",
+      "member": ["王大明", "蔡先生", "吳先生", "其他人員"],
+      "approvals": "已簽核",
+      "offer": 0,
+      "remark": "",
+      "accessory": [],
+      "fileList": [],
+      "detailList": [
+        {
+          "content": "開始會議",
+          "number": "",
+          "conclusion": "待辦",
+          "name": "",
+          "principal": "",
+          "date": "",
+          "member": "",
+          "accessory": "",
+          "edit": false
+        },
+        {
+          "content": "用Checklist檢討103-03排水圖",
+          "number": "",
+          "conclusion": "待辦",
+          "name": "",
+          "principal": "",
+          "date": "",
+          "member": "",
+          "accessory": "",
+          "edit": false
+        }
+      ]
+    },
+    {
+      "finish": true,
+      "id": 8,
+      "principal": "王大明",
+      "type": "專案",
+      "name": "A18002-公共工程投標案",
+      "textarea": "",
+      "chairman": "王大明",
+      "record": "王大明",
+      "date": "2022-10-11",
+      "time": "10:34",
+      "endTime": "14:33",
+      "theme": "會議主題",
+      "member": ["吳先生", "張三", "其他人員", "外部人員"],
+      "approvals": "未開始",
+      "offer": 0,
+      "remark": "",
+      "accessory": [],
+      "fileList": [],
+      "detailList": [
+        {
+          "content": "第一次會議",
+          "number": "AAAA-12345678",
+          "conclusion": "待辦",
+          "name": ["專案", "A22003-億集科技例行會議"],
+          "principal": "王大明",
+          "date": "2022年10月20日",
+          "member": "吳先生",
+          "accessory": "",
+          "edit": false
+        },
+        {
+          "content": "用Checklist檢討103-03排水圖",
+          "number": "BBBB-123456",
+          "conclusion": "已簽核",
+          "name": ["例行性會議", "UD1330-1330部門會議"],
+          "principal": "吳先生",
+          "date": "2022年10月31日",
+          "member": "張三",
+          "accessory": "",
+          "edit": false
+        }
+      ]
+    }
+  ],
+  "toDoList": [
+    {
+      "id": 0,
+      "key": "1",
+      "no": "A21033-220420-t0093-220429-01",
+      "projectNo": "A21033",
+      "principal": "王大明",
+      "principalCommit": "",
+      "principalDone": false,
+      "department": "行政部",
+      "meetingList": "用Checklist檢討103-03排水圖",
+      "date": "2022年04月20日",
+      "doneDate": "2022年04月29日",
+      "status": "未完成",
+      "defer": "03",
+      "KPIOption": false,
+      "KPI": "",
+      "transfer": [
+        {
+          "id": 1,
+          "date": "2021年12月29日",
+          "record": {
+            "form": "李四",
+            "to": "張三"
+          },
+          "edit": "張三"
+        },
+        {
+          "id": 2,
+          "date": "2022年01月08日",
+          "record": {
+            "form": "張三",
+            "to": "林曉明"
+          },
+          "edit": "張三"
+        }
+      ],
+      "auditStatus": "待送簽",
+      "signedStatus": [],
+      "managerCommit": "",
+      "name": "A18002-公共工程投標案",
+      "member": "",
+      "accessory": ""
+    },
+    {
+      "id": 1,
+      "key": "2",
+      "no": "A21006-220413-t0098-220428-02",
+      "projectNo": "A21033",
+      "principal": "張三",
+      "principalCommit": "",
+      "principalDone": false,
+      "department": "行政部",
+      "meetingList": "合約報價修改",
+      "date": "2022年04月13日",
+      "doneDate": "2022年04月28日",
+      "status": "未完成",
+      "defer": "03",
+      "KPIOption": true,
+      "KPI": "2",
+      "transfer": [],
+      "auditStatus": "待簽核",
+      "signedStatus": [
+        {
+          "level": "負責人(王大明)",
+          "status": "送簽",
+          "date": "2022年04月07日 10:51",
+          "commit": ""
+        },
+        {
+          "level": "審核(直屬主管)",
+          "status": "待簽核",
+          "date": "",
+          "commit": ""
+        }
+      ],
+      "managerCommit": "",
+      "name": "A22003-億集科技例行會議",
+      "member": "李四",
+      "accessory": ""
+    },
+    {
+      "id": 2,
+      "key": "3",
+      "no": "MYN2D/-220219-t0097-220224-01",
+      "projectNo": "MYN2D",
+      "principal": "蔡先生",
+      "principalCommit": "",
+      "principalDone": false,
+      "department": "建二部",
+      "meetingList": "相關法律規範確認",
+      "date": "2022年04月10日",
+      "doneDate": "2022年04月10日",
+      "status": "已完成",
+      "defer": "03",
+      "KPIOption": true,
+      "KPI": "1",
+      "transfer": [
+        {
+          "id": 1,
+          "date": "2021年12月29日",
+          "record": {
+            "form": "張美美",
+            "to": "黃大明"
+          },
+          "edit": "黃大明"
+        },
+        {
+          "id": 2,
+          "date": "2022年01月08日",
+          "record": {
+            "form": "張大文",
+            "to": "黃小美"
+          },
+          "edit": "張大文"
+        }
+      ],
+      "auditStatus": "已送簽",
+      "signedStatus": [
+        {
+          "level": "負責人(王大明)",
+          "status": "送簽",
+          "date": "2022年04月07日 10:51",
+          "commit": ""
+        },
+        {
+          "level": "審核(直屬主管)",
+          "status": "通過",
+          "date": "2022年04月07日 10:51",
+          "commit": ""
+        }
+      ],
+      "managerCommit": "",
+      "name": "A22003-億集科技例行會議",
+      "member": "",
+      "accessory": ""
+    },
+    {
+      "id": 3,
+      "key": "4",
+      "no": "A21017-220408-t0092-220429-03",
+      "projectNo": "A21033",
+      "principal": "李四",
+      "principalCommit": "",
+      "principalDone": false,
+      "department": "行政部",
+      "meetingList": "設計圖修改",
+      "date": "2022年04月08日",
+      "doneDate": "2022年4月29日",
+      "status": "未完成",
+      "defer": "03",
+      "KPIOption": false,
+      "KPI": "",
+      "transfer": [],
+      "auditStatus": "已送簽",
+      "signedStatus": [
+        {
+          "level": "負責人(王大明)",
+          "status": "送簽",
+          "date": "2022年04月07日 10:51",
+          "commit": ""
+        },
+        {
+          "level": "審核(直屬主管)",
+          "status": "通過",
+          "date": "2022年04月07日 10:51",
+          "commit": ""
+        }
+      ],
+      "managerCommit": "",
+      "name": "A18002-公共工程投標案",
+      "member": "王大明",
+      "accessory": ""
+    },
+    {
+      "id": 4,
+      "key": "5",
+      "no": "MYN2D/-220301-t0095-220310-01",
+      "projectNo": "MYN2D",
+      "principal": "吳先生",
+      "principalCommit": "",
+      "principalDone": false,
+      "department": "建二部",
+      "meetingList": "設計圖修改",
+      "date": "2022年04月08日",
+      "doneDate": "2022年4月29日",
+      "status": "完成",
+      "defer": "01",
+      "KPIOption": true,
+      "KPI": "-2",
+      "transfer": [],
+      "auditStatus": "已送簽",
+      "signedStatus": [
+        {
+          "level": "負責人(王大明)",
+          "status": "送簽",
+          "date": "2022年04月07日 10:51",
+          "commit": ""
+        },
+        {
+          "level": "審核(直屬主管)",
+          "status": "通過",
+          "date": "2022年04月07日 10:51",
+          "commit": ""
+        }
+      ],
+      "managerCommit": "",
+      "name": "A18002-公共工程投標案",
+      "member": "王大明",
+      "accessory": ""
+    }
+  ]
+}
