@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full p-5 meeting_list">
+  <div class="meeting_list h-full w-full p-5">
     <!--<load-view :loading="loading" :progress-data="loadingData" :color="color"></load-view>-->
     <div class="flex-col space-y-10 rounded-xl bg-white p-10 shadow-6">
       <!--標題-->
@@ -8,7 +8,7 @@
           <a-button type="primary" @click="add">新增會議記錄</a-button>
           <a-button type="primary" status="success">匯出資料</a-button>
         </div>
-        <div class="flex space-x-4 inline-block items-center">
+        <div class="inline-block flex items-center space-x-4">
           <div class="flex-1 text-right">快速搜尋：</div>
           <el-input v-model="wholeSearch" placeholder="請輸入關鍵字" class="flex-1"></el-input>
         </div>
@@ -53,7 +53,7 @@
               <a-trigger trigger="click" :unmount-on-close="false">
                 <el-button class="w-full">日期搜尋</el-button>
                 <template #content>
-                  <div class="demo-basic shadow-xl border border-gray-200 rounded-md bg-white p-2">
+                  <div class="demo-basic rounded-md border border-gray-200 bg-white p-2 shadow-xl">
                     <el-date-picker v-model="search.start" type="date" placeholder="開始" value-format="YYYY-MM-DD"></el-date-picker>
                     <el-date-picker v-model="search.end" type="date" placeholder="結束" value-format="YYYY-MM-DD"></el-date-picker>
                   </div>
@@ -68,20 +68,20 @@
         <el-table-column label="負責人員" prop="principal" align="center" sortable>
           <el-table-column prop="principal" align="center" width="120">
             <template #header>
-              <el-input placeholder="關鍵字" v-model="search.principal"></el-input>
+              <el-input placeholder="關鍵字" v-model="search.principalName"></el-input>
             </template>
             <template #default="scope">
-              <span v-html="showDate(scope.row.principal)"></span>
+              <span v-html="showDate(scope.row.principal.name)"></span>
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column label="部門" prop="chairman" align="center" sortable>
           <el-table-column prop="chairman" align="center" width="100">
             <template #header>
-              <el-input placeholder="關鍵字" v-model="search.chairman"></el-input>
+              <el-input placeholder="關鍵字" v-model="search.principalDepartment"></el-input>
             </template>
             <template #default="scope">
-              <span v-html="showDate(scope.row.chairman)"></span>
+              <span v-html="showDate(scope.row.principal.department)"></span>
             </template>
           </el-table-column>
         </el-table-column>
@@ -104,9 +104,9 @@
             </template>
             <template #default="scope">
               <a-tag v-if="scope.row.approvals === '已簽核'" color="arcoblue" v-html="showDate(scope.row.approvals)"></a-tag>
-              <div v-else-if="scope.row.approvals === '待送簽'" class="flex space-x-2 items-center">
+              <div v-else-if="scope.row.approvals === '待送簽'" class="flex items-center space-x-2">
                 <a-tag v-show="scope.row.approvals === '待送簽'" color="red" v-html="showDate(scope.row.approvals)"></a-tag>
-                <a-button v-show="scope.row.approvals === '待送簽' && scope.row.principal === '王大明'" type="primary" @click="sendPetition(scope.row)">送簽</a-button>
+                <a-button v-show="scope.row.approvals === '待送簽' && scope.row.principal.name === '王大明'" type="primary" @click="sendPetition(scope.row)">送簽</a-button>
               </div>
               <a-tag v-else color="purple" v-html="showDate(scope.row.approvals)"></a-tag>
             </template>
@@ -167,7 +167,7 @@ export default {
     return {
       wholeSearch: "",
       currentPage: 1, //默認顯示頁面為1
-      pageSize: 5, //每頁顯示的數據
+      pageSize: 10, //每頁顯示的數據
       keywordSearch: "",
       loading: true,
       loadingData: 0,
@@ -209,7 +209,8 @@ export default {
         type: "",
         name: "",
         theme: "",
-        principal: "",
+        principalName: "",
+        principalDepartment: "",
         chairman: "",
         member: "",
         approvals: "",
@@ -394,8 +395,8 @@ export default {
       const search2 = this.search.type;
       const search3 = this.search.name;
       const search4 = this.search.theme;
-      const search5 = this.search.principal;
-      const search6 = this.search.chairman;
+      const search5 = this.search.principalName;
+      const search6 = this.search.principalDepartment;
       const search7 = this.search.member;
       const search8 = this.search.approvals;
       const search10 = this.search.remark;
@@ -421,11 +422,11 @@ export default {
         });
       } else if (search5) {
         return this.dataList.filter((data) => {
-          return String(data.principal).toLowerCase().includes(search5.toLowerCase());
+          return String(data.principal.name).toLowerCase().includes(search5.toLowerCase());
         });
       } else if (search6) {
         return this.dataList.filter((data) => {
-          return String(data.chairman).toLowerCase().includes(search6.toLowerCase());
+          return String(data.principal.department).toLowerCase().includes(search6.toLowerCase());
         });
       } else if (search7) {
         return this.dataList.filter((data) => {

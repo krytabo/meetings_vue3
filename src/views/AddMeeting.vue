@@ -1,45 +1,55 @@
 <template>
-  <el-scrollbar class="w-full h-full">
+  <el-scrollbar class="h-full w-full">
     <!--<load-view :loading="loading" :progress-data="loadingData" :color="color"></load-view>-->
     <breadcrumb></breadcrumb>
-    <div class="flex-col space-y-7 mx-5 mb-5 flex-col rounded-xl bg-white p-10 shadow-6">
+    <div class="mx-5 mb-5 flex-col flex-col space-y-7 rounded-xl bg-white p-10 shadow-6">
       <!--標題-->
-      <div class="title-before flex border-b border-b-gray-300 pb-5 h-14">
-        <p class="flex-1 text-left text-3xl font-bold">會議記錄表-{{ formTitle }}</p>
-        {{ editStatus }}
-        <div class="flex space-x-2 h-10">
-          <el-button plain @click="saveButton">返回</el-button>
-          <div :class="{ hidden: editStatus === false }">
+      <div class="title-before flex h-14 border-b border-b-gray-300 pb-5">
+        <p v-if="editStatus === true" class="flex-1 text-left text-3xl font-bold">會議記錄表-{{ formTitle }}</p>
+        <p v-else class="flex-1 text-left text-3xl font-bold">會議記錄表</p>
+        <div class="flex h-10 space-x-2">
+          <el-button plain @click="$router.push({ path: '/meetingList' })">返回</el-button>
+          <div :class="{ hidden: editStatus === false }" class="flex h-10 space-x-2">
             <a-button type="primary" status="danger" @click="finishButton" :disabled="form.finish === true">結束會議</a-button>
-            <a-button type="outline" @click="saveButton">暫存</a-button>
-            <a-button type="primary" @click="saveButton('form')">送簽</a-button>
+            <!--編輯會議記錄的暫存-->
+            <a-button v-show="newMeeting === false" type="outline" @click="patchData('form')">暫存</a-button>
+            <!--新增會議紀錄的暫存-->
+            <a-button v-show="newMeeting === true" type="outline" @click="postData('form')">暫存</a-button>
+            <!--編輯會議記錄的送簽-->
+            <a-button v-show="newMeeting === false" type="primary" @click="patchApprove('form')">送簽</a-button>
+            <!--新增會議紀錄的暫存-->
+            <a-button v-show="newMeeting === true" type="primary" @click="postApprove('form')">送簽</a-button>
           </div>
         </div>
       </div>
       <!--表格-->
-      <el-form ref="form" :rules="rules" :model="form" :inline="true" class="flex flex-col space-y-3 meeting_form">
+      <el-form ref="form" :rules="rules" :model="form" :inline="true" class="meeting_form flex flex-col space-y-3">
         <!--會議標題-->
         <div class="grid grid-cols-2 gap-4">
-          <el-form-item label="負責人" prop="principal" class="flex mb-0 w-full">
-            <member-list-dialog v-model="form.principal" :value="form.principal" :disabled="form.detailList.length === 0 || editStatus === false"></member-list-dialog>
+          <el-form-item label="負責人" prop="principal" class="mb-0 flex w-full">
+            <member-list-dialog v-if="editStatus === true" v-model="form.principal" :value="form.principal.name" :disabled="form.detailList.length === 0"></member-list-dialog>
+            <p v-else>{{ form.principal.name }}</p>
           </el-form-item>
-          <el-form-item label="專案代碼及名稱" prop="name" class="flex mb-0 w-full">
-            <el-cascader
-              v-if="selectDialogFrist === false"
-              v-model="form.name"
-              :options="options"
-              clearable
-              @change="handleChange"
-              :disabled="form.detailList.length === 0 || editStatus === false"
-              class="flex-1 w-full"
-            ></el-cascader>
-            <el-cascader v-else v-model="form.name" :options="options" clearable @change="handleChange" class="flex-1 w-full"></el-cascader>
+          <el-form-item label="專案代碼及名稱" prop="name" class="mb-0 flex w-full">
+            <div v-if="editStatus === true" class="w-full">
+              <el-cascader
+                v-if="selectDialogFrist === false"
+                v-model="form.name"
+                :options="options"
+                clearable
+                @change="handleChange"
+                :disabled="form.detailList.length === 0 || editStatus === false"
+                class="w-full flex-1"
+              ></el-cascader>
+              <el-cascader v-else v-model="form.name" :options="options" clearable @change="handleChange" class="w-full flex-1"></el-cascader>
+            </div>
+            <p v-else>{{ form.name }}</p>
           </el-form-item>
         </div>
         <!--摘要-->
-        <div class="p-5 rounded-lg bg-gray-100 flex flex-col space-y-4" :class="{ hidden: editStatus === false }">
+        <div class="flex flex-col space-y-4 rounded-lg bg-gray-100 p-5" :class="{ hidden: editStatus === false }">
           <div class="flex space-x-3">
-            <div class="flex-1 flex justify-star space-x-3">
+            <div class="justify-star flex flex-1 space-x-3">
               <a-button type="primary" status="success" :disabled="form.name === '' || form.name.length === 0" @click="openopenDialogOption">目前待辦</a-button>
               <a-button type="primary" status="success" :disabled="form.name === '' || form.name.length === 0" @click="openMeetingDialog">前次會議記錄</a-button>
             </div>
@@ -49,20 +59,21 @@
           <el-input type="textarea" :rows="5" placeholder="請輸入摘要內容" v-model="form.textarea"></el-input>
         </div>
         <!--詳細內容-->
-        <div class="p-5 rounded-lg bg-gray-100 flex flex-col space-y-4 meetingForm">
+        <div class="meetingForm flex flex-col space-y-4 rounded-lg bg-gray-100 p-5">
           <div class="grid grid-cols-4 gap-4">
-            <el-form-item label-width="80px" label="主席" prop="chairman" class="flex mb-0 w-full">
-              <member-list-dialog v-if="editStatus === true" v-model="form.chairman" :value="form.chairman" :disabled="form.detailList.length === 0"></member-list-dialog>
-              <p v-else>{{ form.chairman }}</p>
+            <el-form-item label-width="80px" label="主席" prop="chairman" class="mb-0 flex w-full">
+              <member-list-dialog v-if="editStatus === true" v-model="form.chairman" :value="form.chairman.name" :disabled="form.detailList.length === 0"></member-list-dialog>
+              <p v-else>{{ form.chairman.name }}</p>
             </el-form-item>
-            <el-form-item label="紀錄" prop="record" class="flex mb-0 w-full">
-              <member-list-dialog v-model="form.record" :value="form.record" :disabled="form.detailList.length === 0 || editStatus === false"></member-list-dialog>
+            <el-form-item label="紀錄" prop="record" class="mb-0 flex w-full">
+              <member-list-dialog v-if="editStatus === true" v-model="form.record" :value="form.record.name" :disabled="form.detailList.length === 0"></member-list-dialog>
+              <p v-else>{{ form.record.name }}</p>
             </el-form-item>
-            <el-form-item label="會議日期" prop="date" class="flex mb-0 w-full">
+            <el-form-item label="會議日期" prop="date" class="mb-0 flex w-full">
               {{ form.date }}
               <!--<el-date-picker placeholder="請選擇日期" type="date" v-model="form.date" :disabled="form.detailList.length === 0"></el-date-picker>-->
             </el-form-item>
-            <el-form-item label="會議時間" prop="time" class="flex mb-0 w-full">
+            <el-form-item label="會議時間" prop="time" class="mb-0 flex w-full">
               <!--<el-time-picker
                 type="date"
                 v-model="form.time"
@@ -82,28 +93,45 @@
             </el-form-item>
           </div>
           <div class="grid grid-cols-2 gap-4">
-            <el-form-item label="會議主題" prop="theme" class="flex mb-0 w-full">
-              <el-input v-model="form.theme" placeholder="請輸入內容" :disabled="form.detailList.length === 0"></el-input>
+            <el-form-item label="會議主題" prop="theme" class="mb-0 flex w-full">
+              <el-input v-if="editStatus === true" v-model="form.theme" placeholder="請輸入內容" :disabled="form.detailList.length === 0"></el-input>
+              <p v-else>{{ form.theme }}</p>
             </el-form-item>
-            <el-form-item label="出席人員" prop="member" class="flex mb-0 w-full">
-              <member-list-dialog-even v-model="form.member" :value="form.member" :disabled="form.detailList.length === 0"></member-list-dialog-even>
+            <el-form-item label="出席人員" prop="member" class="mb-0 flex w-full">
+              <member-list-dialog-even v-if="editStatus === true" v-model="form.member" :value="form.member" :disabled="form.detailList.length === 0"></member-list-dialog-even>
+              <p v-else>{{ form.member.toString() }}</p>
             </el-form-item>
           </div>
 
-          <el-form-item label-width="80px" label="備註" prop="remark" class="flex mb-0 w-full">
-            <el-input v-model="form.remark" type="textarea" :rows="2" placeholder="請輸入內容" :disabled="form.detailList.length === 0"></el-input>
+          <el-form-item label-width="80px" label="備註" prop="remark" class="mb-0 flex w-full">
+            <el-input v-if="editStatus === true" v-model="form.remark" type="textarea" :rows="2" placeholder="請輸入內容" :disabled="form.detailList.length === 0"></el-input>
+            <p v-else>{{ form.remark }}</p>
           </el-form-item>
 
-          <el-form-item label="客戶提供內容" prop="accessory" class="flex radio_center">
-            <el-radio-group v-model="form.offer" class="flex justify-star items-center" :disabled="form.detailList.length === 0">
+          <el-form-item label="客戶提供內容" prop="accessory" class="radio_center flex">
+            <el-radio-group v-model="form.offer" class="justify-star flex items-center" :disabled="form.detailList.length === 0 || editStatus === false">
               <el-radio :label="0" v-model="form.offer">否</el-radio>
               <el-radio :label="1" v-model="form.offer">是</el-radio>
             </el-radio-group>
           </el-form-item>
 
-          <div v-if="form.offer === 1" class="flex flex-col space-y-2 p-4 rounded-lg bg-gray-200">
-            <el-checkbox-group v-model="form.accessory">
-              <el-checkbox v-for="item in accessoryList" :label="item.accessoryLabel" :key="item.accessoryLabel" :velus="item.accessoryLabel" @change="(val) => handleChecked(val, item)">
+          <div v-if="form.offer === 1" class="flex flex-col space-y-2 rounded-lg bg-gray-200 p-4">
+            <div class="flex space-x-2">
+              <a-tag v-for="item in form.accessory" :key="item.id" color="arcoblue" :class="{ block: item.accessoryNo === '' }">
+                <p>{{ item.accessoryLabel }}</p>
+                <p class="ml-2 text-gray-500">{{ item.accessoryNo }}</p>
+              </a-tag>
+            </div>
+
+            <div class="flex flex-col space-y-1">
+              <p class="w-full text-left">上傳的檔案</p>
+              <div class="flex flex-col space-y-2 rounded-md bg-white p-4">
+                <div v-for="item in form.fileList" :key="item.uid" class="flex w-full space-x-2 rounded px-4 py-2 text-left" style="background: #f7f8fa">{{ item.name }}</div>
+              </div>
+            </div>
+
+            <el-checkbox-group v-model="form.rulesId" :disabled="editStatus === false">
+              <el-checkbox v-for="(item, index) in accessoryList" :label="item.accessoryLabel" :key="index" :velus="item.accessoryLabel" @change="(val) => handleChecked(val, item)">
                 {{ item.accessoryLabel }}
                 <el-input
                   class="w-56"
@@ -115,7 +143,7 @@
               </el-checkbox>
             </el-checkbox-group>
 
-            <a-upload action="/" :auto-upload="false" multiple :default-file-list="form.fileList" @change="onChange" />
+            <a-upload action="http://localhost:3000/meetingList" :auto-upload="false" multiple :default-file-list="form.fileList" @change="onChange" :disabled="editStatus === false" />
           </div>
         </div>
         <!--會議列表-->
@@ -135,7 +163,7 @@
           <el-table-column prop="name" label="結論待辦" width="180">
             <template #default="scope">
               <div v-if="scope.row.edit === true">
-                <el-select v-model="scope.row.conclusion" class="flex-1 w-full" clearable>
+                <el-select v-model="scope.row.conclusion" class="w-full flex-1" clearable>
                   <el-option v-for="item in conclusionOption" :key="item.id" :label="item.name" :value="item.name"></el-option>
                 </el-select>
               </div>
@@ -153,7 +181,7 @@
           </el-table-column>
           <el-table-column prop="principal" label="負責人" width="180">
             <template #default="scope">
-              <member-list-dialog v-if="scope.row.edit === true" v-model="scope.row.principal" :value="scope.row.principal"></member-list-dialog>
+              <member-list-dialog v-if="scope.row.edit === true" v-model="scope.row.principal" :value="scope.row.principal.name"></member-list-dialog>
               <span v-else>{{ scope.row.principal.name }}</span>
             </template>
           </el-table-column>
@@ -165,7 +193,7 @@
           </el-table-column>
           <el-table-column prop="member" label="相關人員" width="180">
             <template #default="scope">
-              <member-list-dialog v-if="scope.row.edit === true" v-model="scope.row.member" :value="scope.row.member"></member-list-dialog>
+              <member-list-dialog v-if="scope.row.edit === true" v-model="scope.row.member" :value="scope.row.member.name"></member-list-dialog>
               <span v-else>{{ scope.row.member.name }}</span>
             </template>
           </el-table-column>
@@ -177,11 +205,11 @@
               <span v-else>{{ scope.row.accessory }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="120" align="center" fixed="right">
+          <el-table-column v-if="editStatus === true" label="操作" width="120" align="center" fixed="right">
             <template #default="scope">
               <div v-if="scope.row.edit === true">
                 <el-button type="text" @click="scope.row.edit = !scope.row.edit" class="text-red-500">取消</el-button>
-                <el-button type="text" @click="scope.row.edit = !scope.row.edit">確定</el-button>
+                <el-button type="text" @click="scope.row.edit = !scope.row.edit && this.getApi">確定</el-button>
               </div>
               <div v-else>
                 <el-button type="text" class="text-red-500" @click="handleDelete(scope.$index)">刪除</el-button>
@@ -288,7 +316,9 @@ export default {
       color: "#673ab7",
       selectDialogFrist: false,
       formTitle: "",
-      editStatus: true,
+      editStatus: true, //true=可編輯 false=預覽
+      newMeeting: false, //true=新增 false=編輯
+      rulesId: [], //checkbox暫存欄位
 
       /** 共用 */
       //會議列表表格資訊
@@ -368,7 +398,7 @@ export default {
       conclusionOption: [
         {
           id: 0,
-          name: "待簽核",
+          name: "待辦",
         },
         {
           id: 1,
@@ -378,26 +408,32 @@ export default {
       //客戶提供內容選項
       accessoryList: [
         {
+          id: 0,
           accessoryLabel: "書籍",
           accessoryNo: "",
         },
         {
+          id: 1,
           accessoryLabel: "文件",
           accessoryNo: "",
         },
         {
+          id: 2,
           accessoryLabel: "光碟",
           accessoryNo: "",
         },
         {
+          id: 3,
           accessoryLabel: "物件",
           accessoryNo: "",
         },
         {
+          id: 4,
           accessoryLabel: "建材樣品",
           accessoryNo: "",
         },
         {
+          id: 5,
           accessoryLabel: "其他",
           accessoryNo: "",
         },
@@ -488,9 +524,11 @@ export default {
         endTime: "", //會議結束時間
         theme: "", //會議主題
         member: [], //出席人員
-        approvals: "未開始",
+        remark: "",
+        approvals: "待送簽",
         offer: 0, //客戶是否提供
         accessory: [], //提供的內容
+        rulesId: [], //提供的內容暫存用
         fileList: [],
         detailList: [],
       },
@@ -583,10 +621,12 @@ export default {
         this.form = Object.assign({}, data);
         this.formTitle = "編輯";
         this.editStatus = JSON.parse(this.$route.query.editStatus);
+        this.newMeeting = false;
 
         console.log("有值", this.$route.query);
       } else {
         this.form = {
+          finish: false,
           id: "",
           principal: "", //負責人
           type: "", //類型
@@ -599,12 +639,15 @@ export default {
           endTime: "",
           theme: "", //會議主題
           member: [], //出席人員
+          remark: "", //備註欄位
+          approvals: "待送簽",
           offer: 0, //客戶是否提供
           accessory: [], //提供的內容
           fileList: [],
           detailList: [],
         };
         this.formTitle = "新增";
+        this.newMeeting = true;
 
         console.log(this.form.time);
       }
@@ -640,44 +683,237 @@ export default {
       this.form.finish = true;
     },
 
-    addPriceForm() {
-      this.$swal
-        .fire({
-          title: "存檔完成！",
-          icon: "success",
-          confirmButtonColor: "#0084ff",
-          confirmButtonText: "確定",
-        })
-        .then((result) => {
-          if (result.isConfirmed) {
-            this.axios
-              .post("http://localhost:3000/meetingList?_sort=id", {
-                id: this.form.id,
-                principal: this.form.principal, //負責人
-                type: this.form.type, //類型
-                name: this.form.name, //專案代碼及名稱
-                textarea: this.form.textarea, //摘要內容
-                chairman: this.form.chairman, //主席
-                record: this.form.record, //紀錄
-                date: this.form.date, //會議日期
-                time: this.form.time, //會議時間
-                theme: this.form.theme, //會議主題
-                member: this.form.member, //出席人員
-                approvals: "未開始",
-                offer: this.form.offer, //客戶是否提供
-                accessory: this.form.accessory, //提供的內容
-                fileList: this.form.fileList,
-                detailList: this.form.detailList,
-              })
-              .then((response) => {
-                this.form.id = response.data.id;
+    //新增會議紀錄
+    addPriceForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$swal
+            .fire({
+              title: "存檔完成！",
+              icon: "success",
+              confirmButtonColor: "#0084ff",
+              confirmButtonText: "確定",
+            })
+            .then((result) => {
+              if (result.isConfirmed) {
+                this.axios
+                  .post("http://localhost:3000/meetingList?_sort=id", {
+                    finish: this.form.finish,
+                    id: this.form.id,
+                    principal: this.form.principal, //負責人
+                    type: this.form.type, //類型
+                    name: this.form.name, //專案代碼及名稱
+                    textarea: this.form.textarea, //摘要內容
+                    chairman: this.form.chairman, //主席
+                    record: this.form.record, //紀錄
+                    date: this.form.date, //會議日期
+                    time: this.form.time, //會議時間
+                    endTime: this.form.endTime, //結束時間
+                    theme: this.form.theme, //會議主題
+                    member: this.form.member, //出席人員
+                    remark: this.form.remark, //備註欄位
+                    approvals: "待送簽",
+                    offer: this.form.offer, //客戶是否提供
+                    accessory: this.form.accessory, //提供的內容
+                    fileList: this.form.fileList,
+                    detailList: this.form.detailList,
+                  })
+                  .then((response) => {
+                    this.form.id = response.data.id;
+                    this.getApi();
+                  })
+                  .catch((error) => {
+                    console.error("There was an error!", error);
+                  });
+              }
+            });
+        } else {
+          return false;
+        }
+      });
+    },
+
+    // 暫存-新增值到api
+    postData(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$swal
+            .fire({
+              title: "存檔完成！",
+              icon: "success",
+              showCancelButton: true,
+              confirmButtonColor: "#0084ff",
+              confirmButtonText: "返回列表",
+              cancelButtonText: "繼續編輯",
+            })
+            .then((result) => {
+              this.axios
+                .post("http://localhost:3000/meetingList?_sort=id", {
+                  finish: this.form.finish,
+                  id: this.form.id,
+                  principal: this.form.principal, //負責人
+                  type: this.form.type, //類型
+                  name: this.form.name, //專案代碼及名稱
+                  textarea: this.form.textarea, //摘要內容
+                  chairman: this.form.chairman, //主席
+                  record: this.form.record, //紀錄
+                  date: this.form.date, //會議日期
+                  time: this.form.time, //會議時間
+                  endTime: this.form.endTime, //結束時間
+                  theme: this.form.theme, //會議主題
+                  member: this.form.member, //出席人員
+                  remark: this.form.remark, //備註欄位
+                  approvals: "待送簽",
+                  offer: this.form.offer, //客戶是否提供
+                  accessory: this.form.accessory, //提供的內容
+                  rulesId: this.form.rulesId, //提供的內容暫存
+                  fileList: this.form.fileList,
+                  detailList: this.form.detailList,
+                })
+                .then((response) => {
+                  this.configForm.id = response.data.id;
+                  this.getApi();
+                })
+                .catch((error) => {
+                  console.error("There was an error!", error);
+                });
+              if (result.isConfirmed) {
                 this.getApi();
-              })
-              .catch((error) => {
-                console.error("There was an error!", error);
-              });
-          }
-        });
+                this.$router.push({ path: "/meetingList" });
+              }
+            });
+        } else {
+          return false;
+        }
+      });
+    },
+
+    // 暫存-變更資料到api
+    patchData(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$swal
+            .fire({
+              title: "存檔完成！",
+              icon: "success",
+              showCancelButton: true,
+              confirmButtonColor: "#0084ff",
+              confirmButtonText: "返回列表",
+              cancelButtonText: "繼續編輯",
+            })
+            .then((result) => {
+              const obj = this.form;
+              const id = this.form.id;
+              this.axios
+                .patch("http://localhost:3000/meetingList/" + `${id}`, obj)
+                .then((response) => {
+                  this.form.id = response.data.id;
+                  this.getApi();
+                })
+                .catch((error) => {
+                  console.error("There was an error!", error);
+                });
+              if (result.isConfirmed) {
+                this.getApi();
+                this.$router.push({ path: "/meetingList" });
+              }
+            });
+        } else {
+          return false;
+        }
+      });
+    },
+
+    // 送簽-新增值到api
+    postApprove(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$swal
+            .fire({
+              title: "存檔完成！",
+              icon: "success",
+              showCancelButton: true,
+              confirmButtonColor: "#0084ff",
+              confirmButtonText: "返回列表",
+              cancelButtonText: "繼續編輯",
+            })
+            .then((result) => {
+              this.axios
+                .post("http://localhost:3000/meetingList?_sort=id", {
+                  finish: this.form.finish,
+                  id: this.form.id,
+                  principal: this.form.principal, //負責人
+                  type: this.form.type, //類型
+                  name: this.form.name, //專案代碼及名稱
+                  textarea: this.form.textarea, //摘要內容
+                  chairman: this.form.chairman, //主席
+                  record: this.form.record, //紀錄
+                  date: this.form.date, //會議日期
+                  time: this.form.time, //會議時間
+                  endTime: this.form.endTime, //結束時間
+                  theme: this.form.theme, //會議主題
+                  member: this.form.member, //出席人員
+                  remark: this.form.remark, //備註欄位
+                  approvals: "待簽核",
+                  offer: this.form.offer, //客戶是否提供
+                  accessory: this.form.accessory, //提供的內容
+                  rulesId: this.form.rulesId, //提供的內容暫存
+                  fileList: this.form.fileList,
+                  detailList: this.form.detailList,
+                })
+                .then((response) => {
+                  this.configForm.id = response.data.id;
+                  this.getApi();
+                })
+                .catch((error) => {
+                  console.error("There was an error!", error);
+                });
+              if (result.isConfirmed) {
+                this.getApi();
+                this.$router.push({ path: "/meetingList" });
+              }
+            });
+        } else {
+          return false;
+        }
+      });
+    },
+
+    // 送簽-變更資料到api
+    patchApprove(formName) {
+      this.form.approvals = "待簽核";
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$swal
+            .fire({
+              title: "存檔完成！",
+              icon: "success",
+              showCancelButton: true,
+              confirmButtonColor: "#0084ff",
+              confirmButtonText: "返回列表",
+              cancelButtonText: "繼續編輯",
+            })
+            .then((result) => {
+              const obj = this.form;
+              const id = this.form.id;
+              this.axios
+                .patch("http://localhost:3000/meetingList/" + `${id}`, obj)
+                .then((response) => {
+                  this.form.id = response.data.id;
+                  this.getApi();
+                })
+                .catch((error) => {
+                  console.error("There was an error!", error);
+                });
+              if (result.isConfirmed) {
+                this.getApi();
+                this.$router.push({ path: "/meetingList" });
+              }
+            });
+        } else {
+          return false;
+        }
+      });
     },
 
     getRole(prov) {
@@ -895,12 +1131,12 @@ export default {
       if (val) {
         this.form.accessory.push(item);
       } else {
-        this.deleteItem(item.accessoryLabel, this.form.accessory);
+        this.deleteItem(item.id, this.form.accessory);
       }
     },
     deleteItem(item, list) {
       for (var key in list) {
-        if (list[key].accessoryLabel === item) {
+        if (list[key].id === item) {
           list.splice(key, 1);
         }
       }
@@ -961,7 +1197,7 @@ export default {
     border: none;
   }
   .el-upload-list {
-    @apply flex-1 bg-white rounded-lg h-28 px-2 overflow-auto pb-2;
+    @apply h-28 flex-1 overflow-auto rounded-lg bg-white px-2 pb-2;
 
     .el-upload-list__item {
       text-align: left;
@@ -1006,7 +1242,7 @@ export default {
     @apply mt-0;
   }
   .arco-upload-list {
-    @apply bg-white rounded-lg p-4 h-28 overflow-auto;
+    @apply h-28 overflow-auto rounded-lg bg-white p-4;
   }
 }
 
