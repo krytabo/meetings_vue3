@@ -7,7 +7,7 @@
       <div class="title-before flex h-14 border-b border-b-gray-300 pb-5">
         <p class="flex-1 text-left text-3xl font-bold">會議記錄表-{{ formTitle }}</p>
         <div class="flex h-10 space-x-2">
-          <el-button plain @click="saveButton">返回</el-button>
+          <el-button plain @click="$router.push({ path: '/toDoList' })">返回</el-button>
         </div>
       </div>
       <!--表格-->

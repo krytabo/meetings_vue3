@@ -116,34 +116,35 @@
           </el-form-item>
 
           <div v-if="form.offer === 1" class="flex flex-col space-y-2 rounded-lg bg-gray-200 p-4">
-            <div class="flex space-x-2">
-              <a-tag v-for="item in form.accessory" :key="item.id" color="arcoblue" :class="{ block: item.accessoryNo === '' }">
-                <p>{{ item.accessoryLabel }}</p>
-                <p class="ml-2 text-gray-500">{{ item.accessoryNo }}</p>
-              </a-tag>
-            </div>
-
-            <div class="flex flex-col space-y-1">
-              <p class="w-full text-left">上傳的檔案</p>
-              <div class="flex flex-col space-y-2 rounded-md bg-white p-4">
-                <div v-for="item in form.fileList" :key="item.uid" class="flex w-full space-x-2 rounded px-4 py-2 text-left" style="background: #f7f8fa">{{ item.name }}</div>
+            <div :class="{ hidden: editStatus === true }">
+              <div class="flex space-x-2">
+                <a-tag v-for="item in form.accessory" :key="item.id" color="arcoblue" :class="{ block: item.accessoryNo === '' }">
+                  <p>{{ item.accessoryLabel }}</p>
+                  <p class="ml-2 text-gray-500">{{ item.accessoryNo }}</p>
+                </a-tag>
+              </div>
+              <div class="flex flex-col space-y-1">
+                <p class="w-full text-left">上傳的檔案</p>
+                <div class="flex flex-col space-y-2 rounded-md bg-white p-4">
+                  <div v-for="item in form.fileList" :key="item.uid" class="flex w-full space-x-2 rounded px-4 py-2 text-left" style="background: #f7f8fa">{{ item.name }}</div>
+                </div>
               </div>
             </div>
-
-            <el-checkbox-group v-model="form.rulesId" :disabled="editStatus === false">
-              <el-checkbox v-for="(item, index) in accessoryList" :label="item.accessoryLabel" :key="index" :velus="item.accessoryLabel" @change="(val) => handleChecked(val, item)">
-                {{ item.accessoryLabel }}
-                <el-input
-                  class="w-56"
-                  v-show="item.accessoryLabel === '光碟' || item.accessoryLabel === '建材樣品' || item.accessoryLabel === '其他'"
-                  v-model="item.accessoryNo"
-                  size="small"
-                  placeholder="請輸入內容"
-                ></el-input>
-              </el-checkbox>
-            </el-checkbox-group>
-
-            <a-upload action="http://localhost:3000/meetingList" :auto-upload="false" multiple :default-file-list="form.fileList" @change="onChange" :disabled="editStatus === false" />
+            <div :class="{ hidden: editStatus === false }">
+              <el-checkbox-group v-model="form.rulesId" :disabled="editStatus === false">
+                <el-checkbox v-for="(item, index) in accessoryList" :label="item.accessoryLabel" :key="index" :velus="item.accessoryLabel" @change="(val) => handleChecked(val, item)">
+                  {{ item.accessoryLabel }}
+                  <el-input
+                    class="w-56"
+                    v-show="item.accessoryLabel === '光碟' || item.accessoryLabel === '建材樣品' || item.accessoryLabel === '其他'"
+                    v-model="item.accessoryNo"
+                    size="small"
+                    placeholder="請輸入內容"
+                  ></el-input>
+                </el-checkbox>
+              </el-checkbox-group>
+              <a-upload action="http://localhost:3000/meetingList" :auto-upload="false" multiple :default-file-list="form.fileList" @change="onChange" :disabled="editStatus === false" />
+            </div>
           </div>
         </div>
         <!--會議列表-->

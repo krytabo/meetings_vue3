@@ -276,7 +276,7 @@
                   <template #default="scope">
                     <span class="w-full text-center" v-html="showDate(scope.row.auditStatus)"></span>
                     <!--                  <span v-if="scope.row.auditStatus === '待送簽' && scope.row.principal !== '王大明'" class="w-full text-center" v-html="showDate(scope.row.auditStatus)"></span>-->
-                    <a-button v-if="scope.row.auditStatus === '待送簽' && scope.row.principal === '王大明'" @click="sendPetition(scope.row)" type="primary" class="w-full">送簽</a-button>
+                    <a-button v-if="scope.row.auditStatus === '待送簽' && scope.row.principal === '王大明'" @click="patchApprove(scope.row)" type="primary" class="w-full">送簽</a-button>
                     <a-button v-if="scope.row.auditStatus === '確認簽核'" @click="sendPetition(scope.row)" type="primary" class="w-full">確認簽核</a-button>
                     <a-trigger v-if="scope.row.auditStatus === '已送簽'" trigger="click">
                       <a-button type="text" v-html="showDate(scope.row.auditStatus)" class="w-full"></a-button>
@@ -357,26 +357,29 @@
                   <el-input v-else class="w-1/2" type="textarea" :rows="2" placeholder="請輸入內容" v-model="scope.row.principalCommit" :disabled="scope.row.principal !== '王大明'"></el-input>-->
                   </div>
                   <div v-else class="flex w-full space-x-2">
-                    <p v-if="scope.row.principalCommit === ''">無</p>
+                    <p v-if="scope.row.principalCommit === ''" class="text-gray-500">無</p>
                     <p v-else>{{ scope.row.principalCommit }}</p>
                   </div>
                 </template>
               </el-table-column>
               <el-table-column prop="KPI" label="KPI" width="200" align="center">
                 <template #default="scope">
-                  <div class="flex flex-col">
+                  <!--<div class="flex flex-col">
                     <el-checkbox v-model="scope.row.KPIOption">評分</el-checkbox>
                     <el-select v-model="scope.row.KPI" size="mini" placeholder="請選擇" clearable filterable allow-create :disabled="scope.row.KPIOption === false">
                       <el-option v-for="item in KPISelect" :key="item.value" :label="item.value" :value="item.value"></el-option>
                     </el-select>
-                    <!--<el-input-number :disabled="scope.row.KPIOption === false" v-model="scope.row.KPI" @change="handleChange"></el-input-number>-->
-                  </div>
+                    &lt;!&ndash;<el-input-number :disabled="scope.row.KPIOption === false" v-model="scope.row.KPI" @change="handleChange"></el-input-number>&ndash;&gt;
+                  </div>-->
+
+                  <p v-if="scope.row.KPI === ''" class="text-gray-500">無</p>
+                  <p v-else>{{ scope.row.KPI }}</p>
                 </template>
               </el-table-column>
               <el-table-column prop="managerCommit" label="直屬主管意見" width="250" align="center">
                 <template #default="scope">
                   <!--                <el-input type="textarea" :rows="2" placeholder="請輸入內容" v-model="scope.row.managerCommit" disabled></el-input>-->
-                  <p v-if="scope.row.managerCommit === ''">無</p>
+                  <p v-if="scope.row.managerCommit === ''" class="text-gray-500">無</p>
                   <p v-else>{{ scope.row.managerCommit }}</p>
                 </template>
               </el-table-column>
@@ -471,8 +474,8 @@
                       <!--                  <span v-if="scope.row.auditStatus === '待送簽' && scope.row.principal !== '王大明'" class="w-full text-center" v-html="showDate(scope.row.auditStatus)"></span>-->
                       <!--                  <a-button v-if="scope.row.auditStatus === '待送簽' && scope.row.principal === '王大明'" @click="sendPetition(scope.row)" type="primary" class="w-full">送簽</a-button>-->
                       <div class="flex space-x-2" v-if="scope.row.auditStatus === '待簽核'">
-                        <a-button @click="sendPetition(scope.row)" type="primary" class="w-full">簽核通過</a-button>
-                        <a-button @click="sendPetition(scope.row)" type="primary" class="w-full">退件</a-button>
+                        <a-button @click="patchPASS(scope.row)" type="primary" class="w-full">簽核通過</a-button>
+                        <a-button @click="patchReturn(scope.row)" type="primary" class="w-full">退件</a-button>
                       </div>
 
                       <a-trigger v-if="scope.row.auditStatus === '已送簽'" trigger="click">
@@ -555,7 +558,7 @@
                     <el-input v-else class="w-1/2" type="textarea" :rows="2" placeholder="請輸入內容" v-model="scope.row.principalCommit"></el-input>
                   </div>
                   <div v-else class="flex w-full space-x-2">
-                    <p v-if="scope.row.principalCommit === ''">無</p>
+                    <p v-if="scope.row.principalCommit === ''" class="text-gray-500">無</p>
                     <p v-else>{{ scope.row.principalCommit }}</p>
                   </div>
                 </template>
@@ -666,7 +669,7 @@
                     </el-select>
                   </template>
                   <template #default="scope">
-                    <a-button v-if="scope.row.signedStatus.length === 0" @click="sendPetition(scope.row)" type="primary" class="w-full">送簽</a-button>
+                    <a-button v-if="scope.row.auditStatus === '待送簽'" @click="sendPetition(scope.row)" type="primary" class="w-full">送簽</a-button>
                     <a-trigger v-else trigger="click">
                       <a-button type="text" v-html="showDate(scope.row.auditStatus)" class="w-full"></a-button>
                       <template #content>
@@ -914,8 +917,8 @@ export default {
       ], //KPI分數選單
       auditStatusSelect: [
         {
-          text: "已送簽",
-          value: "已送簽",
+          text: "已簽核",
+          value: "已簽核",
         },
         {
           text: "待送簽",
@@ -976,6 +979,113 @@ export default {
       return row[property] === value;
     },
 
+    /** 檢視按鈕 */
+    View_PricingList(index, result) {
+      let data = JSON.stringify(result);
+      this.$router.push({ path: "editMeeting", query: { res: data, editStatus: false } });
+    },
+
+    /** 送簽  */
+    patchApprove() {
+      this.$swal
+        .fire({
+          title: "你確定嗎？",
+          text: "會議狀態即將改為「待簽核」",
+          icon: "warning",
+          showCancelButton: true,
+          cancelButtonColor: "#0084ff",
+          confirmButtonColor: "#cccccc",
+          confirmButtonText: "確定送簽",
+          cancelButtonText: "取消",
+          closeOnConfirm: false,
+        })
+        .then((result) => {
+          const obj = this.form;
+          const id = this.form.id;
+          if (result.isConfirmed) {
+            this.form.approvals = "待簽核";
+            this.axios
+              .patch("http://localhost:3000/meetingList/" + `${id}`, obj)
+              .then((response) => {
+                this.form.id = response.data.id;
+                this.getApi();
+                this.$router.push({ path: "/meetingList" });
+              })
+              .catch((error) => {
+                console.error("There was an error!", error);
+              });
+          }
+        })
+        .catch(() => {});
+    },
+
+    /** 簽核通過 */
+    patchPASS() {
+      this.$swal
+        .fire({
+          title: "你確定嗎？",
+          text: "會議狀態即將改為「已簽核」",
+          icon: "warning",
+          showCancelButton: true,
+          cancelButtonColor: "#0084ff",
+          confirmButtonColor: "#cccccc",
+          confirmButtonText: "確定通過",
+          cancelButtonText: "取消",
+          closeOnConfirm: false,
+        })
+        .then((result) => {
+          const obj = this.form;
+          const id = this.form.id;
+          if (result.isConfirmed) {
+            this.form.approvals = "已簽核";
+            this.axios
+              .patch("http://localhost:3000/meetingList/" + `${id}`, obj)
+              .then((response) => {
+                this.form.id = response.data.id;
+                this.getApi();
+                this.$router.push({ path: "/meetingList" });
+              })
+              .catch((error) => {
+                console.error("There was an error!", error);
+              });
+          }
+        })
+        .catch(() => {});
+    },
+    /** 退件 */
+    patchReturn() {
+      this.$swal
+        .fire({
+          title: "你確定嗎？",
+          text: "此會議將退件，簽核狀態將改為「待送簽」",
+          icon: "warning",
+          showCancelButton: true,
+          cancelButtonColor: "#0084ff",
+          confirmButtonColor: "#cccccc",
+          confirmButtonText: "確定退回",
+          cancelButtonText: "取消",
+          closeOnConfirm: false,
+        })
+        .then((result) => {
+          const obj = this.form;
+          const id = this.form.id;
+          if (result.isConfirmed) {
+            this.form.approvals = "待送簽";
+            this.axios
+              .patch("http://localhost:3000/meetingList/" + `${id}`, obj)
+              .then((response) => {
+                this.form.id = response.data.id;
+                this.getApi();
+                this.$router.push({ path: "/meetingList" });
+              })
+              .catch((error) => {
+                console.error("There was an error!", error);
+              });
+          }
+        })
+        .catch(() => {});
+    },
+
     //送出簽核
     send() {
       this.$swal
@@ -1005,8 +1115,6 @@ export default {
         })
         .catch(() => {});
     },
-
-    // 送簽
     validateField(form, index) {
       let result = true;
       for (const item of this.$refs[form].fields) {
