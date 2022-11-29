@@ -519,18 +519,7 @@
       "approvals": "已簽核",
       "offer": 1,
       "remark": "",
-      "accessory": [
-        "書籍",
-        {
-          "accessoryLabel": "書籍",
-          "accessoryNo": ""
-        },
-        "文件",
-        {
-          "accessoryLabel": "文件",
-          "accessoryNo": ""
-        }
-      ],
+      "accessory": [],
       "fileList": [],
       "detailList": [
         {
@@ -747,18 +736,7 @@
       ],
       "approvals": "待簽核",
       "offer": 1,
-      "accessory": [
-        "書籍",
-        {
-          "accessoryLabel": "書籍",
-          "accessoryNo": ""
-        },
-        "其他",
-        {
-          "accessoryLabel": "其他",
-          "accessoryNo": "參考圖片"
-        }
-      ],
+      "accessory": [],
       "fileList": [
         {
           "uid": "16696165870680",
