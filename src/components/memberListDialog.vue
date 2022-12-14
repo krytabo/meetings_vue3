@@ -50,6 +50,8 @@
 </template>
 
 <script>
+import { userList } from "@/views/config/api";
+
 export default {
   name: "tableSelect",
   components: {},
@@ -79,7 +81,8 @@ export default {
       search: this.value,
       searchMember: "",
       memberListSelect: "",
-      memberList: [
+      memberList: [],
+      /*memberList: [
         {
           id: "t0095",
           department: "建一部2",
@@ -100,9 +103,14 @@ export default {
           department: "建四部",
           name: "張三",
         },
-      ],
+      ],*/
       checkedDetail: [],
     };
+  },
+  mounted() {
+    userList().then((res) => {
+      this.memberList = res.data.memberList;
+    });
   },
   methods: {
     test() {

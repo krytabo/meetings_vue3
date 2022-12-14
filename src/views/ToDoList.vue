@@ -1225,15 +1225,19 @@ export default {
             return String(data[key]).toLowerCase().includes(search.toLowerCase());
           });
         });
-      } else if (search2) {
+      }
+
+      if (search2) {
         return this.inServForm.dataList.filter((data) => {
           return String(data.no).toLowerCase().includes(search2.toLowerCase());
         });
-      } else if (search3) {
+      }
+      if (search3) {
         return this.inServForm.dataList.filter((data) => {
           return String(data.projectNo).toLowerCase().includes(search3.toLowerCase());
         });
-      } else if (search4) {
+      }
+      if (search4) {
         return this.inServForm.dataList.filter((data) => {
           return String(data.meetingList).toLowerCase().includes(search4.toLowerCase());
         });
@@ -1241,27 +1245,33 @@ export default {
         return this.inServForm.dataList.filter((data) => {
           return String(data.principal).toLowerCase().includes(search5.toLowerCase());
         });
-      } else if (search6) {
+      }
+      if (search6) {
         return this.inServForm.dataList.filter((data) => {
           return String(data.department).toLowerCase().includes(search6.toLowerCase());
         });
-      } else if (search7) {
+      }
+      if (search7) {
         return this.inServForm.dataList.filter((data) => {
           return String(data.status).toLowerCase().includes(search7.toLowerCase());
         });
-      } else if (search8) {
+      }
+      if (search8) {
         return this.inServForm.dataList.filter((data) => {
           return String(data.auditStatus).toLowerCase().includes(search8.toLowerCase());
         });
-      } else if (search10) {
+      }
+      if (search10) {
         return this.inServForm.dataList.filter((data) => {
           return String(data.doneDate).toLowerCase().includes(search10.toLowerCase());
         });
-      } else if (search11) {
+      }
+      if (search11) {
         return this.inServForm.dataList.filter((data) => {
           return String(data.defer).toLowerCase().includes(search11.toLowerCase());
         });
-      } else if (search12) {
+      }
+      if (search12) {
         return this.inServForm.dataList.filter((data) => {
           return String(data.KPI).toLowerCase().includes(search12.toLowerCase());
         });

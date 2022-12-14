@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import { userList } from "@/views/config/api";
 export default {
   name: "tableSelect",
   components: {},
@@ -65,31 +66,15 @@ export default {
       searchMember: "",
       memberListSelect: "",
       memberListSelect2: [],
-      memberList: [
-        {
-          id: "t0095",
-          department: "建一部2",
-          name: "王大明",
-        },
-        {
-          id: "t0096",
-          department: "建二部",
-          name: "蔡先生",
-        },
-        {
-          id: "t0097",
-          department: "建三部",
-          name: "吳先生",
-        },
-        {
-          id: "t0098",
-          department: "建四部",
-          name: "張三",
-        },
-      ],
+      memberList: [],
       checkedDetail: [],
       inputValue: "",
     };
+  },
+  mounted() {
+    userList().then((res) => {
+      this.memberList = res.data.memberList;
+    });
   },
   methods: {
     handleInputConfirm() {

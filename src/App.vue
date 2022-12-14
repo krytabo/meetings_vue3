@@ -37,59 +37,8 @@ export default {
       collapsed: true,
       checkHidden: false,
       selected: 0,
-      tabsList: [
-        {
-          id: 0,
-          name: "定價表",
-          link: "/",
-        },
-        {
-          id: 1,
-          name: "配置圖設定",
-          link: "/config-setting",
-        },
-      ],
       active: false,
       headerTitle: "會議記錄系統",
-
-      tableData: [
-        {
-          date: "2016-05-03",
-          name: "Tom",
-          state: "California",
-          city: "Los Angeles",
-          address: "No. 189, Grove St, Los Angeles",
-          zip: "CA 90036",
-          tag: "Home",
-        },
-        {
-          date: "2016-05-02",
-          name: "Tom",
-          state: "California",
-          city: "Los Angeles",
-          address: "No. 189, Grove St, Los Angeles",
-          zip: "CA 90036",
-          tag: "Office",
-        },
-        {
-          date: "2016-05-04",
-          name: "Tom",
-          state: "California",
-          city: "Los Angeles",
-          address: "No. 189, Grove St, Los Angeles",
-          zip: "CA 90036",
-          tag: "Home",
-        },
-        {
-          date: "2016-05-01",
-          name: "Tom",
-          state: "California",
-          city: "Los Angeles",
-          address: "No. 189, Grove St, Los Angeles",
-          zip: "CA 90036",
-          tag: "Office",
-        },
-      ],
     };
   },
   methods: {

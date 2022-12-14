@@ -13,6 +13,8 @@
           <el-input v-model="wholeSearch" placeholder="請輸入關鍵字" class="flex-1"></el-input>
         </div>
       </div>
+
+      <el-button @click="dialogVisible = true"></el-button>
       <!--表格-->
       <el-table :data="tables.slice((currentPage - 1) * pageSize, currentPage * pageSize)" ref="multipleTable" style="width: 100%">
         <el-table-column label="類型" prop="type" sortable>
@@ -86,12 +88,12 @@
           </el-table-column>
         </el-table-column>
         <el-table-column label="出席人員" prop="member" sortable>
-          <el-table-column prop="member" width="250">
+          <el-table-column prop="member" width="130" show-overflow-tooltip>
             <template #header>
               <el-input placeholder="關鍵字" v-model="search.member"></el-input>
             </template>
             <template #default="scope">
-              <span v-html="showDate(scope.row.member)"></span>
+              <span class="truncate" v-html="showDate(scope.row.member)"></span>
             </template>
           </el-table-column>
         </el-table-column>
@@ -107,6 +109,17 @@
               <div v-else-if="scope.row.approvals === '待送簽'" class="flex items-center space-x-2">
                 <a-tag v-show="scope.row.approvals === '待送簽'" color="red" v-html="showDate(scope.row.approvals)"></a-tag>
                 <a-button v-show="scope.row.approvals === '待送簽' && scope.row.principal.name === '王大明'" type="primary" @click="sendPetition(scope.row)">送簽</a-button>
+              </div>
+              <a-tag v-else color="purple" v-html="showDate(scope.row.approvals)"></a-tag>
+            </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column label="會簽" prop="countersign">
+          <el-table-column prop="countersign" width="130" show-overflow-tooltip>
+            <template #default="scope">
+              <a-tag v-if="scope.row.approvals === '已簽核'" color="arcoblue" v-html="showDate(scope.row.approvals)"></a-tag>
+              <div v-else-if="scope.row.approvals === '待送簽'" class="flex items-center space-x-2">
+                <a-button v-show="scope.row.approvals === '待送簽' && scope.row.principal.name === '王大明'" type="primary" @click="sendPetition(scope.row)">會簽</a-button>
               </div>
               <a-tag v-else color="purple" v-html="showDate(scope.row.approvals)"></a-tag>
             </template>
@@ -128,10 +141,19 @@
             <div class="w-full text-center">編修</div>
           </template>
           <template #default="scope">
-            <a-button v-if="scope.row.approvals === '待送簽'" type="text" class="ml-0 w-full" @click="Edit_PricingList(scope.$index, scope.row)">
+            <!--待送簽僅負責人可以修改-->
+            <a-button v-if="scope.row.approvals === '待送簽' && scope.row.principal.name === '王大明'" type="text" class="ml-0 w-full" @click="Edit_PricingList(scope.$index, scope.row)">
               修改
               <i class="ri-pencil-fill"></i>
             </a-button>
+
+            <!--部門主管可以修改未簽核的所有事件-->
+            <a-button v-if="scope.row.approvals !== '已簽核' && scope.row.principal.department === '建一部2'" type="text" class="ml-0 w-full" @click="Edit_PricingList(scope.$index, scope.row)">
+              修改
+              <i class="ri-pencil-fill"></i>
+            </a-button>
+
+            <!--已簽核即無法修改-->
             <a-button v-else type="text" status="success" class="ml-0 w-full" @click="View_PricingList(scope.$index, scope.row)">
               檢視
               <i class="ri-eye-fill"></i>
@@ -153,18 +175,22 @@
       ></el-pagination>
     </div>
   </div>
+
+  <memberDialog v-model="dialogVisible"></memberDialog>
 </template>
 
 <script>
-import axios from "axios";
+import memberDialog from "@/components/memberDialog";
+import { meetingList } from "@/views/config/api";
 export default {
   name: "HomeView",
-  components: {},
+  components: { memberDialog },
   created() {
     this.getApi();
   },
   data() {
     return {
+      dialogVisible: false,
       wholeSearch: "",
       currentPage: 1, //默認顯示頁面為1
       pageSize: 10, //每頁顯示的數據
@@ -223,17 +249,10 @@ export default {
   methods: {
     // 獲取API
     getApi() {
-      function getAPI() {
-        // return axios.get("http://localhost:3000/meetingList");
-        return axios.get("https://krytabo.github.io/meetings_vue3/db.json");
-      }
-
-      Promise.all([getAPI()]).then((response) => {
-        // this.dataList = response[0].data;
-        this.dataList = response[0].data.meetingList;
-        this.loadingData = 100;
+      meetingList().then((res) => {
+        this.dataList = res.data.meetingList;
+        console.log(this.dataList);
       });
-
       setTimeout(() => {
         if (this.loadingData === 100) {
           this.loading = false;
@@ -474,6 +493,10 @@ export default {
     th.el-table__cell {
       background-color: #f2f3f5 !important;
     }
+  }
+
+  .el-table--border .el-table__cell {
+    border-right: none !important;
   }
 }
 </style>

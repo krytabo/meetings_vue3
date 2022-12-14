@@ -250,6 +250,9 @@
           </template>
         </el-table-column>
         <el-table-column prop="principal" label="負責人">
+          <template #header>
+            <el-input v-model="form.principal.name"></el-input>
+          </template>
           <template #default="scope">
             <span v-html="showDate(scope.row.principal)"></span>
           </template>
@@ -279,8 +282,7 @@ import breadcrumb from "@/components/breadcrumb";
 import moment from "moment";
 import memberListDialog from "@/components/memberListDialog";
 import memberListDialogEven from "@/components/memberListDialogEven";
-import axios from "axios";
-// import axios from "axios";
+import { to_doList } from "@/views/config/api";
 
 let select1 = [
   { value: "專案", label: "專案" },
@@ -509,6 +511,28 @@ export default {
           ],
         },
       ],
+      personSelect: [
+        {
+          text: "王大明",
+          value: "王大明",
+        },
+        {
+          text: "張三",
+          value: "張三",
+        },
+        {
+          text: "李四",
+          value: "李四",
+        },
+        {
+          text: "蔡先生",
+          value: "蔡先生",
+        },
+        {
+          text: "吳先生",
+          value: "吳先生",
+        },
+      ], //人員選單
 
       //表單內容
       form: {
@@ -550,6 +574,7 @@ export default {
       toDoList: [],
       toDoListSelectSearch: "",
       toDoListSelect: "",
+      toDoListPrincipal: "",
 
       test: "",
 
@@ -655,11 +680,8 @@ export default {
     },
     // 獲取API
     getApi() {
-      function getAPI() {
-        return axios.get("https://run.mocky.io/v3/a960258d-f742-47cd-965a-9ce87dcb35b7");
-      }
-      Promise.all([getAPI()]).then((response) => {
-        this.toDoList = response[0].data.toDoList;
+      to_doList().then((res) => {
+        this.toDoList = res.data.toDoList;
         this.loadingData = 100;
         this.loading = false;
 
@@ -1153,14 +1175,16 @@ export default {
   computed: {
     // 篩選表格
     tables: function () {
+      // principal
       const search = this.toDoListSelectSearch;
+      const search3 = this.form.principal.name;
       if (search) {
         return this.toDoList.filter((dataNews) => {
-          return Object.keys(dataNews).some((key) => {
-            // return String(dataNews[key]).indexOf(search.toUpperCase()) > -1;
-            return String(dataNews[key]).toLowerCase().includes(search.toLowerCase());
-            //.indexOF()區分大小寫 .indexOf(.toUpperCase())不分大小寫 .toLowerCase()轉換小寫
-          });
+          return String(dataNews.name).toLowerCase().includes(search.toLowerCase());
+        });
+      } else if (search3) {
+        return this.toDoList.filter((dataNews) => {
+          return String(dataNews.principal).toLowerCase().includes(search3.toLowerCase());
         });
       }
       return this.toDoList;
