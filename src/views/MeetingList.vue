@@ -14,7 +14,6 @@
         </div>
       </div>
 
-      <el-button @click="dialogVisible = true"></el-button>
       <!--表格-->
       <el-table :data="tables.slice((currentPage - 1) * pageSize, currentPage * pageSize)" ref="multipleTable" style="width: 100%">
         <el-table-column label="類型" prop="type" sortable>
@@ -114,14 +113,15 @@
             </template>
           </el-table-column>
         </el-table-column>
-        <el-table-column label="會簽" prop="countersign">
+        <el-table-column label="會辦" prop="countersign">
           <el-table-column prop="countersign" width="130" show-overflow-tooltip>
             <template #default="scope">
-              <a-tag v-if="scope.row.approvals === '已簽核'" color="arcoblue" v-html="showDate(scope.row.approvals)"></a-tag>
-              <div v-else-if="scope.row.approvals === '待送簽'" class="flex items-center space-x-2">
-                <a-button v-show="scope.row.approvals === '待送簽' && scope.row.principal.name === '王大明'" type="primary" @click="sendPetition(scope.row)">會簽</a-button>
+              <div class="flex flex-col space-y-2">
+                <a-button type="primary" @click="sendCountersign(scope.row)">會辦人員</a-button>
+                <template v-for="item in scope.row.countersign" :key="item.id">
+                  <p>{{ item.name }}</p>
+                </template>
               </div>
-              <a-tag v-else color="purple" v-html="showDate(scope.row.approvals)"></a-tag>
             </template>
           </el-table-column>
         </el-table-column>
@@ -176,20 +176,40 @@
     </div>
   </div>
 
-  <memberDialog v-model="dialogVisible"></memberDialog>
+  <el-dialog title="選擇人員" draggable v-model="dialogVisible">
+    <div class="flax space-x-4">
+      <div class=""></div>
+      <el-table :data="memberList" @select="select" @select-all="selectAll">
+        <el-table-column type="selection" width="50"></el-table-column>
+        <el-table-column label="編號" prop="id"></el-table-column>
+        <el-table-column label="姓名" prop="name"></el-table-column>
+        <el-table-column label="部門" prop="department"></el-table-column>
+      </el-table>
+    </div>
+
+    {{ editForm.countersign }}
+    <el-input v-model="editForm.countersign.name"></el-input>
+    <el-button @click="childClick">確定</el-button>
+  </el-dialog>
+  <!--  <memberDialog v-model="dialogVisible" :inputName="test" v-on:childByValue="childByValue"></memberDialog>-->
 </template>
 
 <script>
-import memberDialog from "@/components/memberDialog";
-import { meetingList } from "@/views/config/api";
+// import memberDialog from "@/components/memberDialog";
+import { meetingList, userList } from "@/views/config/api";
 export default {
   name: "HomeView",
-  components: { memberDialog },
+  components: {
+    // memberDialog
+  },
   created() {
     this.getApi();
   },
   data() {
     return {
+      editForm: {},
+      searchText: "",
+      inputContent: "",
       dialogVisible: false,
       wholeSearch: "",
       currentPage: 1, //默認顯示頁面為1
@@ -230,6 +250,7 @@ export default {
         },
       ], //簽核狀態選單
       dataList: [],
+      memberList: [],
       /** 表頭搜尋 */
       search: {
         type: "",
@@ -247,11 +268,17 @@ export default {
     };
   },
   methods: {
+    getMember(val) {
+      this.memberSearch = val;
+    },
     // 獲取API
     getApi() {
       meetingList().then((res) => {
         this.dataList = res.data.meetingList;
         console.log(this.dataList);
+      });
+      userList().then((res) => {
+        this.memberList = res.data.memberList;
       });
       setTimeout(() => {
         if (this.loadingData === 100) {
@@ -329,6 +356,31 @@ export default {
       });
     },
 
+    /** 會辦 */
+    select(rows) {
+      this.editForm.countersign = rows;
+    },
+    selectAll(rows) {
+      this.editForm.countersign = rows;
+    },
+
+    childClick() {
+      this.dialogVisible = false;
+      this.editForm = "";
+    },
+
+    sendCountersign(row) {
+      this.dialogVisible = true;
+      this.editForm = row;
+      console.log(row);
+    },
+
+    childByValue(childValue) {
+      // this.inputContent = childValue;
+      this.dataList.countersign = childValue;
+      this.dialogVisible = false;
+      this.test = "";
+    },
     // 搜尋高光
     showDate(val) {
       val = val + "";
