@@ -15,7 +15,7 @@
       </div>
 
       <!--表格-->
-      <el-table :data="tables.slice((currentPage - 1) * pageSize, currentPage * pageSize)" ref="multipleTable" style="width: 100%">
+      <el-table :data="tables.slice((currentPage - 1) * pageSize, currentPage * pageSize)" ref="multipleTable" style="width: 100%" :header-cell-style="handerMethod">
         <el-table-column label="類型" prop="type" sortable>
           <el-table-column prop="type" width="150">
             <template #header>
@@ -114,14 +114,16 @@
           </el-table-column>
         </el-table-column>
         <el-table-column label="會辦" prop="countersign">
+          <el-table-column width="130" show-overflow-tooltip>
+            <template #default="scope">
+              <a-button type="primary" @click="sendCountersign(scope.row)">會辦人員</a-button>
+            </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column label="會辦人員" prop="countersign">
           <el-table-column prop="countersign" width="130" show-overflow-tooltip>
             <template #default="scope">
-              <div class="flex flex-col space-y-2">
-                <a-button type="primary" @click="sendCountersign(scope.row)">會辦人員</a-button>
-                <template v-for="item in scope.row.countersign" :key="item.id">
-                  <p>{{ item.name }}</p>
-                </template>
-              </div>
+              <span v-for="item in scope.row.countersign" :key="item.id" class="truncate">{{ item.name }}</span>
             </template>
           </el-table-column>
         </el-table-column>
@@ -175,11 +177,10 @@
       ></el-pagination>
     </div>
   </div>
-
   <el-dialog title="選擇人員" draggable v-model="dialogVisible">
     <div class="flax space-x-4">
       <div class=""></div>
-      <el-table :data="memberList" @select="select" @select-all="selectAll">
+      <el-table ref="multipleTable" :data="memberList" @select="select" @select-all="selectAll">
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column label="編號" prop="id"></el-table-column>
         <el-table-column label="姓名" prop="name"></el-table-column>
@@ -188,8 +189,7 @@
     </div>
 
     {{ editForm.countersign }}
-    <el-input v-model="editForm.countersign.name"></el-input>
-    <el-button @click="childClick">確定</el-button>
+    <el-button @click="childClick()">確定</el-button>
   </el-dialog>
   <!--  <memberDialog v-model="dialogVisible" :inputName="test" v-on:childByValue="childByValue"></memberDialog>-->
 </template>
@@ -290,26 +290,6 @@ export default {
     Edit_PricingList(index, result) {
       let data = JSON.stringify(result);
       this.$router.push({ path: "editMeeting", query: { res: data, editStatus: true } });
-      /*this.$router.push({
-        path: "editMeeting",
-        query: {
-          id: row.id,
-          principal: row.principal,
-          type: row.type,
-          name: row.name,
-          textarea: row.textarea,
-          chairman: row.chairman,
-          record: row.record,
-          date: row.date,
-          time: row.time,
-          theme: row.theme,
-          member: row.member,
-          offer: row.offer,
-          accessory: row.accessory,
-          fileList: row.fileList,
-          detailList: JSON.parse(JSON.stringify(row.detailList)),
-        },
-      });*/
     },
 
     View_PricingList(index, result) {
@@ -322,22 +302,22 @@ export default {
     },
 
     getTime(val) {
-      //   获取时间并格式化
+      //   獲取時間並格式化
       var now = new Date();
-      val === 0 ? "" : now.setTime(now.getTime() - 24 * 60 * 60 * 1000 * val); //   获取前val天的时间
-      // val === 0 ? "" : now.setTime(now.getTime() + 24 * 60 * 60 * 1000 * val); //   获取后val天的时间
+      val === 0 ? "" : now.setTime(now.getTime() - 24 * 60 * 60 * 1000 * val); //   獲取前val天的時間
+      // val === 0 ? "" : now.setTime(now.getTime() + 24 * 60 * 60 * 1000 * val); //   獲取後val天的時間
       const hh = (now.getHours() + "").padStart(2, "0");
       const mm = (now.getMinutes() + "").padStart(2, "0");
       const ss = (now.getSeconds() + "").padStart(2, "0");
-      //获取当前的星期
+      //獲取當前的星期
       let wk = now.getDay();
       let weeks = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
       let week = weeks[wk];
       this.form.time = week;
-      return `${hh}:${mm}:${ss}`; // 获取的时间格式为 2021-11-16 11:37:15
-      //return `${y}年${m}月${d}日 ${hh}:${mm}:${ss}`; // 获取的时间格式为 2021年11月16日 11:37:15
-      // return `${y}-${m}-${d} ${hh}:${mm}:${ss}`; // 获取的时间格式为 2021-04-09 11:37:15
-      // return y + m + d                           // 获取的时间格式为  20210409
+      return `${hh}:${mm}:${ss}`; // 獲取的時間格式為 2021-11-16 11:37:15
+      //return `${y}年${m}月${d}日 ${hh}:${mm}:${ss}`; // 獲取的時間格式為 2021年11月16日 11:37:15
+      // return `${y}-${m}-${d} ${hh}:${mm}:${ss}`; // 獲取的時間格式為 2021-04-09 11:37:15
+      // return y + m + d                           // 獲取的時間格式為  20210409
     },
 
     // 送簽
@@ -364,14 +344,20 @@ export default {
       this.editForm.countersign = rows;
     },
 
-    childClick() {
+    childClick(rows) {
       this.dialogVisible = false;
-      this.editForm = "";
+      if (rows) {
+        rows.forEach((row) => {
+          this.$refs.multipleTable.toggleRowSelection(row);
+        });
+      } else {
+        this.$refs.multipleTable.clearSelection();
+      }
     },
 
     sendCountersign(row) {
       this.dialogVisible = true;
-      this.editForm = row;
+      this.editForm = JSON.parse(JSON.stringify(row));
       console.log(row);
     },
 
@@ -380,6 +366,17 @@ export default {
       this.dataList.countersign = childValue;
       this.dialogVisible = false;
       this.test = "";
+    },
+
+    handerMethod({ row, column, rowIndex, columnIndex }) {
+      if (row[0].level === 1) {
+        row[8].colSpan = 2;
+        row[9].colSpan = 0;
+        if (columnIndex === 9) {
+          return { display: "none" };
+        }
+      }
+      console.log(column, rowIndex);
     },
     // 搜尋高光
     showDate(val) {
