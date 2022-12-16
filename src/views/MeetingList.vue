@@ -188,8 +188,10 @@
       </el-table>
     </div>
 
+    <el-input v-model="editForm.id"></el-input>
+    <el-input v-model="editForm.countersign"></el-input>
     {{ editForm.countersign }}
-    <el-button @click="childClick()">確定</el-button>
+    <el-button @click="childClick">確定</el-button>
   </el-dialog>
   <!--  <memberDialog v-model="dialogVisible" :inputName="test" v-on:childByValue="childByValue"></memberDialog>-->
 </template>
@@ -207,7 +209,10 @@ export default {
   },
   data() {
     return {
-      editForm: {},
+      editForm: {
+        id: "",
+        countersign: "",
+      },
       searchText: "",
       inputContent: "",
       dialogVisible: false,
@@ -274,11 +279,11 @@ export default {
     // 獲取API
     getApi() {
       meetingList().then((res) => {
-        this.dataList = res.data.meetingList;
+        this.dataList = res.data;
         console.log(this.dataList);
       });
       userList().then((res) => {
-        this.memberList = res.data.memberList;
+        this.memberList = res.data;
       });
       setTimeout(() => {
         if (this.loadingData === 100) {
@@ -337,30 +342,82 @@ export default {
     },
 
     /** 會辦 */
+    // 會辦人員按鈕
+    /*sendCountersign(row) {
+      this.dialogVisible = true;
+      this.editForm = Object.assign({}, row);
+      console.log(row);
+    },*/
+    sendCountersign(row) {
+      this.dialogVisible = true;
+
+      /*patch_meetingList(row.id).then((obj) => {
+        this.editForm.countersign = obj.data.countersign;
+      });
+
+      this.editForm = {
+        countersign: row.countersign,
+      };*/
+
+      /* this.editForm = {
+        id: row.id,
+        countersign: row.countersign,
+      };*/
+      this.editForm = row;
+
+      console.log(this.editForm);
+    },
+
+    // 會辦畫面選擇對象
     select(rows) {
       this.editForm.countersign = rows;
     },
+
+    // 會辦畫面全選對象
     selectAll(rows) {
       this.editForm.countersign = rows;
     },
 
-    childClick(rows) {
-      this.dialogVisible = false;
-      if (rows) {
+    // 送出確定會辦人員
+    childClick() {
+      let id = this.editForm.id;
+      let obj = this.editForm;
+
+      /* patch_meetingList(id, obj).then((res) => {
+        console.log(res);
+        this.dataList.map((item) => {
+          if (item.id === id) {
+            item.countersign = this.editForm.countersign;
+
+            this.getApi();
+            this.dialogVisible = false;
+          }
+        });
+      });*/
+
+      // const obj = this.editForm;
+      // const id = this.editForm.id;
+
+      this.axios
+        .patch("http://localhost:3000/meetingList/" + `${id}`, obj)
+        .then((response) => {
+          this.editForm.id = response.data.id;
+          this.getApi();
+          this.dialogVisible = false;
+        })
+        .catch((error) => {
+          console.error("There was an error!", error);
+        });
+      /*if (rows) {
         rows.forEach((row) => {
           this.$refs.multipleTable.toggleRowSelection(row);
         });
       } else {
         this.$refs.multipleTable.clearSelection();
-      }
+      }*/
     },
 
-    sendCountersign(row) {
-      this.dialogVisible = true;
-      this.editForm = JSON.parse(JSON.stringify(row));
-      console.log(row);
-    },
-
+    // 套件送出會辦
     childByValue(childValue) {
       // this.inputContent = childValue;
       this.dataList.countersign = childValue;

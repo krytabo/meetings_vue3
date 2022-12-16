@@ -1,9 +1,10 @@
 import axios from "axios";
 
 const dataList = axios.create({
-  baseURL: "https://631fb559-9d1d-4731-935d-58da2832fdd4.mock.pstmn.io",
+  baseURL: "http://localhost:3000",
 });
 
-export const userList = () => dataList.get("/getUser");
-export const meetingList = () => dataList.get("/getMeeting");
-export const to_doList = () => dataList.get("/getTo_doList");
+export const userList = () => dataList.get("/memberList");
+export const meetingList = () => dataList.get("/meetingList");
+export const patch_meetingList = (data) => dataList.patch("/meetingList", data);
+export const to_doList = () => dataList.get("/toDoList");
