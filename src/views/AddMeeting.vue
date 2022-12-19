@@ -149,19 +149,19 @@
         </div>
         <!--會議列表-->
         <el-table :data="form.detailList">
-          <el-table-column fixed prop="name" label="內容摘要">
+          <el-table-column fixed prop="name" label="內容摘要" show-overflow-tooltip>
             <template #default="scope">
               <el-input v-if="scope.row.edit === true" v-model="scope.row.content" placeholder="請輸入摘要內容" clearable></el-input>
-              <span v-else>{{ scope.row.content }}</span>
+              <span v-else class="truncate">{{ scope.row.content }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="name" label="流水編號" width="180">
+          <el-table-column prop="name" label="流水編號" show-overflow-tooltip>
             <template #default="scope">
               <el-input v-if="scope.row.edit === true" v-model="scope.row.number" placeholder="請輸入內容" clearable></el-input>
-              <span v-else>{{ scope.row.number }}</span>
+              <span v-else class="truncate">{{ scope.row.number }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="name" label="結論待辦" width="180">
+          <el-table-column prop="name" label="結論待辦" width="100px">
             <template #default="scope">
               <div v-if="scope.row.edit === true">
                 <el-select v-model="scope.row.conclusion" class="w-full flex-1" clearable>
@@ -169,44 +169,44 @@
                 </el-select>
               </div>
               <div v-else>
-                <span v-if="scope.row.conclusion === '結案'" class="text-green-500">{{ scope.row.conclusion }}</span>
-                <span v-else class="text-red-500">{{ scope.row.conclusion }}</span>
+                <span v-if="scope.row.conclusion === '結案'" class="truncate text-green-500">{{ scope.row.conclusion }}</span>
+                <span v-else class="truncate text-red-500">{{ scope.row.conclusion }}</span>
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="name" label="專案代碼及名稱" width="180">
+          <el-table-column prop="name" label="專案代碼及名稱" show-overflow-tooltip>
             <template #default="scope">
               <el-cascader v-if="scope.row.edit === true" v-model="scope.row.name" :options="options" clearable @change="handleTableChange($event, scope.$index)"></el-cascader>
-              <span v-else>{{ scope.row.name }}</span>
+              <span v-else class="truncate">{{ scope.row.name }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="principal" label="負責人" width="180">
+          <el-table-column prop="principal" label="負責人" show-overflow-tooltip>
             <template #default="scope">
               <member-list-dialog v-if="scope.row.edit === true" v-model="scope.row.principal" :value="scope.row.principal.name"></member-list-dialog>
-              <span v-else>{{ scope.row.principal.name }}</span>
+              <span v-else class="truncate">{{ scope.row.principal.name }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="date" label="預計日期" width="180">
+          <el-table-column prop="date" label="預計日期" width="180px">
             <template #default="scope">
               <el-date-picker v-if="scope.row.edit === true" v-model="scope.row.date" type="date" placeholder="請選擇日期" clearable format="YYYY/MM/DD" value-format="YYYY年MM月DD日"></el-date-picker>
               <span v-else>{{ scope.row.date }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="member" label="相關人員" width="180">
+          <el-table-column prop="member" label="相關人員" show-overflow-tooltip>
             <template #default="scope">
-              <member-list-dialog v-if="scope.row.edit === true" v-model="scope.row.member" :value="scope.row.member.name"></member-list-dialog>
-              <span v-else>{{ scope.row.member.name }}</span>
+              <member-list-dialog-even v-if="scope.row.edit === true" v-model="scope.row.member" :value="scope.row.member.name" disabled="false"></member-list-dialog-even>
+              <span v-else class="truncate">{{ scope.row.member.toString() }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="accessory" label="附件" width="180">
+          <el-table-column prop="accessory" label="附件" show-overflow-tooltip>
             <template #default="scope">
               <a-upload v-if="scope.row.edit === true" action="https://www.mocky.io/v2/5cc8019d300000980a055e76" :limit="1">
                 <template #upload-button><a-button type="primary">選擇檔案</a-button></template>
               </a-upload>
-              <span v-else>{{ scope.row.accessory }}</span>
+              <span v-else class="truncate">{{ scope.row.accessory }}</span>
             </template>
           </el-table-column>
-          <el-table-column v-if="editStatus === true" label="操作" width="120" align="center" fixed="right">
+          <el-table-column v-if="editStatus === true" label="操作" align="center" fixed="right" width="120px">
             <template #default="scope">
               <div v-if="scope.row.edit === true">
                 <el-button type="text" @click="scope.row.edit = !scope.row.edit" class="text-red-500">取消</el-button>
@@ -1009,7 +1009,7 @@ export default {
       this.form.detailList.push({
         // id: index,
         content: this.form.textarea,
-        number: "",
+        number: "系統自動帶出",
         conclusion: "待辦",
         name: this.form.name,
         principal: this.form.principal,
@@ -1018,6 +1018,16 @@ export default {
         accessory: "",
         edit: false,
       });
+
+      console.log(this.form.detailList[0]);
+
+      if (this.form.detailList[0].principal === "") {
+        this.form.detailList[0].name = this.form.name;
+        this.form.detailList[0].principal = this.form.principal;
+        console.log("目前沒有");
+      } else {
+        console.log("目前有資料");
+      }
 
       this.form.textarea = "";
 

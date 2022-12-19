@@ -32,18 +32,21 @@ export default {
           link: "/toDoList",
           // link: "/price_list",
         },
-        /*{
+        {
           id: 2,
           name: "KPI專區",
-          link: "/",
-          // link: "/division_list",
+          link: "/kpi",
         },
         {
           id: 3,
-          name: "基本資料",
-          link: "/",
-          // link: "/division_list",
-        },*/
+          name: "系統參數",
+          link: "/setting",
+        },
+        {
+          id: 4,
+          name: "個人化設定",
+          link: "/setting_person",
+        },
       ],
       active: false,
     };

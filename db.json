@@ -27,9 +27,7 @@
       "theme": "會議主題1",
       "member": [
         "王大明",
-        "蔡先生",
-        "吳先生",
-        "張三"
+        "蔡先生"
       ],
       "approvals": "待送簽",
       "offer": 1,
@@ -88,11 +86,10 @@
             "name": "王大明"
           },
           "date": "2021-12-14",
-          "member": {
-            "id": "t0095",
-            "department": "建一部2",
-            "name": "王大明"
-          },
+          "member": [
+            "王大明",
+            "蔡先生"
+          ],
           "accessory": "",
           "edit": false
         },
@@ -122,11 +119,8 @@
         "建材樣品"
       ],
       "countersign": [
-        {
-          "id": "t0097",
-          "department": "建三部",
-          "name": "吳先生"
-        }
+        "王大明",
+        "蔡先生"
       ]
     },
     {
@@ -209,9 +203,9 @@
       ],
       "countersign": [
         {
-          "id": "t0097",
-          "department": "建三部",
-          "name": "吳先生"
+          "id": "t0095",
+          "department": "建一部",
+          "name": "王大明"
         },
         {
           "id": "t0096",
@@ -292,19 +286,9 @@
       ],
       "countersign": [
         {
-          "id": "t0097",
-          "department": "建三部",
-          "name": "吳先生"
-        },
-        {
-          "id": "t0095",
-          "department": "建一部",
-          "name": "王大明"
-        },
-        {
-          "id": "t0096",
-          "department": "建二部",
-          "name": "蔡先生"
+          "id": "t0098",
+          "department": "建四部",
+          "name": "張三"
         }
       ]
     },
@@ -388,9 +372,24 @@
       ],
       "countersign": [
         {
+          "id": "t0095",
+          "department": "建一部",
+          "name": "王大明"
+        },
+        {
           "id": "t0096",
           "department": "建二部",
           "name": "蔡先生"
+        },
+        {
+          "id": "t0097",
+          "department": "建三部",
+          "name": "吳先生"
+        },
+        {
+          "id": "t0098",
+          "department": "建四部",
+          "name": "張三"
         }
       ]
     },
@@ -469,6 +468,11 @@
           "id": "t0096",
           "department": "建二部",
           "name": "蔡先生"
+        },
+        {
+          "id": "t0097",
+          "department": "建三部",
+          "name": "吳先生"
         }
       ]
     },

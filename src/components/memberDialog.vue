@@ -2,7 +2,7 @@
   <el-dialog title="選擇人員" draggable>
     <div class="flax space-x-4">
       <div class=""></div>
-      <el-table :data="memberList" @select="select" @select-all="selectAll">
+      <el-table :data="memberList" ref="multipleTable" @selection-change="select">
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column label="編號" prop="id"></el-table-column>
         <el-table-column label="姓名" prop="name"></el-table-column>
@@ -36,7 +36,7 @@ export default {
   },
   mounted() {
     userList().then((res) => {
-      this.memberList = res.data.memberList;
+      this.memberList = res.data;
     });
   },
   methods: {
@@ -52,6 +52,13 @@ export default {
     sendSearch(e) {
       this.$emit("update:modelValue", e);
       this.searchText = e;
+    },
+  },
+  watch: {
+    multipleTable() {
+      this.$nextTick(() => {
+        this.$refs.multipleTable.toggleRowSelection(this.memberList[0], true);
+      });
     },
   },
 };

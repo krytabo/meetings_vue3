@@ -28,7 +28,7 @@
       <!--選擇按鈕-->
       <template #reference>
         <div v-if="disabled === true" class="flex items-center justify-center rounded border border-gray-300 bg-gray-200 px-3 text-gray-400 hover:cursor-not-allowed">選擇</div>
-        <div v-else class="flex items-center justify-center rounded border border-gray-300 bg-white px-3 hover:cursor-pointer hover:bg-gray-800 hover:text-white" @click="search = null">選擇</div>
+        <div v-else class="flex items-center justify-center rounded border border-gray-300 bg-white px-3 hover:cursor-pointer hover:bg-gray-800 hover:text-white">選擇</div>
       </template>
     </el-popover>
   </div>
@@ -73,7 +73,7 @@ export default {
   },
   mounted() {
     userList().then((res) => {
-      this.memberList = res.data.memberList;
+      this.memberList = res.data;
     });
   },
   methods: {
@@ -116,6 +116,13 @@ export default {
         });
       }
       return this.memberList;
+    },
+  },
+  watch: {
+    multipleTable() {
+      this.$nextTick(() => {
+        this.$refs.multipleTable.toggleRowSelection(this.tables[0], true);
+      });
     },
   },
 };

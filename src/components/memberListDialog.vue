@@ -109,7 +109,7 @@ export default {
   },
   mounted() {
     userList().then((res) => {
-      this.memberList = res.data.memberList;
+      this.memberList = res.data;
     });
   },
   methods: {

@@ -15,7 +15,7 @@
             <el-table :data="tables" style="width: 100%" :cell-style="rowClass">
               <!--<el-table-column v-for="(item, index) in tableHeader" :key="index" :prop="item.propName" :label="item.labelName" :width="item.width"></el-table-column>-->
               <el-table-column fixed label="序號" type="index" width="60" align="center"></el-table-column>
-              <el-table-column fixed label="待辦編碼" width="250" sortable>
+              <!--<el-table-column fixed label="待辦編碼" width="250" sortable>
                 <el-table-column prop="no" label="待辦編碼" width="250">
                   <template #header>
                     <el-input v-model="search.no" size="mini" placeholder="關鍵字" />
@@ -24,9 +24,9 @@
                     <span v-html="showDate(scope.row.no)"></span>
                   </template>
                 </el-table-column>
-              </el-table-column>
-              <el-table-column fixed prop="projectNo" label="專案編碼" width="150" sortable align="center">
-                <el-table-column prop="projectNo" label="專案編碼" width="150" align="center">
+              </el-table-column>-->
+              <el-table-column fixed prop="projectNo" label="專案編碼" sortable>
+                <el-table-column prop="projectNo" label="專案編碼">
                   <template #header>
                     <el-input v-model="search.projectNo" size="mini" placeholder="關鍵字" />
                   </template>
@@ -35,8 +35,8 @@
                   </template>
                 </el-table-column>
               </el-table-column>
-              <el-table-column fixed prop="meetingList" label="內容" min-width="240" sortable>
-                <el-table-column prop="meetingList" label="內容" min-width="240">
+              <el-table-column fixed prop="meetingList" label="內容" sortable>
+                <el-table-column prop="meetingList" label="內容">
                   <template #header>
                     <el-input v-model="search.meetingList" size="mini" placeholder="關鍵字" />
                   </template>
@@ -45,8 +45,8 @@
                   </template>
                 </el-table-column>
               </el-table-column>
-              <el-table-column fixed prop="principal" label="負責人" width="200" sortable align="center">
-                <el-table-column prop="principal" label="負責人" width="200" align="center">
+              <el-table-column fixed prop="principal" label="負責人" sortable>
+                <el-table-column prop="principal" label="負責人">
                   <template #header>
                     <el-input v-model="search.principal" size="mini" placeholder="關鍵字" />
                   </template>
@@ -55,8 +55,8 @@
                   </template>
                 </el-table-column>
               </el-table-column>
-              <el-table-column prop="department" label="部門" width="150" sortable align="center">
-                <el-table-column prop="department" label="部門" width="150" align="center">
+              <el-table-column prop="department" label="部門" sortable>
+                <el-table-column prop="department" label="部門">
                   <template #header>
                     <el-select v-model="search.department" size="mini" placeholder="請選擇" clearable>
                       <el-option v-for="item in headerSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -67,7 +67,7 @@
                   </template>
                 </el-table-column>
               </el-table-column>
-              <el-table-column prop="status" label="執行狀態" width="150" sortable align="center">
+              <el-table-column prop="status" label="執行狀態" sortable>
                 <el-table-column prop="status" width="150">
                   <template #header>
                     <el-select v-model="search.status" size="mini" placeholder="請選擇" clearable>
@@ -79,7 +79,7 @@
                   </template>
                 </el-table-column>
               </el-table-column>
-              <el-table-column prop="signedStatus" label="簽核狀態" width="150" sortable align="center">
+              <el-table-column prop="signedStatus" label="簽核狀態" sortable>
                 <el-table-column prop="signedStatus" width="150">
                   <template #header>
                     <el-select v-model="search.signedStatus" size="mini" placeholder="請選擇" clearable>
@@ -202,7 +202,7 @@
           <el-form ref="ruleForm" :inline="true" :model="inServForm">
             <el-table :data="tables" style="width: 100%" table-layout="fixed" :cell-style="rowClass">
               <el-table-column fixed label="序號" type="index" width="60" align="center"></el-table-column>
-              <el-table-column fixed label="待辦編碼" width="250" sortable>
+              <!--<el-table-column fixed label="待辦編碼" width="250" sortable>
                 <el-table-column prop="no" label="待辦編碼" width="250">
                   <template #header>
                     <el-input v-model="search.no" size="mini" placeholder="關鍵字" />
@@ -211,7 +211,7 @@
                     <span v-html="showDate(scope.row.no)"></span>
                   </template>
                 </el-table-column>
-              </el-table-column>
+              </el-table-column>-->
               <el-table-column fixed prop="projectNo" label="專案編碼及名稱" width="150" sortable align="center">
                 <el-table-column prop="projectNo" label="專案編碼及名稱" width="150" align="center">
                   <template #header>
@@ -397,7 +397,7 @@
           <el-form ref="validateForm" :inline="true" :model="editableTableData">
             <el-table :data="tables" style="width: 100%" table-layout="fixed" :cell-style="rowClass">
               <el-table-column fixed label="序號" type="index" width="60" align="center"></el-table-column>
-              <el-table-column fixed label="待辦編碼" width="250" sortable>
+              <!--<el-table-column fixed label="待辦編碼" width="250" sortable>
                 <el-table-column prop="no" label="待辦編碼" width="250">
                   <template #header>
                     <el-input v-model="search.no" size="mini" placeholder="關鍵字" />
@@ -406,7 +406,7 @@
                     <span v-html="showDate(scope.row.no)"></span>
                   </template>
                 </el-table-column>
-              </el-table-column>
+              </el-table-column>-->
               <el-table-column fixed prop="projectNo" label="專案編碼及名稱" width="150" sortable align="center">
                 <el-table-column prop="projectNo" label="專案編碼及名稱" width="150" align="center">
                   <template #header>
@@ -594,7 +594,7 @@
             <el-table :data="tables" ref="filterTable" style="width: 100%" :cell-style="rowClass">
               <!--<el-table-column v-for="(item, index) in tableHeader" :key="index" :prop="item.propName" :label="item.labelName" :width="item.width"></el-table-column>-->
               <el-table-column fixed label="序號" type="index" width="60" align="center"></el-table-column>
-              <el-table-column fixed label="待辦編碼" width="250" sortable>
+              <!--<el-table-column fixed label="待辦編碼" width="250" sortable>
                 <el-table-column prop="no" label="待辦編碼" width="250">
                   <template #header>
                     <el-input v-model="search.no" size="mini" placeholder="關鍵字" />
@@ -603,7 +603,7 @@
                     <span v-html="showDate(scope.row.no)"></span>
                   </template>
                 </el-table-column>
-              </el-table-column>
+              </el-table-column>-->
               <el-table-column fixed prop="projectNo" label="專案編碼" width="150" sortable align="center">
                 <el-table-column prop="projectNo" label="專案編碼" width="150" align="center">
                   <template #header>
@@ -1338,6 +1338,9 @@ export default {
     th.el-table__cell {
       background-color: #f2f3f5 !important;
     }
+  }
+  .el-table--border .el-table__cell {
+    border-right: none !important;
   }
 
   .rowClass {

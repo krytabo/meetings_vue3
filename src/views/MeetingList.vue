@@ -6,6 +6,7 @@
       <div class="title-before mb-5 flex border-b border-b-gray-300 pb-5">
         <div class="flex flex-1 space-x-2">
           <a-button type="primary" @click="add">新增會議記錄</a-button>
+          <a-button type="primary" @click="add">個人會辦</a-button>
           <a-button type="primary" status="success">匯出資料</a-button>
         </div>
         <div class="inline-block flex items-center space-x-4">
@@ -15,9 +16,9 @@
       </div>
 
       <!--表格-->
-      <el-table :data="tables.slice((currentPage - 1) * pageSize, currentPage * pageSize)" ref="multipleTable" style="width: 100%" :header-cell-style="handerMethod">
+      <el-table :data="tables.slice((currentPage - 1) * pageSize, currentPage * pageSize)" ref="multipleTable" style="width: 100%">
         <el-table-column label="類型" prop="type" sortable>
-          <el-table-column prop="type" width="150">
+          <el-table-column prop="type">
             <template #header>
               <el-select v-model="search.type" size="mini" placeholder="請選擇" clearable>
                 <el-option v-for="item in typeSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -29,17 +30,17 @@
           </el-table-column>
         </el-table-column>
         <el-table-column label="專案編碼及名稱" prop="name" sortable>
-          <el-table-column prop="name" min-width="250">
+          <el-table-column prop="name" show-overflow-tooltip>
             <template #header>
               <el-input placeholder="關鍵字" v-model="search.name"></el-input>
             </template>
             <template #default="scope">
-              <span v-html="showDate(scope.row.name)"></span>
+              <span class="truncate" v-html="showDate(scope.row.name)"></span>
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column label="會議主題" prop="theme" sortable>
-          <el-table-column prop="theme" width="200">
+          <el-table-column prop="theme">
             <template #header>
               <el-input placeholder="關鍵字" v-model="search.theme"></el-input>
             </template>
@@ -49,7 +50,7 @@
           </el-table-column>
         </el-table-column>
         <el-table-column label="會議日期" prop="date" align="center" sortable>
-          <el-table-column prop="date" align="center" width="120">
+          <el-table-column prop="date" align="center">
             <template #header>
               <a-trigger trigger="click" :unmount-on-close="false">
                 <el-button class="w-full">日期搜尋</el-button>
@@ -67,7 +68,7 @@
           </el-table-column>
         </el-table-column>
         <el-table-column label="負責人員" prop="principal" align="center" sortable>
-          <el-table-column prop="principal" align="center" width="120">
+          <el-table-column prop="principal" align="center">
             <template #header>
               <el-input placeholder="關鍵字" v-model="search.principalName"></el-input>
             </template>
@@ -77,7 +78,7 @@
           </el-table-column>
         </el-table-column>
         <el-table-column label="部門" prop="chairman" align="center" sortable>
-          <el-table-column prop="chairman" align="center" width="100">
+          <el-table-column prop="chairman" align="center">
             <template #header>
               <el-input placeholder="關鍵字" v-model="search.principalDepartment"></el-input>
             </template>
@@ -97,7 +98,7 @@
           </el-table-column>
         </el-table-column>
         <el-table-column label="簽核" prop="approvals" align="center" sortable>
-          <el-table-column prop="approvals" align="center" width="150">
+          <el-table-column prop="approvals" align="center">
             <template #header>
               <el-select v-model="search.approvals" size="mini" placeholder="請選擇" clearable>
                 <el-option v-for="item in approvalsSelect" :key="item.value" :label="item.value" :value="item.value"></el-option>
@@ -114,27 +115,42 @@
           </el-table-column>
         </el-table-column>
         <el-table-column label="會辦" prop="countersign">
-          <el-table-column width="130" show-overflow-tooltip>
+          <el-table-column show-overflow-tooltip min-width="120">
+            <!--<template #header>
+              <a-button type="primary" status="success" v-show="countersignEdit === false" @click="countersignEdit = true">編輯</a-button>
+              <a-button type="primary" status="success" v-show="countersignEdit === true" @click="save_countersign">存檔</a-button>
+            </template>-->
             <template #default="scope">
-              <a-button type="primary" @click="sendCountersign(scope.row)">會辦人員</a-button>
+              <div class="flex space-x-3">
+                <a-button type="primary" status="success" v-show="countersignEdit === false" @click="edit_countersign(scope.$index, scope.row)">編輯</a-button>
+                <a-button type="primary" status="success" v-show="countersignEdit === true" @click="save_countersign">存檔</a-button>
+                <!--<a-button type="primary" @click="sendCountersign(scope.row)">會辦人員</a-button>-->
+                <member-list-dialog-even v-if="countersignEdit === true" v-model="scope.row.countersign" :value="scope.row.countersign" disabled="false"></member-list-dialog-even>
+                <div v-else class="truncate">
+                  {{ scope.row.countersign }}
+                  <!--<span v-for="item in scope.row.countersign" :key="item.id">{{ item.name }},</span>-->
+                </div>
+              </div>
             </template>
           </el-table-column>
         </el-table-column>
-        <el-table-column label="會辦人員" prop="countersign">
+        <!--<el-table-column label="會辦人員" prop="countersign">
           <el-table-column prop="countersign" width="130" show-overflow-tooltip>
             <template #default="scope">
-              <span v-for="item in scope.row.countersign" :key="item.id" class="truncate">{{ item.name }}</span>
+              <div class="truncate">
+                <span v-for="item in scope.row.countersign" :key="item.id">{{ item.name }},</span>
+              </div>
             </template>
           </el-table-column>
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column label="備註" prop="remark" sortable>
-          <el-table-column prop="remark" width="250">
+          <el-table-column prop="remark" show-overflow-tooltip>
             <template #header>
               <el-input placeholder="關鍵字" v-model="search.remark"></el-input>
             </template>
             <template #default="scope">
               <span v-if="scope.row.remark === ''">無</span>
-              <span v-else v-html="showDate(scope.row.remark)"></span>
+              <span v-else class="truncate" v-html="showDate(scope.row.remark)"></span>
             </template>
           </el-table-column>
         </el-table-column>
@@ -180,7 +196,7 @@
   <el-dialog title="選擇人員" draggable v-model="dialogVisible">
     <div class="flax space-x-4">
       <div class=""></div>
-      <el-table ref="multipleTable" :data="memberList" @select="select" @select-all="selectAll">
+      <el-table ref="multipleTable" :data="memberList" @selection-change="select">
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column label="編號" prop="id"></el-table-column>
         <el-table-column label="姓名" prop="name"></el-table-column>
@@ -198,11 +214,13 @@
 
 <script>
 // import memberDialog from "@/components/memberDialog";
+import memberListDialogEven from "@/components/memberListDialogEven";
 import { meetingList, userList } from "@/views/config/api";
 export default {
   name: "HomeView",
   components: {
     // memberDialog
+    memberListDialogEven,
   },
   created() {
     this.getApi();
@@ -256,6 +274,7 @@ export default {
       ], //簽核狀態選單
       dataList: [],
       memberList: [],
+      countersignEdit: false, //編輯會辦人員
       /** 表頭搜尋 */
       search: {
         type: "",
@@ -280,7 +299,6 @@ export default {
     getApi() {
       meetingList().then((res) => {
         this.dataList = res.data;
-        console.log(this.dataList);
       });
       userList().then((res) => {
         this.memberList = res.data;
@@ -364,13 +382,11 @@ export default {
         countersign: row.countersign,
       };*/
       this.editForm = row;
-
-      console.log(this.editForm);
     },
 
     // 會辦畫面選擇對象
-    select(rows) {
-      this.editForm.countersign = rows;
+    select(val) {
+      this.editForm.countersign = val;
     },
 
     // 會辦畫面全選對象
@@ -378,7 +394,28 @@ export default {
       this.editForm.countersign = rows;
     },
 
+    //編輯會辦切換
+    edit_countersign(index, row) {
+      this.countersignEdit = true;
+      console.log(row);
+    },
     // 送出確定會辦人員
+    save_countersign() {
+      let id = this.editForm.id;
+      let obj = this.editForm;
+      this.axios
+        .patch("http://localhost:3000/meetingList/" + `${id}`, obj)
+        .then((response) => {
+          this.editForm.id = response.data.id;
+          this.getApi();
+          this.dialogVisible = false;
+        })
+        .catch((error) => {
+          console.error("There was an error!", error);
+        });
+
+      this.countersignEdit = false;
+    },
     childClick() {
       let id = this.editForm.id;
       let obj = this.editForm;
@@ -425,7 +462,7 @@ export default {
       this.test = "";
     },
 
-    handerMethod({ row, column, rowIndex, columnIndex }) {
+    handerMethod({ row, columnIndex }) {
       if (row[0].level === 1) {
         row[8].colSpan = 2;
         row[9].colSpan = 0;
@@ -433,7 +470,6 @@ export default {
           return { display: "none" };
         }
       }
-      console.log(column, rowIndex);
     },
     // 搜尋高光
     showDate(val) {
@@ -584,6 +620,13 @@ export default {
       }
 
       // return this.dataList;
+    },
+  },
+  watch: {
+    multipleTable() {
+      this.$nextTick(() => {
+        this.$refs.multipleTable.toggleRowSelection(this.tables[0], true);
+      });
     },
   },
 };
