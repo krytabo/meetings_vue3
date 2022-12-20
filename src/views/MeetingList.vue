@@ -6,7 +6,7 @@
       <div class="title-before mb-5 flex border-b border-b-gray-300 pb-5">
         <div class="flex flex-1 space-x-2">
           <a-button type="primary" @click="add">新增會議記錄</a-button>
-          <a-button type="primary" @click="add">個人會辦</a-button>
+          <a-button type="primary">個人會辦</a-button>
           <a-button type="primary" status="success">匯出資料</a-button>
         </div>
         <div class="inline-block flex items-center space-x-4">
