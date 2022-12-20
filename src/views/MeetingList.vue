@@ -49,8 +49,8 @@
             </template>
           </el-table-column>
         </el-table-column>
-        <el-table-column label="會議日期" prop="date" align="center" sortable>
-          <el-table-column prop="date" align="center">
+        <el-table-column label="會議日期" prop="date" sortable>
+          <el-table-column prop="date">
             <template #header>
               <a-trigger trigger="click" :unmount-on-close="false">
                 <el-button class="w-full">日期搜尋</el-button>
@@ -67,8 +67,8 @@
             </template>
           </el-table-column>
         </el-table-column>
-        <el-table-column label="負責人員" prop="principal" align="center" sortable>
-          <el-table-column prop="principal" align="center">
+        <el-table-column label="負責人員" prop="principal" sortable>
+          <el-table-column prop="principal">
             <template #header>
               <el-input placeholder="關鍵字" v-model="search.principalName"></el-input>
             </template>
@@ -77,8 +77,8 @@
             </template>
           </el-table-column>
         </el-table-column>
-        <el-table-column label="部門" prop="chairman" align="center" sortable>
-          <el-table-column prop="chairman" align="center">
+        <el-table-column label="部門" prop="chairman" sortable>
+          <el-table-column prop="chairman">
             <template #header>
               <el-input placeholder="關鍵字" v-model="search.principalDepartment"></el-input>
             </template>
@@ -97,8 +97,8 @@
             </template>
           </el-table-column>
         </el-table-column>
-        <el-table-column label="簽核" prop="approvals" align="center" sortable>
-          <el-table-column prop="approvals" align="center">
+        <el-table-column label="簽核" prop="approvals" sortable>
+          <el-table-column prop="approvals" min-width="110">
             <template #header>
               <el-select v-model="search.approvals" size="mini" placeholder="請選擇" clearable>
                 <el-option v-for="item in approvalsSelect" :key="item.value" :label="item.value" :value="item.value"></el-option>
@@ -115,20 +115,20 @@
           </el-table-column>
         </el-table-column>
         <el-table-column label="會辦" prop="countersign">
-          <el-table-column show-overflow-tooltip min-width="120">
+          <el-table-column show-overflow-tooltip min-width="150">
             <!--<template #header>
               <a-button type="primary" status="success" v-show="countersignEdit === false" @click="countersignEdit = true">編輯</a-button>
               <a-button type="primary" status="success" v-show="countersignEdit === true" @click="save_countersign">存檔</a-button>
             </template>-->
             <template #default="scope">
-              <div class="flex space-x-3">
+              <div class="flex space-x-3 truncate">
                 <a-button type="primary" status="success" v-show="countersignEdit === false" @click="edit_countersign(scope.$index, scope.row)">編輯</a-button>
                 <a-button type="primary" status="success" v-show="countersignEdit === true" @click="save_countersign">存檔</a-button>
                 <!--<a-button type="primary" @click="sendCountersign(scope.row)">會辦人員</a-button>-->
                 <member-list-dialog-even v-if="countersignEdit === true" v-model="scope.row.countersign" :value="scope.row.countersign" disabled="false"></member-list-dialog-even>
                 <div v-else class="truncate">
-                  {{ scope.row.countersign }}
-                  <!--<span v-for="item in scope.row.countersign" :key="item.id">{{ item.name }},</span>-->
+                  <span v-for="item in scope.row.countersign" :key="item.id">{{ item.name }}</span>
+                  <!--<span>{{ scope.row.countersign.toString() }}</span>-->
                 </div>
               </div>
             </template>
@@ -194,7 +194,7 @@
     </div>
   </div>
   <el-dialog title="選擇人員" draggable v-model="dialogVisible">
-    <div class="flax space-x-4">
+    <div class="flax mb-5 space-x-4">
       <div class=""></div>
       <el-table ref="multipleTable" :data="memberList" @selection-change="select">
         <el-table-column type="selection" width="50"></el-table-column>
@@ -204,10 +204,13 @@
       </el-table>
     </div>
 
-    <el-input v-model="editForm.id"></el-input>
+    <!--<el-input v-model="editForm.id"></el-input>
     <el-input v-model="editForm.countersign"></el-input>
-    {{ editForm.countersign }}
-    <el-button @click="childClick">確定</el-button>
+    {{ editForm.countersign }}-->
+    <div class="flex w-full items-center justify-center space-x-2">
+      <a-button status="primary" @click="this.dialogVisible = false">取消</a-button>
+      <a-button type="primary" @click="childClick">確定</a-button>
+    </div>
   </el-dialog>
   <!--  <memberDialog v-model="dialogVisible" :inputName="test" v-on:childByValue="childByValue"></memberDialog>-->
 </template>
@@ -227,6 +230,45 @@ export default {
   },
   data() {
     return {
+      tableData: [
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-02",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-04",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-01",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-08",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-06",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-07",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+      ],
+      multipleSelection: [1, 2],
+
       editForm: {
         id: "",
         countersign: "",
@@ -368,36 +410,38 @@ export default {
     },*/
     sendCountersign(row) {
       this.dialogVisible = true;
-
-      /*patch_meetingList(row.id).then((obj) => {
-        this.editForm.countersign = obj.data.countersign;
-      });
-
-      this.editForm = {
-        countersign: row.countersign,
-      };*/
-
-      /* this.editForm = {
-        id: row.id,
-        countersign: row.countersign,
-      };*/
       this.editForm = row;
     },
 
     // 會辦畫面選擇對象
     select(val) {
+      /*for (let i = 0; i < val.length; i++) {
+        this.editForm.countersign[i] = val[i].name;
+      }*/
       this.editForm.countersign = val;
+      console.log(this.editForm.countersign);
     },
 
-    // 會辦畫面全選對象
-    selectAll(rows) {
-      this.editForm.countersign = rows;
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+      console.log(this.multipleSelection);
     },
 
-    //編輯會辦切換
+    //開啟會辦選擇視窗
     edit_countersign(index, row) {
-      this.countersignEdit = true;
-      console.log(row);
+      // this.countersignEdit = true;
+      this.dialogVisible = true;
+      this.editForm = row;
+
+      this.$nextTick(() => {
+        this.memberList.forEach((item) => {
+          this.editForm.countersign.forEach((subItem) => {
+            if (item.id === subItem) {
+              this.$refs.multipleTable.toggleRowSelection(item, true);
+            }
+          });
+        });
+      });
     },
     // 送出確定會辦人員
     save_countersign() {
@@ -419,22 +463,6 @@ export default {
     childClick() {
       let id = this.editForm.id;
       let obj = this.editForm;
-
-      /* patch_meetingList(id, obj).then((res) => {
-        console.log(res);
-        this.dataList.map((item) => {
-          if (item.id === id) {
-            item.countersign = this.editForm.countersign;
-
-            this.getApi();
-            this.dialogVisible = false;
-          }
-        });
-      });*/
-
-      // const obj = this.editForm;
-      // const id = this.editForm.id;
-
       this.axios
         .patch("http://localhost:3000/meetingList/" + `${id}`, obj)
         .then((response) => {
@@ -445,13 +473,6 @@ export default {
         .catch((error) => {
           console.error("There was an error!", error);
         });
-      /*if (rows) {
-        rows.forEach((row) => {
-          this.$refs.multipleTable.toggleRowSelection(row);
-        });
-      } else {
-        this.$refs.multipleTable.clearSelection();
-      }*/
     },
 
     // 套件送出會辦
@@ -539,18 +560,6 @@ export default {
   },
   computed: {
     // 搜尋
-    /*tables() {
-      const search = this.wholeSearch;
-      if (search) {
-        return this.dataList.filter((data) => {
-          return Object.keys(data).some((key) => {
-            return String(data[key]).toLowerCase().indexOf(search) > -1;
-          });
-        });
-      }
-      return this.dataList;
-    },*/
-
     tables() {
       const search = this.wholeSearch;
       const search2 = this.search.type;
@@ -622,13 +631,8 @@ export default {
       // return this.dataList;
     },
   },
-  watch: {
-    multipleTable() {
-      this.$nextTick(() => {
-        this.$refs.multipleTable.toggleRowSelection(this.tables[0], true);
-      });
-    },
-  },
+  watch: {},
+  mounted() {},
 };
 </script>
 <style lang="scss">

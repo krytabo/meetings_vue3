@@ -91,6 +91,7 @@ export default {
       let val = this.checkedDetail;
       this.$emit("update:modelValue", val);
       this.search = val;
+      // this.search = Array.from(val);
       this.$refs.visible.hide(); //關閉視窗
       // this.searchMember = "";
     },

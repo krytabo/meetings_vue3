@@ -27,7 +27,9 @@
       "theme": "會議主題1",
       "member": [
         "王大明",
-        "蔡先生"
+        "蔡先生",
+        "吳先生",
+        "張三"
       ],
       "approvals": "待送簽",
       "offer": 1,
@@ -105,11 +107,9 @@
             "name": "王大明"
           },
           "date": "2021-12-14",
-          "member": {
-            "id": "t0095",
-            "department": "建一部2",
-            "name": "王大明"
-          },
+          "member": [
+            "蔡先生"
+          ],
           "accessory": "",
           "edit": false
         }
@@ -119,8 +119,11 @@
         "建材樣品"
       ],
       "countersign": [
-        "王大明",
-        "蔡先生"
+        {
+          "id": "t0095",
+          "department": "建一部",
+          "name": "王大明"
+        }
       ]
     },
     {
@@ -203,14 +206,19 @@
       ],
       "countersign": [
         {
-          "id": "t0095",
-          "department": "建一部",
-          "name": "王大明"
-        },
-        {
           "id": "t0096",
           "department": "建二部",
           "name": "蔡先生"
+        },
+        {
+          "id": "t0097",
+          "department": "建三部",
+          "name": "吳先生"
+        },
+        {
+          "id": "t0095",
+          "department": "建一部",
+          "name": "王大明"
         }
       ]
     },
@@ -286,9 +294,9 @@
       ],
       "countersign": [
         {
-          "id": "t0098",
-          "department": "建四部",
-          "name": "張三"
+          "id": "t0097",
+          "department": "建三部",
+          "name": "吳先生"
         }
       ]
     },
@@ -385,11 +393,6 @@
           "id": "t0097",
           "department": "建三部",
           "name": "吳先生"
-        },
-        {
-          "id": "t0098",
-          "department": "建四部",
-          "name": "張三"
         }
       ]
     },
@@ -465,9 +468,9 @@
       ],
       "countersign": [
         {
-          "id": "t0096",
-          "department": "建二部",
-          "name": "蔡先生"
+          "id": "t0095",
+          "department": "建一部",
+          "name": "王大明"
         },
         {
           "id": "t0097",
@@ -545,7 +548,8 @@
           "accessory": "",
           "edit": false
         }
-      ]
+      ],
+      "countersign": []
     },
     {
       "finish": true,
@@ -616,7 +620,8 @@
           "accessory": "",
           "edit": false
         }
-      ]
+      ],
+      "countersign": []
     },
     {
       "finish": true,
@@ -687,7 +692,8 @@
           "accessory": "",
           "edit": false
         }
-      ]
+      ],
+      "countersign": []
     },
     {
       "finish": true,
@@ -758,7 +764,8 @@
           "accessory": "",
           "edit": false
         }
-      ]
+      ],
+      "countersign": []
     },
     {
       "finish": false,
@@ -830,20 +837,8 @@
           "edit": false
         }
       ],
-      "remark": ""
-    },
-    {
-      "id": "10",
-      "countersign": [
-        {
-          "id": "t0098",
-          "department": "建四部",
-          "name": "張三"
-        }
-      ]
-    },
-    {
-      "id": "11"
+      "remark": "",
+      "countersign": []
     }
   ],
   "toDoList": [
@@ -859,7 +854,7 @@
       "meetingList": "用Checklist檢討103-03排水圖",
       "date": "2022-04-20",
       "doneDate": "2022-04-29",
-      "status": "未完成",
+      "status": "未到期",
       "defer": "03",
       "KPIOption": false,
       "KPI": "",
@@ -902,7 +897,7 @@
       "meetingList": "合約報價修改",
       "date": "2022-04-13",
       "doneDate": "2022-04-28",
-      "status": "未完成",
+      "status": "未到期",
       "defer": "03",
       "KPIOption": true,
       "KPI": "+2",
@@ -934,12 +929,13 @@
       "projectNo": "MYN2D",
       "principal": "蔡先生",
       "principalCommit": "",
+      "un_doneDate": "",
       "principalDone": false,
       "department": "建二部",
       "meetingList": "相關法律規範確認",
       "date": "2022-04-10",
       "doneDate": "2022-04-10",
-      "status": "已完成",
+      "status": "逾時未完成",
       "defer": "03",
       "KPIOption": true,
       "KPI": "-5",
@@ -990,12 +986,13 @@
       "projectNo": "A21033",
       "principal": "李四",
       "principalCommit": "",
+      "un_doneDate": "",
       "principalDone": false,
       "department": "行政部",
       "meetingList": "設計圖修改",
       "date": "2022-04-08",
       "doneDate": "2022-04-29",
-      "status": "已完成",
+      "status": "逾時未完成",
       "defer": "03",
       "KPIOption": false,
       "KPI": "",
@@ -1027,6 +1024,7 @@
       "projectNo": "MYN2D",
       "principal": "蔡先生",
       "principalCommit": "",
+      "un_doneDate": "",
       "principalDone": false,
       "department": "建二部",
       "meetingList": "設計圖修改",
@@ -1064,6 +1062,7 @@
       "projectNo": "MYN2D",
       "principal": "吳先生",
       "principalCommit": "",
+      "un_doneDate": "",
       "principalDone": false,
       "department": "建二部",
       "meetingList": "設計圖修改",
@@ -1101,6 +1100,7 @@
       "projectNo": "MYN2D",
       "principal": "吳先生",
       "principalCommit": "",
+      "un_doneDate": "",
       "principalDone": false,
       "department": "建二部",
       "meetingList": "設計圖修改",

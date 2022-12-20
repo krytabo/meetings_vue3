@@ -196,6 +196,7 @@
             <template #default="scope">
               <member-list-dialog-even v-if="scope.row.edit === true" v-model="scope.row.member" :value="scope.row.member.name" disabled="false"></member-list-dialog-even>
               <span v-else class="truncate">{{ scope.row.member.toString() }}</span>
+              <!--<span v-else class="truncate">{{ scope.row.member }}</span>-->
             </template>
           </el-table-column>
           <el-table-column prop="accessory" label="附件" show-overflow-tooltip>
