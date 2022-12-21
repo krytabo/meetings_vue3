@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const dataList = axios.create({
-  baseURL: "https://mock.apifox.cn/m1/2093908-0-default",
+  baseURL: "http://localhost:3000",
 });
 
 export const userList = () => dataList.get("/memberList");

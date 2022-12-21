@@ -1,0 +1,842 @@
+[
+  {
+    "finish": false,
+    "id": 0,
+    "principal": {
+      "id": "t0095",
+      "department": "建一部2",
+      "name": "王大明"
+    },
+    "type": "專案",
+    "name": "A18002-公共工程投標案",
+    "textarea": "",
+    "chairman": {
+      "id": "t0096",
+      "department": "建二部",
+      "name": "蔡先生"
+    },
+    "record": {
+      "id": "t0096",
+      "department": "建二部",
+      "name": "蔡先生"
+    },
+    "date": "2021-12-14",
+    "time": "10:34",
+    "endTime": "",
+    "theme": "會議主題1",
+    "member": [
+      "王大明",
+      "蔡先生",
+      "吳先生",
+      "張三"
+    ],
+    "approvals": "待送簽",
+    "offer": 1,
+    "remark": "下次開會再繼續討論2",
+    "accessory": [
+      {
+        "id": 4,
+        "accessoryLabel": "建材樣品",
+        "accessoryNo": "平面圖"
+      },
+      {
+        "id": 1,
+        "accessoryLabel": "文件",
+        "accessoryNo": ""
+      },
+      {
+        "id": 4,
+        "accessoryLabel": "建材樣品",
+        "accessoryNo": "平面圖"
+      }
+    ],
+    "fileList": [
+      {
+        "uid": "16696184192050",
+        "file": {},
+        "url": "blob:http://localhost:8081/2d8601f7-c653-4c56-a53d-f7a367448686",
+        "name": "IMG_CC2CD4C85C6B-1.jpeg",
+        "status": "done",
+        "percent": 1,
+        "response": {
+          "id": 12
+        }
+      },
+      {
+        "uid": "16696184192051",
+        "file": {},
+        "url": "blob:http://localhost:8081/1dfb54bb-8f5c-43ef-971a-4c87913839b1",
+        "name": "Frame 427318899.jpg",
+        "status": "done",
+        "percent": 1,
+        "response": {
+          "id": 13
+        }
+      }
+    ],
+    "detailList": [
+      {
+        "id": 1,
+        "content": "5/11召開會議",
+        "number": "aaaa-11234567-234",
+        "conclusion": "待辦",
+        "name": "A18002-公共工程投標案",
+        "principal": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "date": "2021-12-14",
+        "member": [
+          "王大明",
+          "蔡先生"
+        ],
+        "accessory": "",
+        "edit": false
+      },
+      {
+        "id": 2,
+        "content": "會議議程:代碼編碼原則確認",
+        "number": "aaaa-11234567-234",
+        "conclusion": "待辦",
+        "name": "A18002-公共工程投標案",
+        "principal": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "date": "2021-12-14",
+        "member": [
+          "蔡先生"
+        ],
+        "accessory": "",
+        "edit": false
+      }
+    ],
+    "rulesId": [
+      "文件",
+      "建材樣品"
+    ],
+    "countersign": [
+      {
+        "id": "t0096",
+        "department": "建二部",
+        "name": "蔡先生"
+      }
+    ]
+  },
+  {
+    "finish": true,
+    "id": 1,
+    "principal": {
+      "id": "t0097",
+      "department": "建三部",
+      "name": "吳先生"
+    },
+    "type": "專案",
+    "name": "A20003-台中市捷運工程",
+    "textarea": "",
+    "chairman": {
+      "id": "t0096",
+      "department": "建二部",
+      "name": "蔡先生"
+    },
+    "record": {
+      "id": "t0096",
+      "department": "建二部",
+      "name": "蔡先生"
+    },
+    "date": "2021-12-14",
+    "time": "10:34",
+    "endTime": "14:33",
+    "theme": "會議主題2",
+    "member": [
+      "王大明",
+      "蔡先生",
+      "吳先生",
+      "張三"
+    ],
+    "approvals": "待送簽",
+    "offer": 0,
+    "remark": "",
+    "accessory": [],
+    "fileList": [],
+    "detailList": [
+      {
+        "id": 1,
+        "content": "5/11召開會議",
+        "number": "aaaa-11234567-234",
+        "conclusion": "待辦",
+        "name": "A18002-公共工程投標案",
+        "principal": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "date": "2021-12-14",
+        "member": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "accessory": "",
+        "edit": false
+      },
+      {
+        "id": 2,
+        "content": "會議議程:代碼編碼原則確認",
+        "number": "aaaa-11234567-234",
+        "conclusion": "待辦",
+        "name": "A18002-公共工程投標案",
+        "principal": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "date": "2021-12-14",
+        "member": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "accessory": "",
+        "edit": false
+      }
+    ],
+    "countersign": [
+      {
+        "id": "t0096",
+        "department": "建二部",
+        "name": "蔡先生"
+      },
+      {
+        "id": "t0097",
+        "department": "建三部",
+        "name": "吳先生"
+      },
+      {
+        "id": "t0095",
+        "department": "建一部",
+        "name": "王大明"
+      }
+    ]
+  },
+  {
+    "finish": true,
+    "id": 2,
+    "principal": {
+      "id": "t0095",
+      "department": "建一部2",
+      "name": "王大明"
+    },
+    "type": "例行性會議",
+    "name": "RD1330-部門會議",
+    "textarea": "",
+    "chairman": "吳先生",
+    "record": "李先生",
+    "date": "2021-12-13",
+    "time": "10:34",
+    "endTime": "14:33",
+    "theme": "會議主題3",
+    "member": [
+      "王大明",
+      "蔡先生",
+      "吳先生",
+      "張三"
+    ],
+    "approvals": "待送簽",
+    "offer": 0,
+    "remark": "",
+    "accessory": [],
+    "fileList": [],
+    "detailList": [
+      {
+        "id": 1,
+        "content": "5/11召開會議",
+        "number": "aaaa-11234567-234",
+        "conclusion": "待辦",
+        "name": "A18002-公共工程投標案",
+        "principal": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "date": "2021-12-14",
+        "member": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "accessory": "",
+        "edit": false
+      },
+      {
+        "id": 2,
+        "content": "會議議程:代碼編碼原則確認",
+        "number": "aaaa-11234567-234",
+        "conclusion": "待辦",
+        "name": "A18002-公共工程投標案",
+        "principal": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "date": "2021-12-14",
+        "member": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "accessory": "",
+        "edit": false
+      }
+    ],
+    "countersign": [
+      {
+        "id": "t0097",
+        "department": "建三部",
+        "name": "吳先生"
+      }
+    ]
+  },
+  {
+    "finish": true,
+    "id": 3,
+    "principal": {
+      "id": "t0096",
+      "department": "建二部",
+      "name": "蔡先生"
+    },
+    "type": "建築行政",
+    "name": "MYN2D/-室內",
+    "textarea": "",
+    "chairman": {
+      "id": "t0098",
+      "department": "建四部",
+      "name": "張三"
+    },
+    "record": {
+      "id": "t0098",
+      "department": "建四部",
+      "name": "張三"
+    },
+    "date": "2021-12-10",
+    "time": "10:34",
+    "endTime": "14:33",
+    "theme": "會議主題4",
+    "member": [
+      "王大明",
+      "蔡先生",
+      "吳先生",
+      "張三"
+    ],
+    "approvals": "待送簽",
+    "offer": 0,
+    "remark": "",
+    "accessory": [],
+    "fileList": [],
+    "detailList": [
+      {
+        "id": 1,
+        "content": "5/11召開會議",
+        "number": "aaaa-11234567-234",
+        "conclusion": "待辦",
+        "name": "A18002-公共工程投標案",
+        "principal": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "date": "2021-12-14",
+        "member": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "accessory": "",
+        "edit": false
+      },
+      {
+        "id": 2,
+        "content": "會議議程:代碼編碼原則確認",
+        "number": "aaaa-11234567-234",
+        "conclusion": "待辦",
+        "name": "A18002-公共工程投標案",
+        "principal": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "date": "2021-12-14",
+        "member": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "accessory": "",
+        "edit": false
+      }
+    ],
+    "countersign": [
+      {
+        "id": "t0095",
+        "department": "建一部",
+        "name": "王大明"
+      },
+      {
+        "id": "t0096",
+        "department": "建二部",
+        "name": "蔡先生"
+      },
+      {
+        "id": "t0097",
+        "department": "建三部",
+        "name": "吳先生"
+      }
+    ]
+  },
+  {
+    "finish": true,
+    "id": 4,
+    "principal": {
+      "id": "t0095",
+      "department": "建一部2",
+      "name": "王大明"
+    },
+    "type": "一般行政",
+    "name": "GYN06/-財務會計",
+    "textarea": "",
+    "chairman": "張三",
+    "record": "李先生",
+    "date": "2021-12-10",
+    "time": "10:34",
+    "endTime": "14:33",
+    "theme": "會議主題5",
+    "member": [
+      "王大明",
+      "蔡先生",
+      "吳先生",
+      "張三"
+    ],
+    "approvals": "待簽核",
+    "offer": 0,
+    "remark": "",
+    "accessory": [],
+    "fileList": [],
+    "detailList": [
+      {
+        "id": 1,
+        "content": "5/11召開會議",
+        "number": "aaaa-11234567-234",
+        "conclusion": "待辦",
+        "name": "A18002-公共工程投標案",
+        "principal": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "date": "2021-12-14",
+        "member": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "accessory": "",
+        "edit": false
+      },
+      {
+        "id": 2,
+        "content": "會議議程:代碼編碼原則確認",
+        "number": "aaaa-11234567-234",
+        "conclusion": "待辦",
+        "name": "A18002-公共工程投標案",
+        "principal": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "date": "2021-12-14",
+        "member": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "accessory": "",
+        "edit": false
+      }
+    ],
+    "countersign": [
+      {
+        "id": "t0095",
+        "department": "建一部",
+        "name": "王大明"
+      },
+      {
+        "id": "t0097",
+        "department": "建三部",
+        "name": "吳先生"
+      }
+    ]
+  },
+  {
+    "finish": true,
+    "id": 5,
+    "principal": {
+      "id": "t0097",
+      "department": "建三部",
+      "name": "吳先生"
+    },
+    "type": "建築行政",
+    "name": "MYN2D/-室內",
+    "textarea": "",
+    "chairman": "林小明",
+    "record": "李先生",
+    "date": "2021-12-03",
+    "time": "10:34",
+    "endTime": "14:33",
+    "theme": "會議主題6",
+    "member": [
+      "王大明",
+      "蔡先生",
+      "吳先生",
+      "張三"
+    ],
+    "approvals": "待簽核",
+    "offer": 0,
+    "remark": "",
+    "accessory": [],
+    "fileList": [],
+    "detailList": [
+      {
+        "id": 1,
+        "content": "5/11召開會議",
+        "number": "aaaa-11234567-234",
+        "conclusion": "待辦",
+        "name": "A18002-公共工程投標案",
+        "principal": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "date": "2021-12-14",
+        "member": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "accessory": "",
+        "edit": false
+      },
+      {
+        "id": 2,
+        "content": "會議議程:代碼編碼原則確認",
+        "number": "aaaa-11234567-234",
+        "conclusion": "待辦",
+        "name": "A18002-公共工程投標案",
+        "principal": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "date": "2021-12-14",
+        "member": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "accessory": "",
+        "edit": false
+      }
+    ],
+    "countersign": []
+  },
+  {
+    "finish": true,
+    "id": 6,
+    "principal": {
+      "id": "t0096",
+      "department": "建二部",
+      "name": "蔡先生"
+    },
+    "type": "專案",
+    "name": "A18002-公共工程投標案",
+    "textarea": "",
+    "chairman": "王大明",
+    "record": "王大明",
+    "date": "2022-10-12",
+    "time": "10:34",
+    "endTime": "14:33",
+    "theme": "dfsdffsdff",
+    "member": [
+      "張三",
+      "吳先生",
+      "蔡先生",
+      "測試人員"
+    ],
+    "approvals": "已簽核",
+    "offer": 1,
+    "remark": "",
+    "accessory": [],
+    "fileList": [],
+    "detailList": [
+      {
+        "id": 1,
+        "content": "5/11召開會議",
+        "number": "aaaa-11234567-234",
+        "conclusion": "待辦",
+        "name": "A18002-公共工程投標案",
+        "principal": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "date": "2021-12-14",
+        "member": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "accessory": "",
+        "edit": false
+      },
+      {
+        "id": 2,
+        "content": "會議議程:代碼編碼原則確認",
+        "number": "aaaa-11234567-234",
+        "conclusion": "待辦",
+        "name": "A18002-公共工程投標案",
+        "principal": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "date": "2021-12-14",
+        "member": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "accessory": "",
+        "edit": false
+      }
+    ],
+    "countersign": []
+  },
+  {
+    "finish": true,
+    "id": 7,
+    "principal": {
+      "id": "t0095",
+      "department": "建一部2",
+      "name": "王大明"
+    },
+    "type": "專案",
+    "name": "A18002-公共工程投標案",
+    "textarea": "",
+    "chairman": "王大明",
+    "record": "王大明",
+    "date": "2022-10-18",
+    "time": "10:34",
+    "endTime": "14:33",
+    "theme": "年終會議",
+    "member": [
+      "王大明",
+      "蔡先生",
+      "吳先生",
+      "其他人員"
+    ],
+    "approvals": "已簽核",
+    "offer": 0,
+    "remark": "",
+    "accessory": [],
+    "fileList": [],
+    "detailList": [
+      {
+        "id": 1,
+        "content": "5/11召開會議",
+        "number": "aaaa-11234567-234",
+        "conclusion": "待辦",
+        "name": "A18002-公共工程投標案",
+        "principal": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "date": "2021-12-14",
+        "member": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "accessory": "",
+        "edit": false
+      },
+      {
+        "id": 2,
+        "content": "會議議程:代碼編碼原則確認",
+        "number": "aaaa-11234567-234",
+        "conclusion": "待辦",
+        "name": "A18002-公共工程投標案",
+        "principal": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "date": "2021-12-14",
+        "member": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "accessory": "",
+        "edit": false
+      }
+    ],
+    "countersign": []
+  },
+  {
+    "finish": true,
+    "id": 8,
+    "principal": {
+      "id": "t0095",
+      "department": "建一部2",
+      "name": "王大明"
+    },
+    "type": "專案",
+    "name": "A18002-公共工程投標案",
+    "textarea": "",
+    "chairman": "王大明",
+    "record": "王大明",
+    "date": "2022-10-11",
+    "time": "10:34",
+    "endTime": "14:33",
+    "theme": "會議主題",
+    "member": [
+      "吳先生",
+      "張三",
+      "其他人員",
+      "外部人員"
+    ],
+    "approvals": "已簽核",
+    "offer": 0,
+    "remark": "",
+    "accessory": [],
+    "fileList": [],
+    "detailList": [
+      {
+        "id": 1,
+        "content": "5/11召開會議",
+        "number": "aaaa-11234567-234",
+        "conclusion": "待辦",
+        "name": "A18002-公共工程投標案",
+        "principal": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "date": "2021-12-14",
+        "member": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "accessory": "",
+        "edit": false
+      },
+      {
+        "id": 2,
+        "content": "會議議程:代碼編碼原則確認",
+        "number": "aaaa-11234567-234",
+        "conclusion": "待辦",
+        "name": "A18002-公共工程投標案",
+        "principal": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "date": "2021-12-14",
+        "member": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "accessory": "",
+        "edit": false
+      }
+    ],
+    "countersign": []
+  },
+  {
+    "finish": false,
+    "id": 9,
+    "principal": {
+      "id": "t0095",
+      "department": "建一部2",
+      "name": "王大明"
+    },
+    "type": "",
+    "name": "全部",
+    "textarea": "",
+    "chairman": {
+      "id": "t0095",
+      "department": "建一部2",
+      "name": "王大明"
+    },
+    "record": {
+      "id": "t0095",
+      "department": "建一部2",
+      "name": "王大明"
+    },
+    "date": "2022-11-28",
+    "time": "14:21",
+    "endTime": "",
+    "theme": "會議主題",
+    "member": [
+      "外部人員"
+    ],
+    "approvals": "待簽核",
+    "offer": 1,
+    "accessory": [],
+    "fileList": [
+      {
+        "uid": "16696165870680",
+        "file": {},
+        "url": "blob:http://localhost:8081/5784bce4-b76a-4ce5-99ac-1759b2150a41",
+        "name": "Frame 427318899.jpg",
+        "status": "error",
+        "percent": 0,
+        "response": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<title>Error</title>\n</head>\n<body>\n<pre>Cannot POST /</pre>\n</body>\n</html>\n"
+      }
+    ],
+    "detailList": [
+      {
+        "content": "測試第一筆",
+        "number": "",
+        "conclusion": "待辦",
+        "name": "",
+        "principal": "",
+        "date": "2022-12-05",
+        "member": "",
+        "accessory": "",
+        "edit": false
+      },
+      {
+        "content": "用Checklist檢討103-03排水圖",
+        "number": "",
+        "conclusion": "待辦",
+        "name": "全部",
+        "principal": {
+          "id": "t0095",
+          "department": "建一部2",
+          "name": "王大明"
+        },
+        "date": "2022-12-05",
+        "member": "",
+        "accessory": "",
+        "edit": false
+      }
+    ],
+    "remark": "",
+    "countersign": []
+  }
+]

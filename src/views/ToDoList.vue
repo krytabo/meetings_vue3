@@ -573,8 +573,8 @@
                   </template>
                 </el-table-column>
               </el-table-column>-->
-              <el-table-column fixed prop="projectNo" label="專案編碼" width="150" sortable align="center">
-                <el-table-column prop="projectNo" label="專案編碼" width="150" align="center">
+              <el-table-column fixed prop="projectNo" label="專案編碼" sortable>
+                <el-table-column prop="projectNo" label="專案編碼" show-overflow-tooltip>
                   <template #header>
                     <el-input v-model="search.projectNo" size="mini" placeholder="關鍵字" />
                   </template>
@@ -583,8 +583,8 @@
                   </template>
                 </el-table-column>
               </el-table-column>
-              <el-table-column fixed prop="meetingList" label="內容" min-width="240" sortable>
-                <el-table-column prop="meetingList" label="內容" min-width="240">
+              <el-table-column fixed prop="meetingList" label="內容" sortable>
+                <el-table-column prop="meetingList" label="內容" show-overflow-tooltip>
                   <template #header>
                     <el-input v-model="search.meetingList" size="mini" placeholder="關鍵字" />
                   </template>
@@ -593,9 +593,9 @@
                   </template>
                 </el-table-column>
               </el-table-column>
-              <el-table-column prop="principal" label="負責人" width="200" align="center">
+              <el-table-column prop="principal" label="負責人">
                 <!--<el-table-column prop="principal" label="負責人" width="100" :filtered-value="filteredVal" :filters="personSelect" :filter-method="filterHandler" :filter-multiple="false">-->
-                <el-table-column label="負責人" width="200">
+                <el-table-column label="負責人" show-overflow-tooltip>
                   <template #header>
                     <el-select v-model="search.principal" size="mini" placeholder="請選擇" clearable>
                       <el-option v-for="item in personSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -606,8 +606,8 @@
                   </template>
                 </el-table-column>
               </el-table-column>
-              <el-table-column prop="department" label="部門" width="150" sortable align="center">
-                <el-table-column prop="department" label="部門" width="150" align="center">
+              <el-table-column prop="department" label="部門" sortable>
+                <el-table-column prop="department" label="部門" min-width="150" show-overflow-tooltip>
                   <template #header>
                     <el-select v-model="search.department" size="mini" placeholder="請選擇" clearable>
                       <el-option v-for="item in headerSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -619,7 +619,7 @@
                 </el-table-column>
               </el-table-column>
               <el-table-column prop="date" label="待辦發生日期" sortable>
-                <el-table-column prop="date" width="150">
+                <el-table-column prop="date" width="150" show-overflow-tooltip>
                   <template #header>
                     <a-trigger trigger="click" :unmount-on-close="false">
                       <el-button class="w-full">日期搜尋</el-button>
@@ -637,7 +637,7 @@
                 </el-table-column>
               </el-table-column>
               <el-table-column prop="doneDate" label="預計完成日期" sortable>
-                <el-table-column prop="doneDate" width="150">
+                <el-table-column prop="doneDate" width="150" show-overflow-tooltip>
                   <template #header>
                     <a-trigger trigger="click" :unmount-on-close="false">
                       <el-button class="w-full">日期搜尋</el-button>
@@ -654,8 +654,8 @@
                   </template>
                 </el-table-column>
               </el-table-column>
-              <el-table-column prop="status" label="執行狀態" width="150" sortable align="center">
-                <el-table-column prop="status" width="150">
+              <el-table-column prop="status" label="執行狀態" sortable>
+                <el-table-column prop="status" min-width="150" show-overflow-tooltip>
                   <template #header>
                     <el-select v-model="search.status" size="mini" placeholder="請選擇" clearable>
                       <el-option v-for="item in statusSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -666,8 +666,8 @@
                   </template>
                 </el-table-column>
               </el-table-column>
-              <el-table-column prop="signedStatus" label="簽核狀態" width="150" sortable align="center">
-                <el-table-column prop="signedStatus" width="150">
+              <el-table-column prop="signedStatus" label="簽核狀態" sortable>
+                <el-table-column prop="signedStatus" min-width="200" show-overflow-tooltip>
                   <template #header>
                     <el-select v-model="search.signedStatus" size="mini" placeholder="請選擇" clearable>
                       <el-option v-for="item in auditStatusSelect" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -692,8 +692,8 @@
                   </template>
                 </el-table-column>
               </el-table-column>
-              <el-table-column prop="defer" label="遞延次數" width="120" sortable align="center">
-                <el-table-column prop="defer" width="120" align="center">
+              <el-table-column prop="defer" label="遞延次數" sortable>
+                <el-table-column prop="defer" width="120" show-overflow-tooltip>
                   <template #header>
                     <el-input v-model="search.defer" size="mini" placeholder="關鍵字"></el-input>
                   </template>
@@ -702,8 +702,8 @@
                   </template>
                 </el-table-column>
               </el-table-column>
-              <el-table-column prop="KPI" label="KPI" width="100" sortable align="center">
-                <el-table-column prop="KPI" width="100" align="center">
+              <el-table-column prop="KPI" label="KPI" sortable>
+                <el-table-column prop="KPI" width="100" show-overflow-tooltip>
                   <template #header>
                     <el-input v-model="search.KPI" size="mini" placeholder="關鍵字"></el-input>
                   </template>
@@ -712,7 +712,7 @@
                   </template>
                 </el-table-column>
               </el-table-column>
-              <el-table-column prop="transfer" label="移轉紀錄" width="150" sortable align="center">
+              <el-table-column prop="transfer" label="移轉紀錄" width="150" sortable show-overflow-tooltip>
                 <template #default="scope">
                   <span v-if="scope.row.transfer.length === 0"></span>
                   <a-trigger v-else trigger="click">
@@ -738,7 +738,7 @@
                   </a-trigger>
                 </template>
               </el-table-column>
-              <el-table-column label="會議記錄" width="100" align="center" fixed="right">
+              <el-table-column label="會議記錄" width="100" fixed="right">
                 <template #default="scope">
                   <a-button @click="Edit_PricingList(scope.$index, scope.row)" type="primary" status="success" size="small">檢視</a-button>
                 </template>
