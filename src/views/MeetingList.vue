@@ -16,7 +16,7 @@
       </div>
 
       <!--表格-->
-      <el-table :data="tables.slice((currentPage - 1) * pageSize, currentPage * pageSize)" ref="multipleTable" style="width: 100%">
+      <el-table :data="tables.slice((currentPage - 1) * pageSize, currentPage * pageSize)" ref="multipleTable" :header-cell-style="handerMethod">
         <el-table-column label="類型" prop="type" sortable>
           <el-table-column prop="type">
             <template #header>
@@ -115,26 +115,13 @@
           </el-table-column>
         </el-table-column>
         <el-table-column label="會辦" prop="countersign">
-          <el-table-column show-overflow-tooltip min-width="150">
-            <!--<template #header>
-              <a-button type="primary" status="success" v-show="countersignEdit === false" @click="countersignEdit = true">編輯</a-button>
-              <a-button type="primary" status="success" v-show="countersignEdit === true" @click="save_countersign">存檔</a-button>
-            </template>-->
+          <el-table-column show-overflow-tooltip min-width="40">
             <template #default="scope">
-              <div class="flex space-x-3 truncate">
-                <a-button type="primary" status="success" v-show="countersignEdit === false" @click="edit_countersign(scope.$index, scope.row)">編輯</a-button>
-                <a-button type="primary" status="success" v-show="countersignEdit === true" @click="save_countersign">存檔</a-button>
-                <!--<a-button type="primary" @click="sendCountersign(scope.row)">會辦人員</a-button>-->
-                <member-list-dialog-even v-if="countersignEdit === true" v-model="scope.row.countersign" :value="scope.row.countersign" disabled="false"></member-list-dialog-even>
-                <div v-else class="truncate">
-                  <span v-for="item in scope.row.countersign" :key="item.id">{{ item.name }}</span>
-                  <!--<span>{{ scope.row.countersign.toString() }}</span>-->
-                </div>
-              </div>
+              <a-button type="primary" status="success" v-show="countersignEdit === false" @click="edit_countersign(scope.$index, scope.row)">編輯</a-button>
             </template>
           </el-table-column>
         </el-table-column>
-        <!--<el-table-column label="會辦人員" prop="countersign">
+        <el-table-column label="會辦人員" prop="countersign">
           <el-table-column prop="countersign" width="130" show-overflow-tooltip>
             <template #default="scope">
               <div class="truncate">
@@ -142,7 +129,7 @@
               </div>
             </template>
           </el-table-column>
-        </el-table-column>-->
+        </el-table-column>
         <el-table-column label="備註" prop="remark" sortable>
           <el-table-column prop="remark" show-overflow-tooltip>
             <template #header>
@@ -193,10 +180,10 @@
       ></el-pagination>
     </div>
   </div>
-  <el-dialog title="選擇人員" draggable v-model="dialogVisible">
+
+  <el-dialog title="選擇人員" draggable v-model="dialogVisible" :show-close="false">
     <div class="flax mb-5 space-x-4">
-      <div class=""></div>
-      <el-table ref="multipleTable" :data="memberList" @selection-change="select">
+      <el-table ref="multipleTables" :data="memberList" @selection-change="select">
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column label="編號" prop="id"></el-table-column>
         <el-table-column label="姓名" prop="name"></el-table-column>
@@ -204,75 +191,31 @@
       </el-table>
     </div>
 
-    <!--<el-input v-model="editForm.id"></el-input>
-    <el-input v-model="editForm.countersign"></el-input>
-    {{ editForm.countersign }}-->
     <div class="flex w-full items-center justify-center space-x-2">
-      <a-button status="primary" @click="this.dialogVisible = false">取消</a-button>
+      <a-button status="primary" @click="memberListDialog_Cance">取消</a-button>
       <a-button type="primary" @click="childClick">確定</a-button>
     </div>
   </el-dialog>
-  <!--  <memberDialog v-model="dialogVisible" :inputName="test" v-on:childByValue="childByValue"></memberDialog>-->
+  <!--<memberDialog v-model="dialogVisible"></memberDialog>-->
 </template>
 
 <script>
 // import memberDialog from "@/components/memberDialog";
-import memberListDialogEven from "@/components/memberListDialogEven";
 import { meetingList, userList } from "@/views/config/api";
 export default {
   name: "HomeView",
   components: {
-    // memberDialog
-    memberListDialogEven,
+    // memberDialog,
   },
   created() {
     this.getApi();
   },
   data() {
     return {
-      tableData: [
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-08",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-06",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-      ],
-      multipleSelection: [1, 2],
-
       editForm: {
         id: "",
         countersign: "",
-      },
+      }, //選擇員工待存區
       searchText: "",
       inputContent: "",
       dialogVisible: false,
@@ -334,9 +277,6 @@ export default {
     };
   },
   methods: {
-    getMember(val) {
-      this.memberSearch = val;
-    },
     // 獲取API
     getApi() {
       meetingList().then((res) => {
@@ -402,64 +342,27 @@ export default {
     },
 
     /** 會辦 */
-    // 會辦人員按鈕
-    /*sendCountersign(row) {
-      this.dialogVisible = true;
-      this.editForm = Object.assign({}, row);
-      console.log(row);
-    },*/
-    sendCountersign(row) {
-      this.dialogVisible = true;
-      this.editForm = row;
-    },
-
     // 會辦畫面選擇對象
     select(val) {
-      /*for (let i = 0; i < val.length; i++) {
-        this.editForm.countersign[i] = val[i].name;
-      }*/
       this.editForm.countersign = val;
-      console.log(this.editForm.countersign);
     },
-
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
-      console.log(this.multipleSelection);
-    },
-
     //開啟會辦選擇視窗
     edit_countersign(index, row) {
-      // this.countersignEdit = true;
       this.dialogVisible = true;
-      this.editForm = row;
+      this.editForm = JSON.parse(JSON.stringify(row));
 
+      // el-table的checkbox預設勾選
       this.$nextTick(() => {
-        this.memberList.forEach((item) => {
-          this.editForm.countersign.forEach((subItem) => {
-            if (item.id === subItem) {
-              this.$refs.multipleTable.toggleRowSelection(item, true);
+        this.editForm.countersign.forEach((item) => {
+          this.memberList.forEach((subItem) => {
+            if (item.id === subItem.id) {
+              this.$refs.multipleTables.toggleRowSelection(subItem, true);
             }
           });
         });
       });
     },
     // 送出確定會辦人員
-    save_countersign() {
-      let id = this.editForm.id;
-      let obj = this.editForm;
-      this.axios
-        .patch("http://localhost:3000/meetingList/" + `${id}`, obj)
-        .then((response) => {
-          this.editForm.id = response.data.id;
-          this.getApi();
-          this.dialogVisible = false;
-        })
-        .catch((error) => {
-          console.error("There was an error!", error);
-        });
-
-      this.countersignEdit = false;
-    },
     childClick() {
       let id = this.editForm.id;
       let obj = this.editForm;
@@ -474,15 +377,18 @@ export default {
           console.error("There was an error!", error);
         });
     },
-
-    // 套件送出會辦
-    childByValue(childValue) {
-      // this.inputContent = childValue;
-      this.dataList.countersign = childValue;
+    //取消
+    memberListDialog_Cance() {
       this.dialogVisible = false;
-      this.test = "";
+      this.$nextTick(() => {
+        this.editForm.countersign.forEach((item) => {
+          this.$refs.multipleTables.toggleRowSelection(item, false);
+        });
+      });
     },
 
+    /** 會議記錄總表 */
+    //會議記錄總表表頭合併
     handerMethod({ row, columnIndex }) {
       if (row[0].level === 1) {
         row[8].colSpan = 2;
@@ -492,6 +398,7 @@ export default {
         }
       }
     },
+
     // 搜尋高光
     showDate(val) {
       val = val + "";

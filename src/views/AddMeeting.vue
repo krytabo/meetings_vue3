@@ -194,7 +194,7 @@
           </el-table-column>
           <el-table-column prop="member" label="相關人員" show-overflow-tooltip>
             <template #default="scope">
-              <member-list-dialog-even v-if="scope.row.edit === true" v-model="scope.row.member" :value="scope.row.member.name" disabled="false"></member-list-dialog-even>
+              <member-list-dialog-even v-if="scope.row.edit === true" v-model="scope.row.member" :value="scope.row.member" disabled="false"></member-list-dialog-even>
               <span v-else class="truncate">{{ scope.row.member.toString() }}</span>
               <!--<span v-else class="truncate">{{ scope.row.member }}</span>-->
             </template>

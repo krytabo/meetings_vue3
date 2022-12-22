@@ -89,8 +89,7 @@
           },
           "date": "2021-12-14",
           "member": [
-            "王大明",
-            "蔡先生"
+            "張三"
           ],
           "accessory": "",
           "edit": false
@@ -112,6 +111,21 @@
           ],
           "accessory": "",
           "edit": false
+        },
+        {
+          "content": "wert",
+          "number": "系統自動帶出",
+          "conclusion": "待辦",
+          "name": "A18002-公共工程投標案",
+          "principal": {
+            "id": "t0095",
+            "department": "建一部2",
+            "name": "王大明"
+          },
+          "date": "2022-12-29",
+          "member": "",
+          "accessory": "",
+          "edit": false
         }
       ],
       "rulesId": [
@@ -120,9 +134,9 @@
       ],
       "countersign": [
         {
-          "id": "t0096",
-          "department": "建二部",
-          "name": "蔡先生"
+          "id": "t0097",
+          "department": "建三部",
+          "name": "吳先生"
         }
       ]
     },
@@ -293,6 +307,11 @@
         }
       ],
       "countersign": [
+        {
+          "id": "t0096",
+          "department": "建二部",
+          "name": "蔡先生"
+        },
         {
           "id": "t0097",
           "department": "建三部",
