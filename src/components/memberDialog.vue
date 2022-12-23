@@ -11,10 +11,10 @@
     </div>
 
     &lt;!&ndash;    <el-input v-model="searchText"></el-input>&ndash;&gt;
-    <el-button @click="childClick">確定</el-button>
+    <el-button @click="confirmButton">確定</el-button>
   </el-dialog>-->
 
-  <el-dialog title="選擇人員" draggable :show-close="false" v-model="dialogShow">
+  <el-dialog title="選擇人員" draggable :show-close="false">
     <div class="flax mb-5 space-x-4">
       <el-table ref="multipleTables" :data="memberList" @selection-change="select">
         <el-table-column type="selection" width="50"></el-table-column>
@@ -25,8 +25,8 @@
     </div>
 
     <div class="flex w-full items-center justify-center space-x-2">
-      <a-button status="primary" @click="memberListDialog_Cance">取消</a-button>
-      <a-button type="primary" @click="childClick">確定</a-button>
+      <a-button status="primary" @click="cancelButton">取消</a-button>
+      <a-button type="primary" @click="confirmButton">確定</a-button>
     </div>
   </el-dialog>
 </template>
@@ -37,25 +37,63 @@ import { userList } from "@/views/config/api";
 export default {
   name: "memberDialog",
   prop: {
-    inputName: String,
-    modelValue: {
-      type: String,
-      default: "",
+    value: {
+      type: Array,
+      default: () => [],
     },
-    dialogObject: {
-      default() {
-        return {};
-      },
-      type: Object,
+    visible: {
+      type: Boolean,
+      default: false,
+    },
+    isSingel: {
+      type: Boolean,
+      default: false,
     },
   },
-  emits: ["dialogClose", "dialogSuccess"],
+  // emits: ["selected-user"],
+  /*setup(props, { emit }) {
+    // 选择用户
+    const setSelectRows = (selection) => {
+      // 单选
+      if (props.isSingel) {
+        if (selection.length > 1) {
+          const del_row = selection.shift();
+          state.table.toggleRowSelection(del_row, false); //设置这一行取消选中
+        }
+      }
+      // 多选
+      state.selectRows = selection;
+    };
+
+    // 打开弹框
+    const showModel = () => {
+      state.dialogFormVisible = true;
+    };
+
+    // 关闭弹框
+    const close = () => {
+      state.dialogFormVisible = false;
+    };
+
+    // 保存选择的用户
+    const save = () => {
+      emit("selected-user", state.selectRows); // 派发事件，具体逻辑在父组件中实现
+      close();
+    };
+
+    return {
+      ...toRefs(state),
+      setSelectRows,
+      showModel,
+      close,
+      save,
+    };
+  },*/
   data() {
     return {
-      searchText: this.inputName,
       memberList: [],
-      selected: null,
-      dialog: this.dialogPage,
+      search: this.value,
+      checkedDetail: [],
     };
   },
   mounted() {
@@ -64,44 +102,43 @@ export default {
     });
   },
   methods: {
-    childClick() {
-      this.$emit("childByValue", this.searchText);
-    },
+    // table選擇框
     select(rows) {
-      this.searchText = rows;
+      this.checkedDetail = rows;
+      this.$emit("selected-user", rows);
     },
-    selectAll(rows) {
-      this.searchText = rows;
+    // 確認按鈕
+    confirmButton() {
+      let val = this.checkedDetail;
+      this.search = val;
+      this.$emit("submitPopupData", "update:modelValue", val);
     },
-    sendSearch(e) {
-      this.$emit("update:modelValue", e);
-      this.searchText = e;
-    },
-    memberListDialog_Cance() {
-      this.dialogShow = false;
-      this.$nextTick(() => {
+    // 取消按鈕
+    cancelButton() {
+      this.$emit("resetPopupData");
+      /* this.$nextTick(() => {
         this.editForm.countersign.forEach((item) => {
           this.$refs.multipleTables.toggleRowSelection(item, false);
         });
-      });
+      });*/
     },
   },
   watch: {
-    multipleTable() {
+    /*multipleTable() {
       this.$nextTick(() => {
         this.$refs.multipleTable.toggleRowSelection(this.memberList[0], true);
       });
-    },
+    },*/
   },
   computed: {
-    dialogShow: {
+    /*dialogVisible: {
       get() {
-        return this.dialogObject;
+        return this.visible;
       },
       set(val) {
         this.$emit("updateVisible", val);
       },
-    },
+    },*/
   },
 };
 </script>

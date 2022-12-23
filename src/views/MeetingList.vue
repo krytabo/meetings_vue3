@@ -181,6 +181,7 @@
     </div>
   </div>
 
+  <!--<memberDialog v-model="dialogVisible" @resetPopupData="memberListDialog_Cancel" @submitPopupData="memberListDialog_Confirm" @selected-user="selectedUser"></memberDialog>-->
   <el-dialog title="選擇人員" draggable v-model="dialogVisible" :show-close="false">
     <div class="flax mb-5 space-x-4">
       <el-table ref="multipleTables" :data="memberList" @selection-change="select">
@@ -192,11 +193,10 @@
     </div>
 
     <div class="flex w-full items-center justify-center space-x-2">
-      <a-button status="primary" @click="memberListDialog_Cance">取消</a-button>
-      <a-button type="primary" @click="childClick">確定</a-button>
+      <a-button status="primary" @click="memberListDialog_Cancel">取消</a-button>
+      <a-button type="primary" @click="memberListDialog_Confirm">確定</a-button>
     </div>
   </el-dialog>
-  <!--<memberDialog v-model="dialogVisible"></memberDialog>-->
 </template>
 
 <script>
@@ -342,6 +342,12 @@ export default {
     },
 
     /** 會辦 */
+    selectedUser(userInfo) {
+      const user = userInfo;
+      if (user instanceof Array) {
+        this.editForm.countersign = user;
+      }
+    },
     // 會辦畫面選擇對象
     select(val) {
       this.editForm.countersign = val;
@@ -350,6 +356,7 @@ export default {
     edit_countersign(index, row) {
       this.dialogVisible = true;
       this.editForm = JSON.parse(JSON.stringify(row));
+      // this.editForm = row;
 
       // el-table的checkbox預設勾選
       this.$nextTick(() => {
@@ -363,7 +370,7 @@ export default {
       });
     },
     // 送出確定會辦人員
-    childClick() {
+    memberListDialog_Confirm() {
       let id = this.editForm.id;
       let obj = this.editForm;
       this.axios
@@ -378,7 +385,7 @@ export default {
         });
     },
     //取消
-    memberListDialog_Cance() {
+    memberListDialog_Cancel() {
       this.dialogVisible = false;
       this.$nextTick(() => {
         this.editForm.countersign.forEach((item) => {
