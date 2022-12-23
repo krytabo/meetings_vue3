@@ -15,6 +15,7 @@
         </div>
       </div>
 
+      <test></test>
       <!--表格-->
       <el-table :data="tables.slice((currentPage - 1) * pageSize, currentPage * pageSize)" ref="multipleTable" :header-cell-style="handerMethod">
         <el-table-column label="類型" prop="type" sortable>
@@ -118,6 +119,7 @@
           <el-table-column show-overflow-tooltip min-width="40">
             <template #default="scope">
               <a-button type="primary" status="success" v-show="countersignEdit === false" @click="edit_countersign(scope.$index, scope.row)">編輯</a-button>
+              <!--<el-input v-model="scope.row.countersign.name" @focus="edit_countersign(scope.$index, scope.row)"></el-input>-->
             </template>
           </el-table-column>
         </el-table-column>
@@ -200,12 +202,14 @@
 </template>
 
 <script>
+import test from "@/views/test";
 // import memberDialog from "@/components/memberDialog";
 import { meetingList, userList } from "@/views/config/api";
 export default {
   name: "HomeView",
   components: {
     // memberDialog,
+    test,
   },
   created() {
     this.getApi();

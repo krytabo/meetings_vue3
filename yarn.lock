@@ -6489,6 +6489,11 @@ vdirs@^0.1.4, vdirs@^0.1.8:
   dependencies:
     evtd "^0.2.2"
 
+vee-validate@4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/vee-validate/-/vee-validate-4.0.3.tgz#8fe8460b29fee0029ac141431ca97ff2081b5308"
+  integrity sha512-Ovk5+rNCnwZDQuRcCcq8claqJNNerBauKzCBD3bDoGBWqoLwAfo7rakr4p/jJs5WB4qpCyxjuycZMZJhuUNA/g==
+
 vooks@^0.2.12, vooks@^0.2.4:
   version "0.2.12"
   resolved "https://registry.yarnpkg.com/vooks/-/vooks-0.2.12.tgz#2b6e23330b77bac81c7f7a344c4ca3e9f4f6c373"

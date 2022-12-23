@@ -222,6 +222,22 @@
         </el-table>
       </el-form>
     </div>
+
+    <el-dialog title="選擇人員" draggable v-model="dialogVisible" :show-close="false">
+      <div class="flax mb-5 space-x-4">
+        <el-table ref="multipleTables" :data="memberList" @selection-change="select">
+          <el-table-column type="selection" width="50"></el-table-column>
+          <el-table-column label="編號" prop="id"></el-table-column>
+          <el-table-column label="姓名" prop="name"></el-table-column>
+          <el-table-column label="部門" prop="department"></el-table-column>
+        </el-table>
+      </div>
+
+      <div class="flex w-full items-center justify-center space-x-2">
+        <a-button status="primary" @click="memberListDialog_Cancel">取消</a-button>
+        <a-button type="primary" @click="memberListDialog_Confirm">確定</a-button>
+      </div>
+    </el-dialog>
     <a-modal :title="dialogTitle" v-model:visible="openDialogOption" :width="1000" draggable class="list_select">
       <el-table ref="filterTable" :data="tables" highlight-current-row @current-change="handleCurrentChange">
         <el-table-column type="index" label="序號" width="60" align="center"></el-table-column>
@@ -311,6 +327,7 @@ export default {
   watch: {},
   data() {
     return {
+      dialogVisible: false,
       value1: [],
       value2: "",
       /** Loading相關 */
