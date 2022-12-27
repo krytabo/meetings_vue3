@@ -14,9 +14,9 @@
     <el-button @click="confirmButton">確定</el-button>
   </el-dialog>-->
 
-  <el-dialog title="選擇人員" draggable :show-close="false">
+  <el-dialog title="選擇人員" draggable :visible="dialogFormVisible" :show-close="false">
     <div class="flax mb-5 space-x-4">
-      <el-table ref="multipleTables" :data="memberList" @selection-change="select">
+      <el-table ref="memberTables" :data="memberList" @selection-change="select">
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column label="編號" prop="id"></el-table-column>
         <el-table-column label="姓名" prop="name"></el-table-column>
@@ -37,63 +37,28 @@ import { userList } from "@/views/config/api";
 export default {
   name: "memberDialog",
   prop: {
-    value: {
-      type: Array,
-      default: () => [],
-    },
-    visible: {
-      type: Boolean,
-      default: false,
-    },
     isSingel: {
       type: Boolean,
       default: false,
     },
+    //內容
+    tagsValue: {
+      type: Array,
+      default: () => [],
+    },
+    dialogShow: {
+      type: Boolean,
+      default: false,
+    },
   },
-  // emits: ["selected-user"],
-  /*setup(props, { emit }) {
-    // 选择用户
-    const setSelectRows = (selection) => {
-      // 单选
-      if (props.isSingel) {
-        if (selection.length > 1) {
-          const del_row = selection.shift();
-          state.table.toggleRowSelection(del_row, false); //设置这一行取消选中
-        }
-      }
-      // 多选
-      state.selectRows = selection;
-    };
-
-    // 打开弹框
-    const showModel = () => {
-      state.dialogFormVisible = true;
-    };
-
-    // 关闭弹框
-    const close = () => {
-      state.dialogFormVisible = false;
-    };
-
-    // 保存选择的用户
-    const save = () => {
-      emit("selected-user", state.selectRows); // 派发事件，具体逻辑在父组件中实现
-      close();
-    };
-
-    return {
-      ...toRefs(state),
-      setSelectRows,
-      showModel,
-      close,
-      save,
-    };
-  },*/
   data() {
     return {
       memberList: [],
-      search: this.value,
-      checkedDetail: [],
+      selectTags: [],
+      // dialogVisible: false,
+      dialogFormVisible: this.dialogShow,
+      internalVisible: false,
+      tags: this.tagsValue,
     };
   },
   mounted() {
@@ -101,44 +66,59 @@ export default {
       this.memberList = res.data;
     });
   },
-  methods: {
-    // table選擇框
-    select(rows) {
-      this.checkedDetail = rows;
-      this.$emit("selected-user", rows);
-    },
-    // 確認按鈕
-    confirmButton() {
-      let val = this.checkedDetail;
-      this.search = val;
-      this.$emit("submitPopupData", "update:modelValue", val);
-    },
-    // 取消按鈕
-    cancelButton() {
-      this.$emit("resetPopupData");
-      /* this.$nextTick(() => {
-        this.editForm.countersign.forEach((item) => {
-          this.$refs.multipleTables.toggleRowSelection(item, false);
-        });
-      });*/
-    },
-  },
-  watch: {
-    /*multipleTable() {
-      this.$nextTick(() => {
-        this.$refs.multipleTable.toggleRowSelection(this.memberList[0], true);
-      });
-    },*/
-  },
   computed: {
-    /*dialogVisible: {
+    dialogVisible: {
       get() {
         return this.visible;
       },
       set(val) {
+        // 当visible改变的时候，触发父组件的 updateVisible方法，在该方法中更改传入子组件的 centerDialogVisible的值
         this.$emit("updateVisible", val);
+        console.log(123);
+        this.$nextTick(() => {
+          for (let i = 0; i < this.$refs.multipleTable.length; i++) {
+            this.$refs.memberTables[i].clearSelection();
+            this.tags.forEach((item) => {
+              this.memberList.forEach((subItem) => {
+                if (item.id === subItem.id) {
+                  this.$refs.memberTables[i].toggleRowSelection(subItem, true);
+                }
+              });
+            });
+          }
+          /*this.$refs.memberTables.clearSelection();
+          this.tags.forEach((item) => {
+            this.memberList.forEach((subItem) => {
+              if (item.id === subItem.id) {
+                this.$refs.memberTables.toggleRowSelection(subItem, true);
+              }
+            });
+          });*/
+        });
       },
-    },*/
+    },
+  },
+  methods: {
+    // table選擇框
+    select(val) {
+      this.selectTags = JSON.parse(JSON.stringify(val));
+      this.$emit("selected-user", val);
+    },
+    // 確認按鈕
+    confirmButton() {
+      this.tags = this.selectTags;
+      const rows = this.tags;
+      this.$emit("submitPopupData", "update:modelValue", rows);
+    },
+    // 取消按鈕
+    cancelButton() {
+      this.$emit("resetPopupData");
+    },
+  },
+  watch: {
+    dialogShow(val) {
+      this.dialogFormVisible = val;
+    },
   },
 };
 </script>

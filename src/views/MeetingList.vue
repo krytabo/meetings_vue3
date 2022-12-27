@@ -15,7 +15,10 @@
         </div>
       </div>
 
-      <test></test>
+      {{ tags }}
+
+      <el-button type="primary" @click="dialogShowChange(true)">show dialog</el-button>
+      <test @sand-form="sand" rulesOption="false" allowCreate="false" :tagsValue="tags"></test>
       <!--表格-->
       <el-table :data="tables.slice((currentPage - 1) * pageSize, currentPage * pageSize)" ref="multipleTable" :header-cell-style="handerMethod">
         <el-table-column label="類型" prop="type" sortable>
@@ -183,8 +186,14 @@
     </div>
   </div>
 
-  <!--<memberDialog v-model="dialogVisible" @resetPopupData="memberListDialog_Cancel" @submitPopupData="memberListDialog_Confirm" @selected-user="selectedUser"></memberDialog>-->
-  <el-dialog title="選擇人員" draggable v-model="dialogVisible" :show-close="false">
+  <memberDialog
+    :dialogShow="dialogShow"
+    @updateVisible="updateVisible"
+    @resetPopupData="memberListDialog_Cancel"
+    @submitPopupData="memberListDialog_Confirm"
+    @selected-user="selectedUser"
+  ></memberDialog>
+  <!--<el-dialog title="選擇人員" draggable v-model="dialogVisible" :show-close="false">
     <div class="flax mb-5 space-x-4">
       <el-table ref="multipleTables" :data="memberList" @selection-change="select">
         <el-table-column type="selection" width="50"></el-table-column>
@@ -198,17 +207,17 @@
       <a-button status="primary" @click="memberListDialog_Cancel">取消</a-button>
       <a-button type="primary" @click="memberListDialog_Confirm">確定</a-button>
     </div>
-  </el-dialog>
+  </el-dialog>-->
 </template>
 
 <script>
 import test from "@/views/test";
-// import memberDialog from "@/components/memberDialog";
+import memberDialog from "@/components/memberDialog";
 import { meetingList, userList } from "@/views/config/api";
 export default {
   name: "HomeView",
   components: {
-    // memberDialog,
+    memberDialog,
     test,
   },
   created() {
@@ -216,13 +225,30 @@ export default {
   },
   data() {
     return {
+      tags: [
+        {
+          id: "t0095",
+          department: "建一部",
+          name: "王大明",
+        },
+        {
+          id: "t0096",
+          department: "建二部",
+          name: "蔡先生",
+        },
+        {
+          id: "t0097",
+          department: "建三部",
+          name: "吳先生",
+        },
+      ],
       editForm: {
         id: "",
         countersign: "",
       }, //選擇員工待存區
       searchText: "",
       inputContent: "",
-      dialogVisible: false,
+      dialogShow: false,
       wholeSearch: "",
       currentPage: 1, //默認顯示頁面為1
       pageSize: 10, //每頁顯示的數據
@@ -281,6 +307,16 @@ export default {
     };
   },
   methods: {
+    dialogShowChange(val) {
+      this.dialogShow = val;
+    },
+    updateVisible(val) {
+      this.dialogVisible = val;
+    },
+    sand(rows) {
+      this.tags = rows;
+      console.log(rows);
+    },
     // 獲取API
     getApi() {
       meetingList().then((res) => {
@@ -363,15 +399,18 @@ export default {
       // this.editForm = row;
 
       // el-table的checkbox預設勾選
-      this.$nextTick(() => {
-        this.editForm.countersign.forEach((item) => {
-          this.memberList.forEach((subItem) => {
-            if (item.id === subItem.id) {
-              this.$refs.multipleTables.toggleRowSelection(subItem, true);
-            }
+      /*this.$nextTick(() => {
+        for (let i = 0; i < this.$refs.multipleTable.length; i++) {
+          this.$refs.memberTables[i].clearSelection();
+          this.tags.forEach((item) => {
+            this.memberList.forEach((subItem) => {
+              if (item.id === subItem.id) {
+                this.$refs.memberTables[i].toggleRowSelection(subItem, true);
+              }
+            });
           });
-        });
-      });
+        }
+      });*/
     },
     // 送出確定會辦人員
     memberListDialog_Confirm() {
@@ -391,11 +430,6 @@ export default {
     //取消
     memberListDialog_Cancel() {
       this.dialogVisible = false;
-      this.$nextTick(() => {
-        this.editForm.countersign.forEach((item) => {
-          this.$refs.multipleTables.toggleRowSelection(item, false);
-        });
-      });
     },
 
     /** 會議記錄總表 */
