@@ -705,7 +705,14 @@
               </el-table-column>
               <el-table-column prop="KPI" label="KPI" width="200">
                 <template #default="scope">
-                  <div class="flex flex-col">
+                  <div v-if="scope.row.auditStatus === '待送簽' || scope.row.auditStatus === '已簽核'" class="flex flex-col">
+                    <el-checkbox v-model="scope.row.KPIOption" disabled>評分</el-checkbox>
+                    <el-select v-model="scope.row.KPI" size="mini" placeholder="請選擇" allow-create disabled>
+                      <el-option v-for="item in KPISelect" :key="item.value" :label="item.value" :value="item.value"></el-option>
+                    </el-select>
+                    <!--<el-input-number :disabled="scope.row.KPIOption === false" v-model="scope.row.KPI" @change="handleChange"></el-input-number>-->
+                  </div>
+                  <div v-else class="flex flex-col">
                     <el-checkbox v-model="scope.row.KPIOption">評分</el-checkbox>
                     <el-select v-model="scope.row.KPI" size="mini" placeholder="請選擇" allow-create :disabled="scope.row.KPIOption === false">
                       <el-option v-for="item in KPISelect" :key="item.value" :label="item.value" :value="item.value"></el-option>
@@ -716,7 +723,13 @@
               </el-table-column>
               <el-table-column prop="managerCommit" label="直屬主管意見" width="250">
                 <template #default="scope">
-                  <el-input type="textarea" :rows="2" placeholder="請輸入內容" v-model="scope.row.managerCommit"></el-input>
+                  <el-input
+                    type="textarea"
+                    :rows="2"
+                    placeholder="請輸入內容"
+                    v-model="scope.row.managerCommit"
+                    :disabled="scope.row.auditStatus === '待送簽' || scope.row.auditStatus === '已簽核'"
+                  ></el-input>
                 </template>
               </el-table-column>
               <el-table-column label="會議記錄" width="100" fixed="right">
