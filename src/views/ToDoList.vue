@@ -509,7 +509,7 @@
               </el-table-column>
               <el-table-column prop="principalDone" label="回覆是否完成" width="400">
                 <template #default="scope">
-                  <div v-if="scope.row.principal === '王大明'" class="flex w-full space-x-2">
+                  <div v-if="scope.row.principal === '王大明' && scope.row.auditStatus === '待送簽'" class="flex w-full space-x-2">
                     <el-radio-group v-model="scope.row.principalDone" class="text-center">
                       <el-radio :label="true">是</el-radio>
                       <el-radio :label="false">否</el-radio>
@@ -691,24 +691,12 @@
               </el-table-column>
               <el-table-column prop="principalDone" label="回覆是否完成" width="400">
                 <template #default="scope">
-                  <div v-if="scope.row.principal === '蔡先生'" class="flex w-full space-x-2">
-                    <el-radio-group v-model="scope.row.principalDone" class="text-center">
+                  <div class="flex w-full space-x-2">
+                    <el-radio-group v-model="scope.row.principalDone" class="text-center" disabled>
                       <el-radio :label="true">是</el-radio>
                       <el-radio :label="false">否</el-radio>
                     </el-radio-group>
-
-                    <a-upload class="flex-1" v-if="scope.row.principalDone === true" action="https://www.mocky.io/v2/5cc8019d300000980a055e76" :limit="1">
-                      <template #upload-button><a-button type="primary">選擇檔案</a-button></template>
-                    </a-upload>
-                    <div v-else class="flex flex-1 flex-col space-y-2">
-                      <el-input class="flex-1" type="textarea" :rows="1" placeholder="請輸入內容" v-model="scope.row.principalCommit"></el-input>
-                      <el-date-picker class="w-full flex-1" type="date" placeholder="請選擇日期" v-model="scope.row.un_doneDate"></el-date-picker>
-                    </div>
                   </div>
-                  <el-radio-group v-else v-model="scope.row.principalDone" class="text-center" disabled>
-                    <el-radio :label="true">是</el-radio>
-                    <el-radio :label="false">否</el-radio>
-                  </el-radio-group>
                   <!--<div v-else class="flex w-full space-x-2">
                     <p v-if="scope.row.principalCommit === ''" class="text-gray-500">無</p>
                     <p v-else>{{ scope.row.principalCommit }}</p>

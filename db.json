@@ -123,6 +123,11 @@
           "id": "t0096",
           "department": "建二部",
           "name": "蔡先生"
+        },
+        {
+          "id": "t0097",
+          "department": "建三部",
+          "name": "吳先生"
         }
       ]
     },
@@ -1042,7 +1047,7 @@
           "edit": "張大文"
         }
       ],
-      "auditStatus": "待送簽",
+      "auditStatus": "待簽核",
       "signedStatus": [
         {
           "level": "負責人(王大明)",
