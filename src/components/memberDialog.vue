@@ -31,7 +31,7 @@ export default {
       type: Array,
       default: () => [],
     },
-    dialogShow: {
+    dialogVisible: {
       type: Boolean,
       default: false,
     },
@@ -41,7 +41,7 @@ export default {
       memberList: [],
       selectTags: [],
       // dialogVisible: false,
-      dialogFormVisible: this.dialogShow,
+      dialogFormVisible: this.dialogVisible,
       internalVisible: false,
       tags: this.tagsValue,
     };

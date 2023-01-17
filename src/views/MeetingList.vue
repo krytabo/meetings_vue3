@@ -14,13 +14,8 @@
           <el-input v-model="wholeSearch" placeholder="請輸入關鍵字" class="flex-1"></el-input>
         </div>
       </div>
-
-      {{ tags }}
-
-      <el-button type="primary" @click="dialogShowChange(true)">show dialog</el-button>
-      <test @sand-form="sand" rulesOption="false" allowCreate="false" :tagsValue="tags"></test>
       <!--表格-->
-      <el-table :data="tables.slice((currentPage - 1) * pageSize, currentPage * pageSize)" ref="multipleTable" :header-cell-style="handerMethod">
+      <el-table border :data="tables.slice((currentPage - 1) * pageSize, currentPage * pageSize)" ref="multipleTable" :header-cell-style="handerMethod">
         <el-table-column label="類型" prop="type" sortable>
           <el-table-column prop="type">
             <template #header>
@@ -121,8 +116,8 @@
         <el-table-column label="會辦" prop="countersign">
           <el-table-column show-overflow-tooltip min-width="40">
             <template #default="scope">
+              <!--<test @sand-form="memberListDialog_Confirm(scope.$index, scope.row)" rulesOption="false" :tagsValue="scope.row.countersign" tagsInput="false" type="primary" status="success"></test>-->
               <a-button type="primary" status="success" v-show="countersignEdit === false" @click="edit_countersign(scope.$index, scope.row)">編輯</a-button>
-              <!--<el-input v-model="scope.row.countersign.name" @focus="edit_countersign(scope.$index, scope.row)"></el-input>-->
             </template>
           </el-table-column>
         </el-table-column>
@@ -185,70 +180,46 @@
       ></el-pagination>
     </div>
   </div>
+  <!--<video class="video-js" id="remoteVideo" ref="videoJsPlayer"></video>-->
+  <!--<member-dialog v-model="dialogVisible" @resetPopupData="memberListDialog_Cancel" @submitPopupData="memberListDialog_Confirm"></member-dialog>-->
 
-  <memberDialog
-    :dialogShow="dialogShow"
-    @updateVisible="updateVisible"
-    @resetPopupData="memberListDialog_Cancel"
-    @submitPopupData="memberListDialog_Confirm"
-    @selected-user="selectedUser"
-  ></memberDialog>
-  <!--<el-dialog title="選擇人員" draggable v-model="dialogVisible" :show-close="false">
+  <el-dialog title="選擇人員" draggable v-model="dialogVisible" :show-close="false">
     <div class="flax mb-5 space-x-4">
-      <el-table ref="multipleTables" :data="memberList" @selection-change="select">
+      <el-table ref="memberTables" :data="memberList" @selection-change="select" :row-key="getRowKeys">
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column label="編號" prop="id"></el-table-column>
         <el-table-column label="姓名" prop="name"></el-table-column>
         <el-table-column label="部門" prop="department"></el-table-column>
       </el-table>
     </div>
-
     <div class="flex w-full items-center justify-center space-x-2">
       <a-button status="primary" @click="memberListDialog_Cancel">取消</a-button>
       <a-button type="primary" @click="memberListDialog_Confirm">確定</a-button>
     </div>
-  </el-dialog>-->
+  </el-dialog>
 </template>
 
 <script>
-import test from "@/views/test";
-import memberDialog from "@/components/memberDialog";
+// import memberDialog from "@/components/memberDialog";
 import { meetingList, userList } from "@/views/config/api";
 export default {
   name: "HomeView",
   components: {
-    memberDialog,
-    test,
+    // memberDialog,
   },
   created() {
     this.getApi();
+    // this.applyFn();
   },
   data() {
     return {
-      tags: [
-        {
-          id: "t0095",
-          department: "建一部",
-          name: "王大明",
-        },
-        {
-          id: "t0096",
-          department: "建二部",
-          name: "蔡先生",
-        },
-        {
-          id: "t0097",
-          department: "建三部",
-          name: "吳先生",
-        },
-      ],
       editForm: {
         id: "",
         countersign: "",
       }, //選擇員工待存區
       searchText: "",
       inputContent: "",
-      dialogShow: false,
+      dialogVisible: false,
       wholeSearch: "",
       currentPage: 1, //默認顯示頁面為1
       pageSize: 10, //每頁顯示的數據
@@ -304,19 +275,37 @@ export default {
         start: "",
         end: "",
       },
+      /*options: {
+        autoplay: true,
+        controls: true,
+        preload: true,
+        fluid: true,
+        hls: true,
+        notSupportedMessage: "無法播放，請稍候重試",
+        sources: [
+          {
+            src: "https://flashphoner.ezplus.com.tw:8445/rtsp://admin:a-123456@118.163.192.216:554/cam/realmonitor?channel=1%26subtype=1.m3u8",
+            type: "application/vnd.apple.mpegurl",
+          },
+        ],
+      },
+      player: null,*/
     };
   },
   methods: {
-    dialogShowChange(val) {
-      this.dialogShow = val;
+    /*play() {
+      this.player = videojs(this.$refs.videoPlayer, this.options, () => {
+        this.player.log("video player ready", this);
+      });
     },
-    updateVisible(val) {
-      this.dialogVisible = val;
-    },
-    sand(rows) {
-      this.tags = rows;
-      console.log(rows);
-    },
+    applyFn() {
+      var urlServer = "https://flashphoner.ezplus.com.tw:8445";
+      var streamName = "rtsp://admin:a-123456@118.163.192.216:554/cam/realmonitor?channel=1%26subtype=1";
+      streamName = encodeURIComponent(streamName);
+      var src = urlServer + "/" + streamName + "/" + streamName + ".m3u8";
+      this.options.sources[0].src = src;
+      this.options.sources[0].type = "application/vnd.apple.mpegurl";
+    },*/
     // 獲取API
     getApi() {
       meetingList().then((res) => {
@@ -382,13 +371,6 @@ export default {
     },
 
     /** 會辦 */
-    selectedUser(userInfo) {
-      const user = userInfo;
-      if (user instanceof Array) {
-        this.editForm.countersign = user;
-      }
-    },
-    // 會辦畫面選擇對象
     select(val) {
       this.editForm.countersign = val;
     },
@@ -396,21 +378,21 @@ export default {
     edit_countersign(index, row) {
       this.dialogVisible = true;
       this.editForm = JSON.parse(JSON.stringify(row));
-      // this.editForm = row;
-
-      // el-table的checkbox預設勾選
-      /*this.$nextTick(() => {
-        for (let i = 0; i < this.$refs.multipleTable.length; i++) {
-          this.$refs.memberTables[i].clearSelection();
-          this.tags.forEach((item) => {
-            this.memberList.forEach((subItem) => {
-              if (item.id === subItem.id) {
-                this.$refs.memberTables[i].toggleRowSelection(subItem, true);
-              }
-            });
+      let _this = row;
+      console.log(row.countersign);
+      this.$nextTick(() => {
+        this.$refs.memberTables.clearSelection();
+        _this.countersign.forEach((item) => {
+          this.memberList.forEach((subItem) => {
+            if (item.id === subItem.id) {
+              this.$refs.memberTables.toggleRowSelection(subItem);
+            }
           });
-        }
-      });*/
+        });
+      });
+    },
+    getRowKeys(row) {
+      return row.id;
     },
     // 送出確定會辦人員
     memberListDialog_Confirm() {
@@ -584,7 +566,11 @@ export default {
     },
   },
   watch: {},
-  mounted() {},
+  mounted() {
+    /*this.player = videojs(this.$refs.videoPlayer, this.options, () => {
+      this.player.log("video player ready", this);
+    });*/
+  },
 };
 </script>
 <style lang="scss">

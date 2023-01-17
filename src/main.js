@@ -39,6 +39,12 @@ const naive = create({
 
 import moment from "moment";
 
+import VueVideoPlayer from "vue-video-player";
+import "video.js/dist/video-js.css";
+
+import Vue3VideoPlayer from "@cloudgeek/vue3-video-player";
+import "@cloudgeek/vue3-video-player/dist/vue3-video-player.css";
+
 const app = createApp(App);
 app.use(store);
 app.use(router);
@@ -50,4 +56,8 @@ app.use(ElementPlus, { locale: locale });
 app.use(ArcoVue);
 app.use(naive);
 app.config.globalProperties.$moment = moment; //prototype方式
+app.use(VueVideoPlayer);
+app.use(Vue3VideoPlayer, {
+  lang: "zh-CN",
+});
 app.mount("#app");

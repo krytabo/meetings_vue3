@@ -1,28 +1,32 @@
 <template>
-  <p class="text-red-500">{{ tags }}</p>
-  <div class="relative flex w-full items-center">
-    <div class="flex h-8 flex-1 items-center space-x-2 rounded border border-gray-200 bg-white px-4 hover:border-gray-300" :class="{ inputError: validateState === 'error' }">
-      <a-tag v-for="tag in tags" :key="tag.name" color="#165dff" class="rounded" closable @close="handleClose(tag)">{{ tag.name }}</a-tag>
-      <input v-show="allowCreate === true" v-model="inputValue" @keyup.enter="handleInputConfirm" class="flex-1" @blur="handleInputConfirm" />
+  <div>
+    <!--<p class="text-red-500">{{ tags }}</p>-->
+    <div class="flex w-full items-center">
+      <div v-show="tagsInput === true" class="relative w-full">
+        <div class="flex h-8 flex-1 items-center space-x-2 rounded border border-gray-200 bg-white px-4 hover:border-gray-300" :class="{ inputError: validateState === 'error' }">
+          <a-tag v-for="tag in tags" :key="tag.name" color="#165dff" class="rounded" closable @close="handleClose(tag)">{{ tag.name }}</a-tag>
+          <input v-show="allowCreate === true" v-model="inputValue" @keyup.enter="handleInputConfirm" class="flex-1" @blur="handleInputConfirm" />
+        </div>
+        <p v-show="validateState === 'error'" class="absolute text-red-500" style="bottom: -20px">請選擇對象</p>
+      </div>
+      <a-button :type="type" :size="size" :plain="plain" :circle="circle" :status="status" @click="edit_countersign">選擇</a-button>
     </div>
-    <p v-show="validateState === 'error'" class="absolute text-red-500" style="bottom: -20px">請選擇對象</p>
-    <el-button plain @click="edit_countersign">選擇</el-button>
+    <el-dialog title="選擇人員" draggable v-model="dialogVisible" :show-close="false">
+      <div class="flax mb-5 space-x-4">
+        <el-table ref="memberTables" :data="memberList" @selection-change="select" :row-key="getRowKeys">
+          <el-table-column type="selection" width="50"></el-table-column>
+          <el-table-column label="編號" prop="id"></el-table-column>
+          <el-table-column label="姓名" prop="name"></el-table-column>
+          <el-table-column label="部門" prop="department"></el-table-column>
+        </el-table>
+      </div>
+      <div class="flex w-full items-center justify-center space-x-2">
+        <a-button status="primary" @click="memberListDialog_Cancel">取消</a-button>
+        <a-button v-if="rulesOption === true" type="primary" @click="memberListDialog_Confirm">確定</a-button>
+        <a-button v-else type="primary" @click="memberListDialog_Confirm2">確定</a-button>
+      </div>
+    </el-dialog>
   </div>
-  <el-dialog title="選擇人員" draggable v-model="dialogVisible" :show-close="false">
-    <div class="flax mb-5 space-x-4">
-      <el-table ref="memberTables" :data="memberList" @selection-change="select" :row-key="getRowKeys">
-        <el-table-column type="selection" width="50"></el-table-column>
-        <el-table-column label="編號" prop="id"></el-table-column>
-        <el-table-column label="姓名" prop="name"></el-table-column>
-        <el-table-column label="部門" prop="department"></el-table-column>
-      </el-table>
-    </div>
-    <div class="flex w-full items-center justify-center space-x-2">
-      <a-button status="primary" @click="memberListDialog_Cancel">取消</a-button>
-      <a-button v-if="rulesOption === true" type="primary" @click="memberListDialog_Confirm">確定</a-button>
-      <a-button v-else type="primary" @click="memberListDialog_Confirm2">確定</a-button>
-    </div>
-  </el-dialog>
 </template>
 
 <script>
@@ -32,8 +36,33 @@ export default {
   name: "testPage",
   components: {},
   props: {
+    status: {
+      type: String,
+      default: null,
+    },
+    circle: {
+      type: String,
+      default: null,
+    },
+    plain: {
+      type: String,
+      default: null,
+    },
+    size: {
+      type: String,
+      default: null,
+    },
+    type: {
+      type: String,
+      default: null,
+    },
     // 可新增
     allowCreate: {
+      type: Boolean,
+      default: true,
+    },
+    // 輸入欄位
+    tagsInput: {
       type: Boolean,
       default: true,
     },
@@ -72,6 +101,7 @@ export default {
     // 會辦畫面選擇對象
     select(val) {
       this.selectTags = JSON.parse(JSON.stringify(val));
+      console.log(this.selectTags);
     },
     //開啟會辦選擇視窗
     edit_countersign() {
